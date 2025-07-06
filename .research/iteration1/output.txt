@@ -1,0 +1,86 @@
+Device being used: cuda
+Starting Experiment 1: Convergence Efficiency with Sequential Conditioning
+Training Epoch 0: Loss = 0.16156
+Training Epoch 50: Loss = 0.00027
+Training Epoch 100: Loss = 0.00000
+Training Epoch 150: Loss = 0.00000
+Training for Experiment 1 completed.
+Evaluation complete over 100 iterations. Mean MSE error = 14572.089204177857
+Evaluation complete over 100 iterations. Mean MSE error = 10.105657806396485
+Experiment 1 plot saved as .research/iteration1/images/training_loss_baseline_vs_sbfse.pdf
+Starting Experiment 2: Likelihood Approximation via Importance Weighting
+1D Network Training Epoch 0: Loss = 3.21546
+1D Network Training Epoch 100: Loss = 3.41326
+1D Network Training Epoch 200: Loss = 2.56857
+Training for Experiment 2 completed.
+SB-FSE Approximated Integrated Likelihood: 0.22918
+Analytically computed True Likelihood: 0.01753
+Experiment 2 plot saved as .research/iteration1/images/likelihood_approximation.pdf
+Starting Experiment 3: Scalability and Robustness on MNIST with Added Noise
+Image Network Training Epoch 0 completed.
+Image Network Training Epoch 1 completed.
+Image Network Training Epoch 2 completed.
+Image Network Training Epoch 3 completed.
+Image Network Training Epoch 4 completed.
+Running baseline image sampler evaluation...
+Batch 0: MSE Metric = 6.98872, Time = 0.05255 sec
+Batch 1: MSE Metric = 6.97645, Time = 0.05306 sec
+Batch 2: MSE Metric = 7.07224, Time = 0.05336 sec
+Batch 3: MSE Metric = 7.15619, Time = 0.05311 sec
+Batch 4: MSE Metric = 7.12445, Time = 0.05261 sec
+Batch 5: MSE Metric = 7.03589, Time = 0.05211 sec
+Batch 6: MSE Metric = 6.97686, Time = 0.05314 sec
+Batch 7: MSE Metric = 6.95717, Time = 0.05223 sec
+Batch 8: MSE Metric = 6.99576, Time = 0.05212 sec
+Batch 9: MSE Metric = 7.01522, Time = 0.05227 sec
+Batch 10: MSE Metric = 7.00196, Time = 0.05313 sec
+Running SB-FSE image sampler evaluation...
+Batch 0: MSE Metric = 1.21872, Time = 0.06405 sec
+Batch 1: MSE Metric = 1.22251, Time = 0.06398 sec
+Batch 2: MSE Metric = 1.17635, Time = 0.06308 sec
+Batch 3: MSE Metric = 1.20722, Time = 0.06366 sec
+Batch 4: MSE Metric = 1.20789, Time = 0.06380 sec
+Batch 5: MSE Metric = 1.20172, Time = 0.06378 sec
+Batch 6: MSE Metric = 1.24554, Time = 0.06288 sec
+Batch 7: MSE Metric = 1.21982, Time = 0.06336 sec
+Batch 8: MSE Metric = 1.19335, Time = 0.06383 sec
+Batch 9: MSE Metric = 1.17331, Time = 0.06417 sec
+Batch 10: MSE Metric = 1.20740, Time = 0.06400 sec
+Experiment 3 plot saved as .research/iteration1/images/scalability_metrics.pdf
+=== Starting quick tests for all experiments ===
+
+Running test for Experiment 1 (convergence)...
+Evaluation complete over 5 iterations. Mean MSE error = 8.131387281417847
+Experiment 1 test completed.
+
+Running test for Experiment 2 (likelihood approximation)...
+Test Likelihood: SB-FSE approximated = 0.54920, True = 0.01753
+Experiment 2 test completed.
+
+Running test for Experiment 3 (scalability)...
+Batch 0: MSE Metric = 7.53287, Time = 0.01349 sec
+Batch 1: MSE Metric = 7.23429, Time = 0.01358 sec
+Batch 2: MSE Metric = 7.35093, Time = 0.01337 sec
+Batch 3: MSE Metric = 7.37421, Time = 0.01344 sec
+Batch 4: MSE Metric = 7.31376, Time = 0.01380 sec
+Batch 5: MSE Metric = 6.58666, Time = 0.01346 sec
+Batch 6: MSE Metric = 7.31585, Time = 0.01341 sec
+Batch 7: MSE Metric = 7.29843, Time = 0.01352 sec
+Batch 8: MSE Metric = 7.21122, Time = 0.01345 sec
+Batch 9: MSE Metric = 7.19652, Time = 0.01354 sec
+Batch 10: MSE Metric = 7.37396, Time = 0.01337 sec
+Batch 0: MSE Metric = 1.13855, Time = 0.01605 sec
+Batch 1: MSE Metric = 1.14079, Time = 0.01627 sec
+Batch 2: MSE Metric = 1.16731, Time = 0.01627 sec
+Batch 3: MSE Metric = 1.12912, Time = 0.01596 sec
+Batch 4: MSE Metric = 1.20264, Time = 0.01599 sec
+Batch 5: MSE Metric = 1.21512, Time = 0.01593 sec
+Batch 6: MSE Metric = 1.20942, Time = 0.01595 sec
+Batch 7: MSE Metric = 1.11018, Time = 0.01609 sec
+Batch 8: MSE Metric = 1.16920, Time = 0.01632 sec
+Batch 9: MSE Metric = 1.15479, Time = 0.01606 sec
+Batch 10: MSE Metric = 1.20098, Time = 0.01638 sec
+Experiment 3 test completed.
+
+=== All quick tests completed successfully ===
+All experiments executed. Check the PDF files for the plots and the console output for details.
