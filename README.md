@@ -1,1 +1,7 @@
-airas-template
+# Sequential Bayesian Flow Score Estimation: A Robust and Scalable Approach to Generative Modeling
+> ⚠️ **NOTE:** This research is an automatic research using AIRAS.
+## Abstract
+This paper introduces Sequential Bayesian Flow Score Estimation (SB-FSE), a novel inference and generation framework that couples the iterative parameter refinement of Bayesian Flow Networks (BFNs) with a sequential neural score estimation strategy. By integrating conditional score matching with Bayesian corrections, SB-FSE mitigates the limitations of fixed solvers and enables direct likelihood approximation through an importance-sampling mechanism. The approach models the forward noise-addition process via stochastic differential equations (SDEs) and employs a sequential update, based on conditional denoising objectives, to guide samples toward high-density regions. Empirical evaluations on synthetic two-dimensional Gaussian mixtures, a one-dimensional Gaussian likelihood approximation task, and noisy MNIST data demonstrate that SB-FSE converges in significantly fewer iterations – reducing mean squared error from over 14,000 to nearly 10 – while delivering substantial improvements in sample quality and computational efficiency. These results validate our contribution of combining sequential neural score estimation with Bayesian parameter refinement for robust and scalable generative modeling.
+
+- [Research history](https://github.com/auto-res2/Yoshino-4/blob/1-test/.research/research_history.json)
+- [Devin execution log](https://app.devin.ai/sessions/ba6293e4e45e4f95a562e4217502934b)
