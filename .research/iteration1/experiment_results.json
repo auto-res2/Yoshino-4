@@ -1,0 +1,18 @@
+{
+  "experiment_timestamp": "2025-07-09T14:05:15.821350",
+  "experiment1_summary": {
+    "avg_ctd_e_nodes": 4.0,
+    "avg_baseline_nodes": 3.0,
+    "improvement_ratio": 1.3333333333333333
+  },
+  "experiment2_summary": {
+    "total_nodes_processed": 3,
+    "avg_length_improvement": 0.0
+  },
+  "experiment3_summary": {
+    "avg_final_score": 7.798931458163533,
+    "score_improvement": -0.15106854183646679,
+    "avg_tree_depth": 1.0,
+    "curriculum_convergence": 3.173817742515804
+  }
+}

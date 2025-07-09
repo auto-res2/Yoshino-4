@@ -1,0 +1,24 @@
+{
+  "model_settings": {
+    "model_name": "gpt2",
+    "max_length": 50,
+    "temperature": 0.7,
+    "device": "auto"
+  },
+  "experiment_parameters": {
+    "num_samples": 6,
+    "retrieval_top_k": 1,
+    "adversarial_iterations": 5,
+    "curriculum_learning_rate": 0.2
+  },
+  "gpu_settings": {
+    "target_gpu": "Tesla T4",
+    "max_vram_gb": 16,
+    "enable_memory_optimization": true
+  },
+  "output_settings": {
+    "save_plots_as_pdf": true,
+    "plot_dpi": 300,
+    "results_directory": ".research/iteration1"
+  }
+}
