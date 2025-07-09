@@ -1,0 +1,94 @@
+Starting CTD-E (Critic Tree-Guided Dynamic Evaluation) Experiments
+================================================================================
+Setting up experiment environment...
+Environment setup completed.
+Preprocessed data saved to data/
+
+Running all three CTD-E experiments...
+
+============================================================
+EXPERIMENT 1: Dynamic Critic Tree Construction
+============================================================
+Processing 6 samples...
+Initializing CTD-E Evaluator with model: gpt2
+Using device: cuda
+Processing sample 1/6: The quick brown fox jumps over the lazy dog. This ...
+  CTD-E Tree: It is a simple example to demonstrate that the qui...
+  Subcriteria: 3
+  Baseline criteria: 3
+Processing sample 2/6: In an increasingly globalized world, decisions sha...
+  CTD-E Tree: In a recent paper, we show that globalization's im...
+  Subcriteria: 3
+  Baseline criteria: 3
+Processing sample 3/6: The narrative is cohesive and the language is enga...
+  CTD-E Tree: The "soul-dwelling" style of the book is a combina...
+  Subcriteria: 3
+  Baseline criteria: 3
+Processing sample 4/6: The report is informative and provides clear insig...
+  CTD-E Tree: The study was conducted using the R software packa...
+  Subcriteria: 3
+  Baseline criteria: 3
+Processing sample 5/6: Academic writing requires precision, clarity, and ...
+  CTD-E Tree: This is a high-quality, high quality writing that ...
+  Subcriteria: 3
+  Baseline criteria: 3
+Processing sample 6/6: Effective communication involves understanding you...
+  CTD-E Tree: That's a key challenge in the marketing world, and...
+  Subcriteria: 3
+  Baseline criteria: 3
+
+Comparison Results:
+  Average CTD-E nodes: 4.00
+  Average baseline nodes: 3.00
+  Improvement ratio: 1.33
+Saved tree comparison plot as .research/iteration1/images/evaluation_tree_comparison.pdf
+
+============================================================
+EXPERIMENT 2: Retrieval-Augmented Node Refinement
+============================================================
+Created corpus with 10 documents
+Created Whoosh index for corpus
+Processing node 1/3: Evaluation for clarity
+  Original length: 51
+  Refined length: 51
+  Improvement: 0
+Processing node 2/3: Evaluation for coherence
+  Original length: 38
+  Refined length: 38
+  Improvement: 0
+Processing node 3/3: Evaluation for style
+  Original length: 35
+  Refined length: 35
+  Improvement: 0
+Saved retrieval refinement plot as .research/iteration1/images/retrieval_refinement.pdf
+
+============================================================
+EXPERIMENT 3: Iterative Adversarial Refinement
+============================================================
+Processing 2 samples through iterative refinement...
+Generated 10 evaluation records
+
+Iterative Refinement Results:
+          score               tree_depth curriculum_weight
+          first   last   mean       mean              last
+sample_id                                                 
+0           7.4  7.821  7.771        1.2             3.229
+1           7.8  7.779  7.844        1.0             3.156
+
+Summary Metrics:
+  avg_final_score: 7.800
+  score_improvement: 0.200
+  avg_tree_depth: 1.100
+  curriculum_convergence: 3.192
+Saved comprehensive iterative refinement plot as .research/iteration1/images/iterative_refinement_comprehensive.pdf
+
+Saving experiment results...
+Results saved to .research/iteration1/
+Status set to 'stopped' in config/experiment_status.json
+
+================================================================================
+ALL EXPERIMENTS COMPLETED SUCCESSFULLY
+================================================================================
+Results saved in .research/iteration1/
+Plots saved as high-quality PDFs in .research/iteration1/images/
+Status set to 'stopped'
