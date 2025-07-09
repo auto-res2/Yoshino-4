@@ -1,0 +1,9 @@
+{
+  "status_enum": "stopped",
+  "completion_timestamp": "2025-07-09T14:05:15.825128",
+  "experiments_completed": [
+    "dynamic_tree",
+    "retrieval_refinement",
+    "iterative_refinement"
+  ]
+}
