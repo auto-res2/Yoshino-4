@@ -1,1 +1,7 @@
 # Please list the required python packages.
+requests
+numpy
+torch
+scikit-learn
+matplotlib
+seaborn
