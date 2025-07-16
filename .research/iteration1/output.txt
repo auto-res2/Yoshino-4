@@ -1,0 +1,19 @@
+
+========= Starting Test of All Experiments =========
+
+===== Running Experiment 1: Dynamic Online Knowledge Expansion =====
+Fetched papers from arXiv (dummy): [{'title': 'Paper 0', 'summary': 'This is a sample summary about machine learning technique 0.', 'published': '2025-07-16'}, {'title': 'Paper 1', 'summary': 'This is a sample summary about machine learning technique 1.', 'published': '2025-07-16'}, {'title': 'Paper 2', 'summary': 'This is a sample summary about machine learning technique 2.', 'published': '2025-07-16'}, {'title': 'Paper 3', 'summary': 'This is a sample summary about machine learning technique 3.', 'published': '2025-07-16'}, {'title': 'Paper 4', 'summary': 'This is a sample summary about machine learning technique 4.', 'published': '2025-07-16'}, {'title': 'Paper 5', 'summary': 'This is a sample summary about machine learning technique 5.', 'published': '2025-07-16'}, {'title': 'Paper 6', 'summary': 'This is a sample summary about machine learning technique 6.', 'published': '2025-07-16'}, {'title': 'Paper 7', 'summary': 'This is a sample summary about machine learning technique 7.', 'published': '2025-07-16'}, {'title': 'Paper 8', 'summary': 'This is a sample summary about machine learning technique 8.', 'published': '2025-07-16'}, {'title': 'Paper 9', 'summary': 'This is a sample summary about machine learning technique 9.', 'published': '2025-07-16'}]
+Updated Expert Knowledge Base (Clusters): {np.int32(0): [{'title': 'Paper 0', 'summary': 'This is a sample summary about machine learning technique 0.', 'published': '2025-07-16'}, {'title': 'Paper 1', 'summary': 'This is a sample summary about machine learning technique 1.', 'published': '2025-07-16'}, {'title': 'Paper 2', 'summary': 'This is a sample summary about machine learning technique 2.', 'published': '2025-07-16'}, {'title': 'Paper 3', 'summary': 'This is a sample summary about machine learning technique 3.', 'published': '2025-07-16'}, {'title': 'Paper 4', 'summary': 'This is a sample summary about machine learning technique 4.', 'published': '2025-07-16'}, {'title': 'Paper 5', 'summary': 'This is a sample summary about machine learning technique 5.', 'published': '2025-07-16'}, {'title': 'Paper 6', 'summary': 'This is a sample summary about machine learning technique 6.', 'published': '2025-07-16'}, {'title': 'Paper 7', 'summary': 'This is a sample summary about machine learning technique 7.', 'published': '2025-07-16'}, {'title': 'Paper 8', 'summary': 'This is a sample summary about machine learning technique 8.', 'published': '2025-07-16'}, {'title': 'Paper 9', 'summary': 'This is a sample summary about machine learning technique 9.', 'published': '2025-07-16'}]}
+Freshness Metric (average timestamp): 1752624000.0
+Static KB - Epoch [10/50], Loss: 0.7096
+Static KB - Epoch [20/50], Loss: 0.5544
+Static KB - Epoch [30/50], Loss: 0.4392
+Static KB - Epoch [40/50], Loss: 0.3484
+Static KB - Epoch [50/50], Loss: 0.2767
+Dynamic KB - Epoch [10/50], Loss: 0.6162
+Dynamic KB - Epoch [20/50], Loss: 0.2561
+Dynamic KB - Epoch [30/50], Loss: 0.2055
+Dynamic KB - Epoch [40/50], Loss: 0.1786
+Dynamic KB - Epoch [50/50], Loss: 0.1565
+Final Loss (Static KB): 0.2767
+Final Loss (Dynamic KB): 0.1565
