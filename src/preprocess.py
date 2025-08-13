@@ -1,125 +1,122 @@
 import pandas as pd
 import numpy as np
-import os
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer
+import logging
 
-def load_data(data_path):
-    print(f"Loading data from {data_path}...")
-    if not os.path.exists(data_path):
-        raise FileNotFoundError(f"Data file not found at {data_path}")
-    df = pd.read_csv(data_path)
-    print(f"Data loaded. Shape: {df.shape}")
-    return df
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def preprocess_data(df, config, advanced_imputation=False):
-    print("Starting data preprocessing...")
-    target_column = config['data']['target_column']
+def generate_mock_data(scenario="default"):
+    np.random.seed(42)
+    size = 100
+    if scenario == "small_noisy_data":
+        size = 20 # Smaller dataset
     
-    if target_column not in df.columns:
-        raise ValueError(f"Target column '{target_column}' not found in data.")
+    data = pd.DataFrame({
+        'feature1': np.random.rand(size) * 100,
+        'feature2': np.random.randint(0, 5, size),
+        'target': np.random.rand(size) * 10
+    })
 
-    X = df.drop(columns=[target_column])
-    y = df[target_column]
-
-    numerical_cols = X.select_dtypes(include=np.number).columns
-    categorical_cols = X.select_dtypes(exclude=np.number).columns
-
-    # Imputation strategies
-    numerical_imputer = SimpleImputer(strategy='mean')
-    categorical_imputer = SimpleImputer(strategy='most_frequent')
-
-    if advanced_imputation:
-        print("Applying advanced imputation (e.g., iterative imputer - conceptual)")
-        # In a real scenario, you'd use sklearn.impute.IterativeImputer or similar
-        # For simplicity, we'll just demonstrate a different conceptual path.
-        numerical_imputer = SimpleImputer(strategy='median')
-        categorical_imputer = SimpleImputer(strategy='constant', fill_value='missing')
-
-    # Preprocessing pipelines for numerical and categorical features
-    numerical_transformer = ColumnTransformer(
-        [('num_imputer', numerical_imputer, numerical_cols),
-         ('scaler', StandardScaler(), numerical_cols)],
-        remainder='passthrough'
-    )
+    if scenario == "non_numeric_for_scaling":
+        data['feature1'] = data['feature1'].astype(str) # Introduce non-numeric
+    elif scenario == "missing_values":
+        data.loc[np.random.choice(data.index, int(0.1*size)), 'feature1'] = np.nan # 10% missing
+    elif scenario == "imbalanced_target":
+        data['target'] = np.random.choice([0, 1], size=size, p=[0.9, 0.1]) # Simulate imbalance
+    elif scenario == "small_noisy_data":
+        # Introduce more noise for 'feature1'
+        data['feature1'] = data['feature1'] + np.random.randn(size) * 50
+        data['target'] = (data['feature1'] + data['feature2'] + np.random.randn(size)*20 > 100).astype(int)
     
-    # Handle potential empty categorical columns
-    if len(categorical_cols) > 0:
-        categorical_transformer = ColumnTransformer(
-            [('cat_imputer', categorical_imputer, categorical_cols),
-             ('onehot', OneHotEncoder(handle_unknown='ignore'), categorical_cols)],
-            remainder='passthrough'
-        )
-        preprocessor = ColumnTransformer(
-            transformers=[
-                ('num', numerical_transformer, numerical_cols),
-                ('cat', categorical_transformer, categorical_cols)
-            ])
+    return data
+
+def preprocess_data(data: pd.DataFrame, params: dict, task_context: dict) -> pd.DataFrame:
+    logging.info(f"Preprocessing data for task '{task_context.get('task_id', 'N/A')}' with params: {params}")
+
+    processed_data = data.copy()
+    
+    # Simulate missing value handling
+    if params.get('handle_missing'):
+        logging.info("  Handling missing values...")
+        if processed_data.isnull().sum().sum() > 0:
+            processed_data = processed_data.fillna(processed_data.mean(numeric_only=True))
+        else:
+            logging.info("  No missing values found.")
     else:
-        preprocessor = numerical_transformer # Only numerical transformer if no categorical columns
+        # If not handled, check for critical missing values that might cause downstream errors
+        if processed_data.isnull().sum().sum() > 0 and task_context.get('simulate_preprocess_error', False) and task_context.get('preprocess_error_type') == "unhandled_missing":
+             raise ValueError("PreprocessingError: Unhandled missing values detected.")
 
-    # Fit and transform
-    X_processed = preprocessor.fit_transform(X)
+    # Simulate scaling
+    if params.get('scale_data'):
+        logging.info("  Scaling data...")
+        numeric_cols = processed_data.select_dtypes(include=np.number).columns
+        non_numeric_cols = processed_data.select_dtypes(exclude=np.number).columns
+        
+        if len(non_numeric_cols) > 0 and task_context.get('simulate_preprocess_error', False) and task_context.get('preprocess_error_type') == "non_numeric_for_scaling":
+            logging.error(f"PreprocessingError: Non-numeric columns {list(non_numeric_cols)} found for scaling. Raising error.")
+            raise TypeError(f"PreprocessingError: Non-numeric columns {list(non_numeric_cols)} detected, cannot scale.")
+        
+        for col in numeric_cols:
+            if processed_data[col].std() > 0:
+                processed_data[col] = (processed_data[col] - processed_data[col].mean()) / processed_data[col].std()
+            else:
+                processed_data[col] = 0 # Avoid division by zero for constant columns
+    
+    # Simulate adaptive outlier handling
+    if params.get('adaptive_outlier_handling'):
+        logging.info("  Applying adaptive outlier handling...")
+        # Simple percentile based outlier removal for demonstration
+        for col in processed_data.select_dtypes(include=np.number).columns:
+            Q1 = processed_data[col].quantile(0.25)
+            Q3 = processed_data[col].quantile(0.75)
+            IQR = Q3 - Q1
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
+            # Replace outliers with median or cap them
+            processed_data[col] = np.where(processed_data[col] < lower_bound, processed_data[col].median(), processed_data[col])
+            processed_data[col] = np.where(processed_data[col] > upper_bound, processed_data[col].median(), processed_data[col])
+        logging.info("  Outlier handling applied.")
 
-    # Convert back to DataFrame (for easier debugging, though not strictly necessary for PyTorch)
-    # This part can be tricky due to one-hot encoding changing column names
-    # For now, just return numpy array
-    print("Data preprocessing complete.")
-    return X_processed, y, preprocessor # Return preprocessor for potential future use (e.g., new data)
-
-def get_preprocessed_data(config, advanced_imputation=False):
-    data_path = os.path.join(config['paths']['data_dir'], config['data']['filename'])
-    df = load_data(data_path)
-    X, y, _ = preprocess_data(df, config, advanced_imputation=advanced_imputation)
-    X = pd.DataFrame(X) # Convert back to DataFrame for consistency with train/eval expectations
-    return train_test_split(X, y, test_size=config['data']['test_size'], random_state=config['data']['random_state'])
+    logging.info("Preprocessing complete.")
+    return processed_data
 
 if __name__ == '__main__':
-    # This block is for simple testing of preprocess.py in isolation
-    print("Running preprocess.py in test mode...")
+    # Simple test run
+    print("--- Preprocess Test Run ---")
     
-    dummy_data_dir = '../data'
-    dummy_data_path = os.path.join(dummy_data_dir, 'dummy_data.csv')
-    os.makedirs(dummy_data_dir, exist_ok=True)
+    # Scenario 1: Default successful run
+    print("\nScenario 1: Default successful run")
+    data_default = generate_mock_data()
+    params_default = {"scale_data": True, "handle_missing": True}
+    processed_data_default = preprocess_data(data_default, params_default, {"task_id": "test_default"})
+    print(f"Processed data shape: {processed_data_default.shape}")
+    print(f"Processed data head:\n{processed_data_default.head()}")
 
-    # Create dummy CSV data with some missing values and categorical data
-    dummy_df = pd.DataFrame({
-        'feature_1': np.random.rand(100),
-        'feature_2': np.random.randint(0, 10, 100).astype(float),
-        'feature_3': ['A', 'B', 'C'] * 30 + ['A', 'B', 'A', 'B', 'C', 'A', 'B', 'C', 'A', 'B'],
-        'target': np.random.randint(0, 2, 100)
-    })
-    dummy_df.loc[10:20, 'feature_1'] = np.nan
-    dummy_df.loc[30, 'feature_3'] = np.nan # Introduce a missing categorical value
-    dummy_df.to_csv(dummy_data_path, index=False)
-
-    dummy_config = {
-        'data': {
-            'filename': 'dummy_data.csv',
-            'target_column': 'target',
-            'test_size': 0.2,
-            'random_state': 42
-        },
-        'paths': {
-            'data_dir': dummy_data_dir
-        }
-    }
-    
+    # Scenario 2: Simulate non-numeric error
+    print("\nScenario 2: Simulate non-numeric for scaling error")
+    data_non_numeric = generate_mock_data(scenario="non_numeric_for_scaling")
+    params_non_numeric = {"scale_data": True, "handle_missing": False}
     try:
-        X_train, X_test, y_train, y_test = get_preprocessed_data(dummy_config)
-        print(f"X_train shape: {X_train.shape}, y_train shape: {y_train.shape}")
-        print(f"X_test shape: {X_test.shape}, y_test shape: {y_test.shape}")
-        # Test advanced imputation path
-        print("\nTesting advanced imputation path...")
-        X_train_adv, X_test_adv, y_train_adv, y_test_adv = get_preprocessed_data(dummy_config, advanced_imputation=True)
-        print(f"X_train_adv shape: {X_train_adv.shape}, y_train_adv shape: {y_train_adv.shape}")
+        preprocess_data(data_non_numeric, params_non_numeric, {"task_id": "test_non_numeric", "simulate_preprocess_error": True, "preprocess_error_type": "non_numeric_for_scaling"})
+    except TypeError as e:
+        print(f"Caught expected error: {e}")
 
-    except Exception as e:
-        print(f"Error during preprocess.py test: {e}")
-    finally:
-        # Clean up dummy data
-        if os.path.exists(dummy_data_path):
-            os.remove(dummy_data_path)
-    print("preprocess.py test finished.")
+    # Scenario 3: Simulate missing values error
+    print("\nScenario 3: Simulate unhandled missing values error")
+    data_missing = generate_mock_data(scenario="missing_values")
+    params_missing = {"scale_data": False, "handle_missing": False} # Not handling missing
+    try:
+        preprocess_data(data_missing, params_missing, {"task_id": "test_missing", "simulate_preprocess_error": True, "preprocess_error_type": "unhandled_missing"})
+    except ValueError as e:
+        print(f"Caught expected error: {e}")
+
+    # Scenario 4: Adaptive outlier handling
+    print("\nScenario 4: Adaptive outlier handling")
+    data_outlier = generate_mock_data()
+    # Manually inject some outliers
+    data_outlier.loc[0, 'feature1'] = 1000.0
+    data_outlier.loc[1, 'feature1'] = -500.0
+    params_outlier = {"scale_data": True, "handle_missing": True, "adaptive_outlier_handling": True}
+    processed_data_outlier = preprocess_data(data_outlier, params_outlier, {"task_id": "test_outlier"})
+    print(f"Processed data with outlier handling head:\n{processed_data_outlier.head()}")
+    

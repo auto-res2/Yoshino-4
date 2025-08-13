@@ -1,316 +1,420 @@
 import os
 import json
+import logging
 import yaml
-import time
-import pandas as pd
+import networkx as nx
 import numpy as np
+from typing import List, Dict, Any, Optional
+from enum import Enum
+from sentence_transformers import SentenceTransformer, util
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import Dict, Any, List
+import pandas as pd # Import pandas for pd.Series
 
-from src.preprocess import get_preprocessed_data
-from src.train import train_model
-from src.evaluate import evaluate_model
+# Ensure .research/iteration1/images directory exists
+os.makedirs(os.path.join(".research", "iteration1", "images"), exist_ok=True)
 
-# --- SCEL Module Components (Conceptual Implementations) ---
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-class CFAE: # Causal Failure Analysis Engine
-    def analyze(self, error_message: str, context: Dict[str, Any]) -> Dict[str, str]:
-        print(f"[CFAE] Analyzing failure: {error_message}")
-        print(f"[CFAE] Context: {context}")
+# Import modules from src
+import src.preprocess as preprocess
+import src.train as train
+import src.evaluate as evaluate
+
+# --- Enums for Causal Failure Analysis ---
+class ProblemType(Enum):
+    PREPROCESSING_ERROR = "Preprocessing Error"
+    TRAINING_ERROR = "Training Error"
+    EVALUATION_ERROR = "Evaluation Error"
+    SUBOPTIMAL_PERFORMANCE = "Suboptimal Performance"
+
+class RootCause(Enum):
+    DATA_QUALITY_ISSUE = "Data Quality Issue"
+    MISSING_VALUES = "Missing Values"
+    NON_NUMERIC_DATA = "Non-Numeric Data"
+    OUTLIERS = "Outliers"
+    DATA_IMBALANCE = "Data Imbalance"
+    MODEL_OVERFITTING = "Model Overfitting"
+    MODEL_UNDERFITTING = "Model Underfitting"
+    INVALID_HYPERPARAMETERS = "Invalid Hyperparameters"
+    NO_TARGET_VARIABLE = "No Target Variable"
+    UNKNOWN_ERROR = "Unknown Error"
+
+class ProposedSolution(Enum):
+    APPLY_MISSING_VALUE_HANDLING = "Apply Missing Value Handling"
+    CONVERT_DATA_TYPES = "Convert Data Types"
+    APPLY_FEATURE_SCALING = "Apply Feature Scaling"
+    APPLY_OUTLIER_HANDLING = "Apply Outlier Handling"
+    APPLY_REGULARIZATION = "Apply Regularization"
+    REDUCE_COMPLEXITY = "Reduce Model Complexity"
+    INCREASE_COMPLEXITY = "Increase Model Complexity"
+    ADJUST_HYPERPARAMETERS = "Adjust Hyperparameters"
+    IMPROVE_DATA_QUALITY = "Improve Data Quality"
+    CHECK_TARGET_VARIABLE = "Check Target Variable Definition"
+    GENERIC_TROUBLESHOOT = "Generic Troubleshooting"
+
+# --- SCEL Agent Implementation ---
+class SCELAgent:
+    def __init__(self, config: dict):
+        self.config = config
+        self.dekg_path = config['dekg_path']
+        self.embedding_model_name = config['embedding_model']
+        self.cbr_top_k = config['cbr_top_k']
         
-        # Simulate LLM-based analysis for common issues
-        if "not found in data" in error_message or "column missing" in error_message:
-            root_cause = "Missing or incorrect target/feature column in input data."
-            proposed_action = "Verify column names in config and data; potentially adjust data loading or feature selection logic."
-            adaptation = {'type': 'data_config_check', 'details': 'Review config.yaml and data headers.'}
-        elif "NaN values" in error_message or "input contains NaN" in error_message:
-            root_cause = "Inadequate handling of missing values during preprocessing."
-            proposed_action = "Implement more robust imputation strategies (e.g., advanced_imputation=True)."
-            adaptation = {'type': 'preprocessing_strategy', 'param': 'advanced_imputation', 'value': True}
-        elif "singular matrix" in error_message or "data has 0 variance" in error_message:
-            root_cause = "Numerical instability or constant features after scaling."
-            proposed_action = "Review feature scaling; consider removing low-variance features."
-            adaptation = {'type': 'preprocessing_strategy', 'details': 'Review feature selection/scaling.'} # For this demo, just conceptual
-        elif "Model not found" in error_message:
-            root_cause = "Model training failed or model file was not saved/loaded correctly."
-            proposed_action = "Ensure training completes successfully and model path is correct."
-            adaptation = {'type': 'retry', 'step': 'train'}
-        elif context.get('performance') and context['performance']['accuracy'] < 0.6: # Example of suboptimal outcome
-            root_cause = "Model performance is suboptimal, potentially due to overfitting, underfitting, or imbalanced data."
-            proposed_action = "Consider increasing epochs, adjusting learning rate, or applying data balancing techniques."
-            adaptation = {'type': 'training_strategy', 'param': 'epochs', 'value': context['config']['training']['epochs'] + 5}
-        else:
-            root_cause = "Unidentified or novel error."
-            proposed_action = "Consult documentation or human expert; log full context for future analysis."
-            adaptation = {'type': 'log_and_alert'}
+        self.dekg = self._load_dekg()
+        self.sentence_model = SentenceTransformer(self.embedding_model_name)
+        logging.info(f"Initialized SCELAgent with DEKG from {self.dekg_path} and embedding model {self.embedding_model_name}")
 
-        analysis_result = {
-            'root_cause': root_cause,
-            'proposed_action': proposed_action,
-            'adaptation': adaptation
+    def _load_dekg(self) -> list:
+        """Loads DEKG from file or initializes an empty one."""
+        if os.path.exists(self.dekg_path):
+            try:
+                with open(self.dekg_path, 'r') as f:
+                    dekg_data = json.load(f)
+                    logging.info(f"Loaded {len(dekg_data)} cases from DEKG.")
+                    return dekg_data
+            except Exception as e:
+                logging.warning(f"Could not load DEKG from {self.dekg_path}: {e}. Initializing empty DEKG.")
+                return []
+        logging.info("DEKG file not found. Initializing empty DEKG.")
+        return []
+
+    def _save_dekg(self):
+        """Saves the current DEKG to file."""
+        os.makedirs(os.path.dirname(self.dekg_path), exist_ok=True)
+        with open(self.dekg_path, 'w') as f:
+            json.dump(self.dekg, f, indent=2)
+        logging.info(f"DEKG saved to {self.dekg_path}")
+
+    def causal_failure_analysis(self, problem_type: ProblemType, error_message: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Simulates the Causal Failure Analysis Engine (CFAE) using a rule-based approach.
+        In a real system, this would involve a fine-tuned LLM.
+        """
+        logging.info(f"CFAE initiated for {problem_type.value}: '{error_message}' in context {context}")
+        
+        root_cause = RootCause.UNKNOWN_ERROR
+        proposed_solution = ProposedSolution.GENERIC_TROUBLESHOOT
+        
+        # Rule-based mapping for demonstration
+        if "non-numeric" in error_message.lower() and "scale" in error_message.lower():
+            root_cause = RootCause.NON_NUMERIC_DATA
+            proposed_solution = ProposedSolution.CONVERT_DATA_TYPES
+        elif "unhandled missing values" in error_message.lower():
+            root_cause = RootCause.MISSING_VALUES
+            proposed_solution = ProposedSolution.APPLY_MISSING_VALUE_HANDLING
+        elif "target variable has only one unique value" in error_message.lower() or "target' column not found" in error_message.lower():
+            root_cause = RootCause.NO_TARGET_VARIABLE
+            proposed_solution = ProposedSolution.CHECK_TARGET_VARIABLE
+        elif context.get('overfitting_detected'):
+            root_cause = RootCause.MODEL_OVERFITTING
+            proposed_solution = ProposedSolution.APPLY_REGULARIZATION
+        elif problem_type == ProblemType.SUBOPTIMAL_PERFORMANCE:
+            # Suboptimal performance needs deeper context, but for mock, let's assume overfitting if high train/low test
+            if context.get('train_accuracy', 0) > 0.9 and context.get('test_accuracy', 0) < 0.7:
+                 root_cause = RootCause.MODEL_OVERFITTING
+                 proposed_solution = ProposedSolution.APPLY_REGULARIZATION
+            else: # Placeholder for other suboptimal cases
+                 root_cause = RootCause.INVALID_HYPERPARAMETERS # Could be underfitting too
+                 proposed_solution = ProposedSolution.ADJUST_HYPERPARAMETERS
+        
+        logging.info(f"  Inferred Root Cause: {root_cause.value}")
+        logging.info(f"  Proposed Solution: {proposed_solution.value}")
+
+        return {
+            "problem_type": problem_type.value,
+            "error_message": error_message,
+            "context": context,
+            "root_cause": root_cause.value,
+            "proposed_solution": proposed_solution.value
         }
-        print(f"[CFAE] Analysis complete. Result: {analysis_result}")
-        return analysis_result
 
-class DEKG: # Dynamic Experiential Knowledge Graph (simple list-based for demo)
-    def __init__(self):
-        self.cases: List[Dict[str, Any]] = []
+    def add_case_to_dekg(self, case_data: Dict[str, Any]):
+        """
+        Adds a new case (failure scenario and resolution) to the DEKG.
+        For conceptual DEKG, each case is a dictionary with an embedding.
+        """
+        case_string = f"Problem: {case_data['problem_type']}. Error: {case_data['error_message']}. Root Cause: {case_data['root_cause']}. Solution: {case_data['proposed_solution']}. Context: {json.dumps(case_data['context'])}"
+        case_data['embedding'] = self.sentence_model.encode(case_string).tolist()
+        self.dekg.append(case_data)
+        logging.info("Case added to DEKG.")
+        self._save_dekg()
 
-    def store_case(self, case_details: Dict[str, Any]):
-        print(f"[DEKG] Storing new case: {case_details['problem_summary']}")
-        self.cases.append(case_details)
-        # In a real system, this would update a graph database or persistent store
-        # For this demo, just print a confirmation
-        print(f"[DEKG] Current knowledge graph size: {len(self.cases)}")
+    def retrieve_relevant_cases(self, current_context_str: str) -> List[Dict[str, Any]]:
+        """
+        Retrieves relevant cases from DEKG using Case-Based Reasoning (CBR).
+        Uses sentence embeddings for semantic similarity.
+        """
+        if not self.dekg:
+            return []
 
-    def retrieve_case(self, problem_description: str) -> Dict[str, Any] or None:
-        print(f"[DEKG] Retrieving relevant cases for: '{problem_description}'")
-        # Simple keyword-based CBR for demonstration. In a real system, use semantic similarity (e.g., Sentence Transformers).
-        best_match = None
-        highest_score = 0
+        current_embedding = self.sentence_model.encode(current_context_str)
+        similarities = []
+        for i, case in enumerate(self.dekg):
+            if 'embedding' in case:
+                case_embedding = np.array(case['embedding'])
+                similarity = util.cos_sim(current_embedding, case_embedding).item()
+                similarities.append((similarity, case))
         
-        keywords = problem_description.lower().split()
-
-        for case in self.cases:
-            case_summary = case['problem_summary'].lower()
-            score = sum(1 for keyword in keywords if keyword in case_summary)
-            if score > highest_score:
-                highest_score = score
-                best_match = case
+        similarities.sort(key=lambda x: x[0], reverse=True)
+        top_k_cases = [case for sim, case in similarities[:self.cbr_top_k] if sim > 0.7] # Threshold similarity
         
-        if best_match:
-            print(f"[DEKG] Found relevant case: {best_match['problem_summary']}")
+        if top_k_cases:
+            logging.info(f"Retrieved {len(top_k_cases)} relevant cases from DEKG.")
+            for sim, case in similarities[:self.cbr_top_k]:
+                logging.info(f"  - Case (Sim: {sim:.2f}): Problem: {case['problem_type']}, Root Cause: {case['root_cause']}, Solution: {case['proposed_solution']}")
         else:
-            print("[DEKG] No direct relevant case found.")
-        return best_match
+            logging.info("No highly similar cases found in DEKG.")
+        return top_k_cases
 
-class SCELModule:
-    def __init__(self):
-        self.cfae = CFAE()
-        self.dekg = DEKG()
+    def proactive_adaptive_planning(self, initial_params: dict, current_task_context: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Modifies the plan based on 'lessons learned' from DEKG before execution.
+        """
+        context_str = f"Task Type: Data Science. Initial Params: {initial_params}. Current Data Characteristics: {current_task_context.get('data_characteristics', 'N/A')}"
+        
+        relevant_cases = self.retrieve_relevant_cases(context_str)
+        
+        adapted_params = initial_params.copy()
+        modifications_made = []
 
-    def self_correct(self, error_message: str, context: Dict[str, Any]) -> Dict[str, Any]:
-        analysis = self.cfae.analyze(error_message, context)
-        # Store the failure and analysis as a new case
-        case_details = {
-            'timestamp': time.time(),
-            'problem_summary': error_message,
-            'context_snapshot': context,
-            'root_cause': analysis['root_cause'],
-            'proposed_action': analysis['proposed_action'],
-            'adaptation_applied': analysis['adaptation']
+        # Apply adaptations based on relevant cases
+        for case in relevant_cases:
+            solution = ProposedSolution(case['proposed_solution'])
+            if solution == ProposedSolution.APPLY_MISSING_VALUE_HANDLING:
+                if not adapted_params.get('preprocessing', {}).get('handle_missing'):
+                    adapted_params.setdefault('preprocessing', {})['handle_missing'] = True
+                    modifications_made.append("Added missing value handling.")
+            elif solution == ProposedSolution.CONVERT_DATA_TYPES:
+                # This is harder to simulate directly in params, implies a pre-analysis step
+                # For mock, we'll just note it.
+                modifications_made.append("Considered data type conversion for numerical columns.")
+            elif solution == ProposedSolution.APPLY_OUTLIER_HANDLING:
+                if not adapted_params.get('preprocessing', {}).get('adaptive_outlier_handling'):
+                    adapted_params.setdefault('preprocessing', {})['adaptive_outlier_handling'] = True
+                    modifications_made.append("Added adaptive outlier handling.")
+            elif solution == ProposedSolution.APPLY_REGULARIZATION:
+                if not adapted_params.get('training', {}).get('add_regularization'):
+                    adapted_params.setdefault('training', {})['add_regularization'] = True
+                    # Also might adjust epochs or LR to mitigate overfitting
+                    if adapted_params.get('training', {}).get('epochs', 0) > 10:
+                        adapted_params['training']['epochs'] = 10 # Reduce epochs
+                    modifications_made.append("Added regularization and adjusted epochs.")
+            elif solution == ProposedSolution.ADJUST_HYPERPARAMETERS:
+                # Generic adjustment for demonstration
+                adapted_params.setdefault('training', {})['learning_rate'] = adapted_params.get('training', {}).get('learning_rate', 0.001) * 0.5 # Reduce LR
+                modifications_made.append("Adjusted hyperparameters (e.g., reduced learning rate).")
+            # Add more specific adaptations as needed
+
+        if modifications_made:
+            logging.info(f"Proactive Adaptation: Applied modifications: {', '.join(modifications_made)}")
+        else:
+            logging.info("Proactive Adaptation: No relevant cases found for adaptation or current plan already addresses.")
+
+        return adapted_params
+
+    def meta_policy_refinement(self, success: bool, strategy_applied: Dict[str, Any]):
+        """
+        Conceptually refines meta-policies based on the outcome of a task.
+        In a full system, this would update internal planning heuristics.
+        """
+        if success:
+            logging.info("Meta-Policy Refinement: Task successful. Reinforcing applied strategy and associated meta-policies.")
+            # Logic to strengthen connections/weights for successful strategies in a real system
+        else:
+            logging.info("Meta-Policy Refinement: Task failed/suboptimal. Re-evaluating applied strategy and adjusting meta-policies.")
+            # Logic to weaken connections/weights or explore alternative strategies
+
+    def run_task(self, task_id: str, initial_params: dict, data_scenario: str = "default", 
+                 simulate_preprocess_error: bool = False, preprocess_error_type: Optional[str] = None,
+                 simulate_train_overfitting: bool = False):
+        """Orchestrates a single data science task with SCEL intervention."""
+        logging.info(f"\n--- Running Task: {task_id} ---")
+        current_task_context = {
+            "task_id": task_id,
+            "simulate_preprocess_error": simulate_preprocess_error,
+            "preprocess_error_type": preprocess_error_type,
+            "simulate_train_overfitting": simulate_train_overfitting,
+            "data_characteristics": data_scenario # Pass data characteristics for context
         }
-        self.dekg.store_case(case_details)
-        return analysis['adaptation']
 
-    def proactive_adapt(self, task_description: str) -> Dict[str, Any] or None:
-        print(f"[SCEL] Proactively checking DEKG for task: '{task_description}'")
-        relevant_case = self.dekg.retrieve_case(task_description)
-        if relevant_case and 'adaptation_applied' in relevant_case:
-            print(f"[SCEL] Applying proactive adaptation from past experience: {relevant_case['adaptation_applied']}")
-            return relevant_case['adaptation_applied']
-        return None
+        # 1. Proactive Adaptive Planning
+        logging.info("Phase 1: Proactive Adaptive Planning...")
+        adapted_params = self.proactive_adaptive_planning(initial_params, current_task_context)
+        logging.info(f"  Initial Params: {initial_params}")
+        logging.info(f"  Adapted Params: {adapted_params}")
+        
+        task_success = False
+        final_score = None
+        error_details = None
+        applied_strategy = {"preprocessing": adapted_params.get("preprocessing", {}), "training": adapted_params.get("training", {})}
 
-# --- Experiment Orchestration ---
+        try:
+            # Generate mock data specific to the scenario
+            mock_data = preprocess.generate_mock_data(scenario=data_scenario)
+            
+            # 2. Preprocessing
+            logging.info("Phase 2: Data Preprocessing...")
+            processed_data = preprocess.preprocess_data(mock_data, adapted_params.get('preprocessing', {}), current_task_context)
+            logging.info("  Preprocessing successful.")
 
-def run_experiment(config_path: str, trial: int = 1, scel_module: SCELModule = None, initial_config_override: Dict = None):
-    print(f"\n--- Starting Experiment Trial {trial} ---")
+            # 3. Training
+            logging.info("Phase 3: Model Training...")
+            model_output = train.train_model(processed_data, adapted_params.get('training', {}), current_task_context)
+            logging.info("  Training successful.")
+            
+            # 4. Evaluation
+            logging.info("Phase 4: Model Evaluation...")
+            # Pass true labels directly from model_output
+            true_labels_for_eval = pd.Series(model_output.get("true_labels_test", []))
+            
+            eval_results = evaluate.evaluate_model(model_output, true_labels_for_eval, adapted_params.get('evaluation', {}), current_task_context)
+            final_score = eval_results['metrics']['f1_score']
+            
+            if eval_results['metrics']['is_suboptimal'] or current_task_context.get('overfitting_detected'):
+                logging.warning("Task resulted in suboptimal performance or detected overfitting.")
+                # Engage CFAE for suboptimal performance
+                analysis_result = self.causal_failure_analysis(
+                    ProblemType.SUBOPTIMAL_PERFORMANCE,
+                    f"Model performance (F1-score: {final_score:.2f}) is below threshold.",
+                    {"task_id": task_id, "metrics": eval_results['metrics'], "current_params": adapted_params, 
+                     "train_accuracy": model_output.get('train_accuracy'), "test_accuracy": model_output.get('test_accuracy'),
+                     "overfitting_detected": current_task_context.get('overfitting_detected', False)}
+                )
+                self.add_case_to_dekg(analysis_result)
+                task_success = False # Mark as failure for meta-policy, even if no hard error
+                error_details = analysis_result
+            else:
+                logging.info(f"Task completed successfully with F1-score: {final_score:.4f}")
+                task_success = True
+
+        except (TypeError, ValueError) as e:
+            logging.error(f"Task {task_id} failed with a known error: {e}")
+            problem_type = ProblemType.UNKNOWN_ERROR
+            if "PreprocessingError" in str(e):
+                problem_type = ProblemType.PREPROCESSING_ERROR
+            elif "TrainingError" in str(e):
+                problem_type = ProblemType.TRAINING_ERROR
+            elif "EvaluationError" in str(e):
+                problem_type = ProblemType.EVALUATION_ERROR
+
+            analysis_result = self.causal_failure_analysis(
+                problem_type,
+                str(e),
+                {"task_id": task_id, "current_params": adapted_params, "last_successful_phase": "N/A"}
+            )
+            self.add_case_to_dekg(analysis_result)
+            task_success = False
+            error_details = analysis_result
+
+        except Exception as e:
+            logging.critical(f"Task {task_id} failed with an unexpected error: {e}", exc_info=True)
+            analysis_result = self.causal_failure_analysis(
+                ProblemType.UNKNOWN_ERROR,
+                str(e),
+                {"task_id": task_id, "current_params": adapted_params, "last_successful_phase": "N/A"}
+            )
+            self.add_case_to_dekg(analysis_result)
+            task_success = False
+            error_details = analysis_result
+
+        # 5. Meta-Policy Refinement
+        logging.info("Phase 5: Meta-Policy Refinement...")
+        self.meta_policy_refinement(task_success, applied_strategy)
+
+        logging.info(f"--- Task {task_id} Complete. Status: {'SUCCESS' if task_success else 'FAILURE/SUBOPTIMAL'} ---")
+        if not task_success and error_details:
+            logging.info(f"  Root Cause Identified: {error_details.get('root_cause')}")
+            logging.info(f"  Proposed Solution: {error_details.get('proposed_solution')}")
+        elif task_success:
+            logging.info(f"  Final F1-score: {final_score:.4f}")
+        
+        return task_success, final_score, error_details
+
+def plot_dekg_similarity(agent: SCELAgent, task_id: str, current_context_str: str, output_dir: str):
+    """Visualizes similarity scores for a given context against DEKG cases."""
+    if not agent.dekg:
+        logging.info("DEKG is empty, cannot plot similarity.")
+        return
+
+    current_embedding = agent.sentence_model.encode(current_context_str)
+    similarities = []
+    case_labels = []
+    
+    for i, case in enumerate(agent.dekg):
+        if 'embedding' in case:
+            case_embedding = np.array(case['embedding'])
+            similarity = util.cos_sim(current_embedding, case_embedding).item()
+            similarities.append(similarity)
+            case_labels.append(f"Case {i+1} ({case['root_cause']})")
+    
+    if not similarities:
+        logging.info("No cases with embeddings in DEKG to plot similarity.")
+        return
+
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=similarities, y=case_labels, palette="viridis")
+    plt.xlabel("Cosine Similarity")
+    plt.title(f"DEKG Case Similarity for Task {task_id}")
+    plt.xlim(0, 1)
+    plt.tight_layout()
+    plot_path = os.path.join(output_dir, f"dekg_similarity_task_{task_id}.pdf")
+    plt.savefig(plot_path, format='pdf')
+    plt.close()
+    logging.info(f"DEKG similarity plot saved to {plot_path}")
+
+if __name__ == '__main__':
+    logging.info("Starting AutoMind SCEL Experiment...")
+    
+    # Load configuration
+    config_path = "config/config.yaml"
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Config file not found at {config_path}")
     
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
-
-    # Apply any initial overrides (e.g., from SCEL proactive adaptation)
-    if initial_config_override:
-        print(f"[Main] Applying initial config overrides: {initial_config_override}")
-        if 'data' in initial_config_override and 'advanced_imputation' in initial_config_override['data']:
-            config['data']['advanced_imputation'] = initial_config_override['data']['advanced_imputation']
-        if 'training' in initial_config_override and 'epochs' in initial_config_override['training']:
-             config['training']['epochs'] = initial_config_override['training']['epochs']
-        # Add more override logic here as needed for other adaptation types
-
-    X_train, X_test, y_train, y_test = None, None, None, None
-    metrics = {}
     
-    # Flags for SCEL-driven retries/adaptations
-    advanced_imputation_applied = config['data'].get('advanced_imputation', False)
-    
-    current_trial_status = 'Success'
-    failure_details = None
+    # Initialize SCEL Agent
+    scel_agent = SCELAgent(config)
 
-    try:
-        print("Step 1: Data Preprocessing...")
-        X_train, X_test, y_train, y_test = get_preprocessed_data(config, advanced_imputation=advanced_imputation_applied)
-        print(f"Data shapes: X_train={X_train.shape}, y_train={y_train.shape}, X_test={X_test.shape}, y_test={y_test.shape}")
+    # --- Run simulated data science tasks ---
+    results_summary = []
+    image_output_dir = os.path.join(".research", "iteration1", "images")
+    os.makedirs(image_output_dir, exist_ok=True)
 
-        print("Step 2: Model Training...")
-        model = train_model(X_train, y_train, config)
+    for task_config in config['task_configs']:
+        task_id = task_config['id']
+        initial_params = task_config['initial_params']
+        data_scenario = task_config.get('data_scenario', 'default') # Retrieve data_scenario from config
+
+        success, final_score, error_details = scel_agent.run_task(
+            task_id,
+            initial_params,
+            data_scenario=data_scenario,
+            simulate_preprocess_error=task_config.get('simulate_preprocess_error', False),
+            preprocess_error_type=task_config.get('preprocess_error_type'),
+            simulate_train_overfitting=task_config.get('simulate_train_overfitting', False)
+        )
         
-        print("Step 3: Model Evaluation...")
-        metrics = evaluate_model(X_test, y_test, config)
-        
-        if metrics['accuracy'] < config['evaluation']['min_acceptable_accuracy']:
-            current_trial_status = 'Suboptimal Performance'
-            failure_details = {
-                'error_type': 'Suboptimal Performance',
-                'message': f"Accuracy {metrics['accuracy']:.2f} is below threshold {config['evaluation']['min_acceptable_accuracy']:.2f}.",
-                'context': {'performance': metrics, 'config': config.copy()}
-            }
-            raise ValueError(failure_details['message']) # Raise an error to trigger SCEL
+        results_summary.append({
+            "task_id": task_id,
+            "status": "SUCCESS" if success else "FAILURE/SUBOPTIMAL",
+            "final_score": final_score,
+            "error_details": error_details
+        })
 
-    except Exception as e:
-        print(f"[Experiment Trial {trial}] An error occurred: {e}")
-        current_trial_status = 'Failed'
-        if failure_details is None: # If not already set by suboptimal performance check
-            failure_details = {
-                'error_type': 'Execution Error',
-                'message': str(e),
-                'context': {'stage': 'unknown', 'config': config.copy()}
-            }
-            if 'Data Preprocessing' in str(e): # Simple heuristic to identify stage
-                failure_details['context']['stage'] = 'preprocessing'
-            elif 'Model Training' in str(e):
-                failure_details['context']['stage'] = 'training'
-            elif 'Model Evaluation' in str(e):
-                failure_details['context']['stage'] = 'evaluation'
-            
-        if scel_module:
-            print("[Main] Engaging SCEL Module for self-correction.")
-            adaptation = scel_module.self_correct(failure_details['message'], failure_details['context'])
-            
-            if adaptation:
-                print(f"[Main] SCEL proposed adaptation: {adaptation}")
-                return 'needs_retry', adaptation # Indicate need for retry with new config
-            else:
-                print("[Main] SCEL did not propose a specific adaptation. Terminating trial.")
-                return 'terminated', None # No adaptation, terminate
-        else:
-            print("[Main] SCEL Module not enabled. Terminating trial.")
-            return 'terminated', None
+        # Plot DEKG similarity after each task to see how new cases might affect it
+        # This context string should ideally be derived from the actual data/task at hand
+        current_context_for_plot = f"Attempting task {task_id} with params {json.dumps(initial_params)}. Data scenario: {data_scenario}"
+        plot_dekg_similarity(scel_agent, task_id, current_context_for_plot, image_output_dir)
 
-    print(f"--- Experiment Trial {trial} Finished: {current_trial_status} ---")
+    logging.info("\n--- Experiment Summary ---")
+    for res in results_summary:
+        logging.info(f"Task {res['task_id']}: Status: {res['status']}, F1-Score: {res['final_score']:.4f}" if res['final_score'] is not None else f"Task {res['task_id']}: Status: {res['status']}")
+        if res['error_details']:
+            logging.info(f"  Problem: {res['error_details']['problem_type']}, Root Cause: {res['error_details']['root_cause']}, Solution: {res['error_details']['proposed_solution']}")
 
-    # Save results and plot if successful or if a plot is needed for analysis
-    if current_trial_status == 'Success':
-        results_dir = os.path.join('.research', 'iteration1', 'images')
-        os.makedirs(results_dir, exist_ok=True)
-        
-        # Save metrics
-        with open(os.path.join(results_dir, f'metrics_trial_{trial}.json'), 'w') as f:
-            json.dump(metrics, f, indent=4)
-        print(f"Metrics saved to {os.path.join(results_dir, f'metrics_trial_{trial}.json')}")
-
-        # Create a dummy plot
-        plt.figure(figsize=(8, 6))
-        sns.barplot(x=list(metrics.keys()), y=list(metrics.values()))
-        plt.title(f'Model Evaluation Metrics - Trial {trial}')
-        plt.ylabel('Score')
-        plt.ylim(0, 1)
-        plot_path = os.path.join(results_dir, f'evaluation_metrics_trial_{trial}.pdf')
-        plt.savefig(plot_path, format='pdf')
-        plt.close()
-        print(f"Metrics plot saved to {plot_path}")
-        
-    return 'success', None
-
-def main():
-    print("Starting AutoMind SCEL Experiment Orchestration...")
-    
-    # Ensure necessary directories exist
-    os.makedirs('.research/iteration1/images', exist_ok=True)
-    os.makedirs('data', exist_ok=True)
-    os.makedirs('models', exist_ok=True)
-    os.makedirs('config', exist_ok=True)
-
-    config_path = 'config/config.yaml'
-    
-    # Create a dummy data file if it doesn't exist for initial run
-    dummy_data_path = os.path.join('data', 'sample_data.csv')
-    if not os.path.exists(dummy_data_path):
-        print(f"Creating dummy data at {dummy_data_path}")
-        pd.DataFrame({
-            'feature_1': np.random.rand(200),
-            'feature_2': np.random.randint(0, 5, 200).astype(float),
-            'feature_3': ['X', 'Y', 'Z', 'X', 'Y'] * 40,
-            'target': np.random.randint(0, 2, 200)
-        }).to_csv(dummy_data_path, index=False)
-        # Introduce some missing values for testing SCEL
-        df_temp = pd.read_csv(dummy_data_path)
-        df_temp.loc[50:60, 'feature_1'] = np.nan
-        df_temp.loc[70, 'feature_3'] = np.nan
-        df_temp.to_csv(dummy_data_path, index=False)
-
-    scel_module = SCELModule()
-    
-    max_trials = 3 # Allow for initial run + 2 self-correction attempts
-    current_trial = 1
-    config_overrides = None # This will hold dictionary of overrides
-    
-    while current_trial <= max_trials:
-        print(f"\n{'='*50}\nRunning Full Experiment Cycle - Trial {current_trial}\n{'='*50}")
-        
-        task_description_for_proactive_check = "tabular classification with potential missing values and categorical features."
-        proactive_adaptation = scel_module.proactive_adapt(task_description_for_proactive_check)
-        
-        # Merge proactive adaptations into config_overrides
-        if proactive_adaptation:
-            if config_overrides is None:
-                config_overrides = {}
-            if proactive_adaptation['type'] == 'preprocessing_strategy' and proactive_adaptation['param'] == 'advanced_imputation':
-                if 'data' not in config_overrides: config_overrides['data'] = {}
-                config_overrides['data']['advanced_imputation'] = proactive_adaptation['value']
-            elif proactive_adaptation['type'] == 'training_strategy' and proactive_adaptation['param'] == 'epochs':
-                 if 'training' not in config_overrides: config_overrides['training'] = {}
-                 config_overrides['training']['epochs'] = proactive_adaptation['value']
-            print(f"[Main] Proactively adjusting config based on DEKG: {config_overrides}")
-
-        status, next_adaptation = run_experiment(config_path, current_trial, scel_module, initial_config_override=config_overrides)
-        
-        if status == 'success':
-            print("Experiment succeeded after self-correction or on first attempt.")
-            break
-        elif status == 'needs_retry':
-            print("Experiment failed, attempting self-correction and retry.")
-            # Update config overrides for next trial based on SCEL's proposed adaptation
-            if next_adaptation:
-                if config_overrides is None:
-                    config_overrides = {}
-                if next_adaptation['type'] == 'preprocessing_strategy' and next_adaptation['param'] == 'advanced_imputation':
-                    if 'data' not in config_overrides: config_overrides['data'] = {}
-                    config_overrides['data']['advanced_imputation'] = next_adaptation['value']
-                elif next_adaptation['type'] == 'training_strategy' and next_adaptation['param'] == 'epochs':
-                    if 'training' not in config_overrides: config_overrides['training'] = {}
-                    config_overrides['training']['epochs'] = next_adaptation['value']
-            
-            # For demo purposes, let's artificially introduce an error scenario after the first trial
-            # to ensure SCEL has something to correct on subsequent runs if the first one was too perfect.
-            if current_trial == 1 and status == 'needs_retry': # If 1st trial failed and needs retry
-                print("[Main] Forcing a 'missing value' scenario for demo purposes for the next trial.")
-                # Modify the config for next trial to simulate a problem that SCEL will solve
-                with open(config_path, 'r') as f:
-                    temp_config = yaml.safe_load(f)
-                temp_config['data']['filename'] = 'sample_data_with_nans.csv' # Assume this file has issues
-                with open(config_path, 'w') as f:
-                    yaml.safe_dump(temp_config, f)
-                # Create the 'problematic' file with guaranteed NaNs for the next run
-                pd.DataFrame({
-                    'feature_1': np.random.rand(200),
-                    ''feature_2': np.random.randint(0, 5, 200).astype(float),
-                    'feature_3': ['X', 'Y', 'Z', 'X', 'Y'] * 40,
-                    'target': np.random.randint(0, 2, 200)
-                }).to_csv(os.path.join('data', 'sample_data_with_nans.csv'), index=False)
-                df_problem = pd.read_csv(os.path.join('data', 'sample_data_with_nans.csv'))
-                df_problem.loc[0:100, 'feature_1'] = np.nan # Lots of NaNs
-                df_problem.to_csv(os.path.join('data', 'sample_data_with_nans.csv'), index=False)
-
-            current_trial += 1
-        else: # 'terminated'
-            print("Experiment terminated due to unresolvable errors or max retries.")
-            break
-
-    if current_trial > max_trials:
-        print(f"Max trials ({max_trials}) reached. Experiment could not converge to a successful state.")
-    print("AutoMind SCEL Experiment Orchestration finished.")
-
-if __name__ == '__main__':
-    main()
+    logging.info(f"\nDEKG contains {len(scel_agent.dekg)} learned cases.")
+    logging.info(f"All evaluation plots and DEKG similarity plots saved to: {image_output_dir}")
+    logging.info("AutoMind SCEL Experiment Complete.")

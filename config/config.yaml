@@ -1,20 +1,42 @@
-data:
-  filename: sample_data.csv
-  target_column: target
-  test_size: 0.2
-  random_state: 42
-  advanced_imputation: False # Default, can be changed by SCEL
-
-training:
-  learning_rate: 0.001
-  batch_size: 32
-  epochs: 10 # Can be adjusted by SCEL
-
-evaluation:
-  batch_size: 32
-  min_acceptable_accuracy: 0.75 # Threshold for SCEL to detect suboptimal performance
-
-paths:
-  data_dir: ./data
-  models_dir: ./models
-  images_dir: ./.research/iteration1/images
+llm_model_name: "simulated-llm-for-cfa"
+dekg_path: ".models/dekg.json"
+embedding_model: "all-MiniLM-L6-v2"
+cbr_top_k: 3
+task_configs:
+  - id: "task_001"
+    simulate_preprocess_error: false
+    simulate_train_overfitting: false
+    data_scenario: "default"
+    initial_params:
+      preprocessing: {"scale_data": true, "handle_missing": false}
+      training: {"epochs": 10, "learning_rate": 0.001}
+  - id: "task_002"
+    simulate_preprocess_error: true
+    preprocess_error_type: "non_numeric_for_scaling"
+    simulate_train_overfitting: false
+    data_scenario: "non_numeric_for_scaling"
+    initial_params:
+      preprocessing: {"scale_data": true, "handle_missing": false}
+      training: {"epochs": 10, "learning_rate": 0.001}
+  - id: "task_003"
+    simulate_preprocess_error: false
+    simulate_train_overfitting: true
+    data_scenario: "small_noisy_data"
+    initial_params:
+      preprocessing: {"scale_data": true, "handle_missing": true}
+      training: {"epochs": 20, "learning_rate": 0.01}
+  - id: "task_004"
+    simulate_preprocess_error: false
+    simulate_train_overfitting: false
+    data_scenario: "default"
+    initial_params:
+      preprocessing: {"scale_data": true, "handle_missing": true, "adaptive_outlier_handling": false}
+      training: {"epochs": 10, "learning_rate": 0.001, "add_regularization": false}
+  - id: "task_005"
+    simulate_preprocess_error: true
+    preprocess_error_type: "unhandled_missing"
+    simulate_train_overfitting: false
+    data_scenario: "missing_values"
+    initial_params:
+      preprocessing: {"scale_data": false, "handle_missing": false}
+      training: {"epochs": 10, "learning_rate": 0.001}
