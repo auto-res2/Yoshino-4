@@ -1,1 +1,12 @@
-# Please list the required python packages.
+pandas
+torch
+transformers
+json
+networkx
+numpy
+typing
+sentence_transformers
+matplotlib
+seaborn
+pyyaml
+scikit-learn

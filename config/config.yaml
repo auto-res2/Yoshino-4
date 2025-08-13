@@ -1,0 +1,20 @@
+data:
+  filename: sample_data.csv
+  target_column: target
+  test_size: 0.2
+  random_state: 42
+  advanced_imputation: False # Default, can be changed by SCEL
+
+training:
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 10 # Can be adjusted by SCEL
+
+evaluation:
+  batch_size: 32
+  min_acceptable_accuracy: 0.75 # Threshold for SCEL to detect suboptimal performance
+
+paths:
+  data_dir: ./data
+  models_dir: ./models
+  images_dir: ./.research/iteration1/images
