@@ -1,122 +1,166 @@
 import pandas as pd
 import numpy as np
-import logging
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from typing import Dict, Any, Tuple
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def generate_mock_data(scenario="default"):
+def generate_synthetic_data(config: Dict[str, Any]) -> pd.DataFrame:
+    """Generates synthetic classification data with controlled issues."""
     np.random.seed(42)
-    size = 100
-    if scenario == "small_noisy_data":
-        size = 20 # Smaller dataset
-    
-    data = pd.DataFrame({
-        'feature1': np.random.rand(size) * 100,
-        'feature2': np.random.randint(0, 5, size),
-        'target': np.random.rand(size) * 10
-    })
+    num_samples = config['num_samples']
+    num_features = config['num_features']
+    missing_value_ratio = config['missing_value_ratio']
+    imbalance_ratio = config['imbalance_ratio']
 
-    if scenario == "non_numeric_for_scaling":
-        data['feature1'] = data['feature1'].astype(str) # Introduce non-numeric
-    elif scenario == "missing_values":
-        data.loc[np.random.choice(data.index, int(0.1*size)), 'feature1'] = np.nan # 10% missing
-    elif scenario == "imbalanced_target":
-        data['target'] = np.random.choice([0, 1], size=size, p=[0.9, 0.1]) # Simulate imbalance
-    elif scenario == "small_noisy_data":
-        # Introduce more noise for 'feature1'
-        data['feature1'] = data['feature1'] + np.random.randn(size) * 50
-        data['target'] = (data['feature1'] + data['feature2'] + np.random.randn(size)*20 > 100).astype(int)
-    
-    return data
+    # Generate features
+    X = pd.DataFrame(np.random.rand(num_samples, num_features), columns=[f'feature_{i}' for i in range(num_features)])
 
-def preprocess_data(data: pd.DataFrame, params: dict, task_context: dict) -> pd.DataFrame:
-    logging.info(f"Preprocessing data for task '{task_context.get('task_id', 'N/A')}' with params: {params}")
+    # Introduce some categorical features
+    num_categorical = min(3, num_features // 3)
+    for i in range(num_categorical):
+        X[f'cat_feature_{i}'] = np.random.choice(['A', 'B', 'C'], num_samples)
 
-    processed_data = data.copy()
+    # Generate a simple target based on some features
+    y = ((X[f'feature_0'] + X[f'feature_1']) > 1.0).astype(int)
+
+    # Introduce class imbalance
+    if imbalance_ratio < 0.5:
+        minority_class_indices = np.where(y == 1)[0]
+        majority_class_indices = np.where(y == 0)[0]
+        
+        num_minority_samples = int(num_samples * imbalance_ratio)
+        if len(minority_class_indices) > num_minority_samples:
+            # Downsample minority class if it's currently too large
+            downsample_indices = np.random.choice(minority_class_indices, len(minority_class_indices) - num_minority_samples, replace=False)
+            y.iloc[downsample_indices] = 0 # Change some minority to majority
+        elif len(minority_class_indices) < num_minority_samples:
+            # Upsample minority class (by flipping some majority)
+            flip_count = num_minority_samples - len(minority_class_indices)
+            if len(majority_class_indices) >= flip_count:
+                flip_indices = np.random.choice(majority_class_indices, flip_count, replace=False)
+                y.iloc[flip_indices] = 1
+
+    # Introduce missing values
+    for col in X.columns:
+        if np.random.rand() < 0.7: # Only some columns get NaNs
+            nan_indices = np.random.choice(X.index, int(num_samples * missing_value_ratio), replace=False)
+            X.loc[nan_indices, col] = np.nan
     
-    # Simulate missing value handling
-    if params.get('handle_missing'):
-        logging.info("  Handling missing values...")
-        if processed_data.isnull().sum().sum() > 0:
-            processed_data = processed_data.fillna(processed_data.mean(numeric_only=True))
+    # Introduce unscaled features (if config asks for it)
+    if config.get('unscaled_features', False):
+        for col in X.select_dtypes(include=np.number).columns:
+            X[col] = X[col] * np.random.uniform(1, 100) + np.random.uniform(0, 50)
+
+    X['target'] = y
+    return X
+
+def get_data_characteristics(df: pd.DataFrame) -> Dict[str, Any]:
+    """Analyzes data and extracts key characteristics relevant for CFAE."""
+    characteristics = {}
+    
+    # Check for missing values
+    missing_cols = df.isnull().sum()
+    characteristics['has_missing_values'] = any(missing_cols > 0)
+    characteristics['missing_cols_count'] = len(missing_cols[missing_cols > 0])
+    
+    # Check class imbalance
+    if 'target' in df.columns:
+        target_counts = df['target'].value_counts(normalize=True)
+        characteristics['target_class_distribution'] = target_counts.to_dict()
+        if len(target_counts) > 1:
+            minority_ratio = target_counts.min()
+            characteristics['is_imbalanced'] = minority_ratio < 0.3 # Threshold for imbalance
         else:
-            logging.info("  No missing values found.")
-    else:
-        # If not handled, check for critical missing values that might cause downstream errors
-        if processed_data.isnull().sum().sum() > 0 and task_context.get('simulate_preprocess_error', False) and task_context.get('preprocess_error_type') == "unhandled_missing":
-             raise ValueError("PreprocessingError: Unhandled missing values detected.")
-
-    # Simulate scaling
-    if params.get('scale_data'):
-        logging.info("  Scaling data...")
-        numeric_cols = processed_data.select_dtypes(include=np.number).columns
-        non_numeric_cols = processed_data.select_dtypes(exclude=np.number).columns
-        
-        if len(non_numeric_cols) > 0 and task_context.get('simulate_preprocess_error', False) and task_context.get('preprocess_error_type') == "non_numeric_for_scaling":
-            logging.error(f"PreprocessingError: Non-numeric columns {list(non_numeric_cols)} found for scaling. Raising error.")
-            raise TypeError(f"PreprocessingError: Non-numeric columns {list(non_numeric_cols)} detected, cannot scale.")
-        
-        for col in numeric_cols:
-            if processed_data[col].std() > 0:
-                processed_data[col] = (processed_data[col] - processed_data[col].mean()) / processed_data[col].std()
-            else:
-                processed_data[col] = 0 # Avoid division by zero for constant columns
+            characteristics['is_imbalanced'] = False
     
-    # Simulate adaptive outlier handling
-    if params.get('adaptive_outlier_handling'):
-        logging.info("  Applying adaptive outlier handling...")
-        # Simple percentile based outlier removal for demonstration
-        for col in processed_data.select_dtypes(include=np.number).columns:
-            Q1 = processed_data[col].quantile(0.25)
-            Q3 = processed_data[col].quantile(0.75)
-            IQR = Q3 - Q1
-            lower_bound = Q1 - 1.5 * IQR
-            upper_bound = Q3 + 1.5 * IQR
-            # Replace outliers with median or cap them
-            processed_data[col] = np.where(processed_data[col] < lower_bound, processed_data[col].median(), processed_data[col])
-            processed_data[col] = np.where(processed_data[col] > upper_bound, processed_data[col].median(), processed_data[col])
-        logging.info("  Outlier handling applied.")
+    # Check for unscaled numerical features (simple check)
+    numeric_cols = df.select_dtypes(include=np.number).columns.drop('target', errors='ignore')
+    if not numeric_cols.empty:
+        max_vals = df[numeric_cols].max()
+        min_vals = df[numeric_cols].min()
+        characteristics['has_unscaled_features'] = any((max_vals - min_vals) > 100) # Arbitrary large range
+    else:
+        characteristics['has_unscaled_features'] = False
+    
+    return characteristics
 
-    logging.info("Preprocessing complete.")
-    return processed_data
+def apply_preprocessing(df: pd.DataFrame, adaptations: Dict[str, Any]) -> Tuple[Any, pd.Series, Any]:
+    """
+    Splits data into features (X) and target (y), then applies preprocessing steps.
+    Adaptations can modify the preprocessing logic.
+    """
+    X = df.drop('target', axis=1)
+    y = df['target']
+
+    numerical_cols = X.select_dtypes(include=np.number).columns
+    categorical_cols = X.select_dtypes(include='object').columns
+
+    numerical_transformer_steps = []
+    
+    # Imputation
+    if adaptations.get('impute_missing', False):
+        print("Preprocessing: Applying missing value imputation.")
+        numerical_transformer_steps.append(('imputer', SimpleImputer(strategy='mean')))
+    else:
+        # If no explicit imputation, fill with a placeholder to avoid pipeline errors on NaNs
+        # Or remove this if the data is guaranteed to not have NaNs when no imputation is applied.
+        # For robustness in demo, keep a default imputer.
+        numerical_transformer_steps.append(('imputer_default', SimpleImputer(strategy='constant', fill_value=0)))
+
+    # Scaling
+    if adaptations.get('scale_features', False):
+        print("Preprocessing: Applying feature scaling.")
+        numerical_transformer_steps.append(('scaler', StandardScaler()))
+
+    numerical_transformer = Pipeline(steps=numerical_transformer_steps)
+
+    categorical_transformer = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='most_frequent')), # Impute categorical NaNs
+        ('onehot', OneHotEncoder(handle_unknown='ignore'))
+    ])
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', numerical_transformer, numerical_cols),
+            ('cat', categorical_transformer, categorical_cols)
+        ],
+        remainder='passthrough' # Keep other columns if any
+    )
+    
+    print("Fitting and transforming data...")
+    X_processed = preprocessor.fit_transform(X)
+    
+    print("Data preprocessing complete.")
+    return X_processed, y, preprocessor
 
 if __name__ == '__main__':
     # Simple test run
-    print("--- Preprocess Test Run ---")
+    dummy_config = {
+        'num_samples': 100,
+        'num_features': 5,
+        'missing_value_ratio': 0.1,
+        'imbalance_ratio': 0.2,
+        'unscaled_features': True
+    }
     
-    # Scenario 1: Default successful run
-    print("\nScenario 1: Default successful run")
-    data_default = generate_mock_data()
-    params_default = {"scale_data": True, "handle_missing": True}
-    processed_data_default = preprocess_data(data_default, params_default, {"task_id": "test_default"})
-    print(f"Processed data shape: {processed_data_default.shape}")
-    print(f"Processed data head:\n{processed_data_default.head()}")
-
-    # Scenario 2: Simulate non-numeric error
-    print("\nScenario 2: Simulate non-numeric for scaling error")
-    data_non_numeric = generate_mock_data(scenario="non_numeric_for_scaling")
-    params_non_numeric = {"scale_data": True, "handle_missing": False}
-    try:
-        preprocess_data(data_non_numeric, params_non_numeric, {"task_id": "test_non_numeric", "simulate_preprocess_error": True, "preprocess_error_type": "non_numeric_for_scaling"})
-    except TypeError as e:
-        print(f"Caught expected error: {e}")
-
-    # Scenario 3: Simulate missing values error
-    print("\nScenario 3: Simulate unhandled missing values error")
-    data_missing = generate_mock_data(scenario="missing_values")
-    params_missing = {"scale_data": False, "handle_missing": False} # Not handling missing
-    try:
-        preprocess_data(data_missing, params_missing, {"task_id": "test_missing", "simulate_preprocess_error": True, "preprocess_error_type": "unhandled_missing"})
-    except ValueError as e:
-        print(f"Caught expected error: {e}")
-
-    # Scenario 4: Adaptive outlier handling
-    print("\nScenario 4: Adaptive outlier handling")
-    data_outlier = generate_mock_data()
-    # Manually inject some outliers
-    data_outlier.loc[0, 'feature1'] = 1000.0
-    data_outlier.loc[1, 'feature1'] = -500.0
-    params_outlier = {"scale_data": True, "handle_missing": True, "adaptive_outlier_handling": True}
-    processed_data_outlier = preprocess_data(data_outlier, params_outlier, {"task_id": "test_outlier"})
-    print(f"Processed data with outlier handling head:\n{processed_data_outlier.head()}")
+    print("--- Preprocessing Test Run ---")
+    data = generate_synthetic_data(dummy_config)
+    print("Generated data sample:")
+    print(data.head())
     
+    chars = get_data_characteristics(data)
+    print("\nData Characteristics:")
+    print(chars)
+    
+    adaptations_test = {
+        'impute_missing': True,
+        'scale_features': True
+    }
+    
+    X_proc, y_proc, preprocessor_obj = apply_preprocessing(data, adaptations_test)
+    print(f"\nProcessed X shape: {X_proc.shape}")
+    print(f"Processed y shape: {y_proc.shape}")
+    print("--- Preprocessing Test Complete ---")

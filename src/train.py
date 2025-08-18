@@ -1,146 +1,129 @@
-import pandas as pd
-import numpy as np
-import logging
-from sklearn.linear_model import LogisticRegression
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from typing import Dict, Any, Tuple
+import numpy as np
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+class SimpleMLP(nn.Module):
+    def __init__(self, input_size: int, hidden_size: int, dropout_rate: float = 0.0, apply_regularization: bool = False):
+        super(SimpleMLP, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(dropout_rate)
+        self.fc2 = nn.Linear(hidden_size, 1) # Binary classification output
+        self.sigmoid = nn.Sigmoid()
+        self.apply_regularization = apply_regularization
 
-def train_model(data: pd.DataFrame, params: dict, task_context: dict):
-    logging.info(f"Training model for task '{task_context.get('task_id', 'N/A')}' with params: {params}")
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+        x = self.fc2(x)
+        x = self.sigmoid(x)
+        return x
 
-    if 'target' not in data.columns:
-        raise ValueError("TrainingError: 'target' column not found in data.")
+def train_model(X: np.ndarray, y: np.ndarray, model_config: Dict[str, Any]) -> nn.Module:
+    """Trains the SimpleMLP model."""
+    print("Starting model training...")
 
-    X = data.drop('target', axis=1)
-    y = data['target']
+    # Convert to PyTorch tensors
+    X_tensor = torch.tensor(X, dtype=torch.float32)
+    y_tensor = torch.tensor(y, dtype=torch.float32).unsqueeze(1) # Add a dimension for binary output
 
-    # Ensure target is binary for Logistic Regression mock
-    if y.nunique() > 2:
-        logging.warning("Target has more than 2 unique values. Binarizing for mock Logistic Regression.")
-        y = (y > y.median()).astype(int)
-    elif y.nunique() == 1:
-        raise ValueError("TrainingError: Target variable has only one unique value, cannot train a meaningful model.")
+    # Split data
+    X_train, X_val, y_train, y_val = train_test_split(X_tensor, y_tensor, test_size=0.2, random_state=42, stratify=y_tensor.numpy())
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    train_dataset = TensorDataset(X_train, y_train)
+    train_loader = DataLoader(train_dataset, batch_size=model_config['batch_size'], shuffle=True)
 
-    epochs = params.get('epochs', 10)
-    learning_rate = params.get('learning_rate', 0.001)
-    add_regularization = params.get('add_regularization', False)
+    val_dataset = TensorDataset(X_val, y_val)
+    val_loader = DataLoader(val_dataset, batch_size=model_config['batch_size'], shuffle=False)
 
-    # Simulate model training (Logistic Regression as a placeholder)
-    # The 'max_iter' and 'C' (inverse of regularization strength) will simulate epochs and regularization
-    # Large C means less regularization.
-    C_val = 1.0 / learning_rate # Inversely related to LR conceptually for simple sim
-    if add_regularization:
-        C_val = 0.1 # Stronger regularization
+    input_size = X_train.shape[1]
+    model = SimpleMLP(input_size, model_config['hidden_size'], model_config['dropout_rate'], model_config['apply_regularization'])
+    
+    # Determine device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+    print(f"Using device: {device}")
 
-    try:
-        model = LogisticRegression(max_iter=epochs * 10, solver='liblinear', C=C_val, random_state=42)
-        model.fit(X_train, y_train)
+    # Loss function and optimizer
+    # Apply class weights if specified by SCEL for imbalanced data
+    criterion = nn.BCELoss()
+    if model_config.get('apply_class_weights', False):
+        print("Training: Applying class weights to BCELoss.")
+        # Calculate class weights based on actual training data imbalance
+        neg_count = (y_train == 0).sum().item()
+        pos_count = (y_train == 1).sum().item()
+        if pos_count == 0 or neg_count == 0:
+            print("Warning: One class has 0 samples, cannot apply class weights effectively.")
+        else:
+            total_samples = neg_count + pos_count
+            weight_for_neg = total_samples / (2.0 * neg_count)
+            weight_for_pos = total_samples / (2.0 * pos_count)
+            pos_weight_tensor = torch.tensor([weight_for_pos], dtype=torch.float32).to(device)
+            criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight_tensor)
+            # Adjust model output for BCEWithLogitsLoss (remove sigmoid from model if it was there)
+            model.sigmoid = nn.Identity() # No sigmoid if using BCEWithLogitsLoss
+
+    optimizer = optim.Adam(model.parameters(), lr=model_config['learning_rate'])
+
+    # Training loop
+    for epoch in range(model_config['num_epochs']):
+        model.train()
+        train_loss = 0.0
+        for inputs, labels in train_loader:
+            inputs, labels = inputs.to(device), labels.to(device)
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            
+            # Add L2 regularization if applicable (simple weight decay)
+            if model_config['apply_regularization']:
+                l2_reg = torch.tensor(0., device=device)
+                for param in model.parameters():
+                    l2_reg += torch.norm(param, 2)
+                loss += model_config.get('regularization_lambda', 0.001) * l2_reg
+
+            loss.backward()
+            optimizer.step()
+            train_loss += loss.item() * inputs.size(0)
         
-        y_pred_train = model.predict(X_train)
-        y_pred_test = model.predict(X_test)
-        
-        train_accuracy = accuracy_score(y_train, y_pred_train)
-        test_accuracy = accuracy_score(y_test, y_pred_test)
+        train_loss = train_loss / len(train_dataset)
 
-        logging.info(f"  Train Accuracy: {train_accuracy:.4f}")
-        logging.info(f"  Test Accuracy: {test_accuracy:.4f}")
-
-        # Simulate overfitting based on config or conditions
-        if task_context.get('simulate_train_overfitting', False):
-            # Artificially inflate train_accuracy and suppress test_accuracy
-            train_accuracy = 0.95
-            test_accuracy = 0.60
-            logging.warning("  Simulating overfitting as per task context.")
-        elif train_accuracy > 0.9 and test_accuracy < 0.7: # Heuristic for real overfitting
-             logging.warning("  Potential overfitting detected: High train accuracy, low test accuracy.")
-             task_context['overfitting_detected'] = True
+        # Validation phase
+        model.eval()
+        val_loss = 0.0
+        with torch.no_grad():
+            for inputs, labels in val_loader:
+                inputs, labels = inputs.to(device), labels.to(device)
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                val_loss += loss.item() * inputs.size(0)
+        val_loss = val_loss / len(val_dataset)
         
-        model_output = {
-            "model": model, # In a real scenario, this would be a serialized model or path
-            "train_accuracy": train_accuracy,
-            "test_accuracy": test_accuracy,
-            "predictions_test": y_pred_test.tolist(),
-            "true_labels_test": y_test.tolist()
-        }
-        
-        logging.info("Model training complete.")
-        return model_output
+        print(f"Epoch {epoch+1}/{model_config['num_epochs']}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
 
-    except Exception as e:
-        logging.error(f"TrainingError: An error occurred during model training: {e}")
-        raise ValueError(f"TrainingError: {e}")
+    print("Model training complete.")
+    return model
 
 if __name__ == '__main__':
     # Simple test run
-    print("--- Train Test Run ---")
+    dummy_X = np.random.rand(100, 5)
+    dummy_y = np.random.randint(0, 2, 100)
     
-    # Generate mock data for training
-    def generate_binary_mock_data(size=100):
-        np.random.seed(42)
-        data = pd.DataFrame({
-            'feature1': np.random.rand(size),
-            'feature2': np.random.rand(size),
-            'target': (np.random.rand(size) > 0.5).astype(int)
-        })
-        return data
+    dummy_model_config = {
+        'learning_rate': 0.01,
+        'num_epochs': 5,
+        'batch_size': 16,
+        'hidden_size': 32,
+        'dropout_rate': 0.1,
+        'apply_regularization': False,
+        'apply_class_weights': False
+    }
 
-    # Scenario 1: Default successful training
-    print("\nScenario 1: Default successful training")
-    data_default = generate_binary_mock_data()
-    params_default = {"epochs": 10, "learning_rate": 0.001, "add_regularization": False}
-    task_context_default = {"task_id": "test_train_default"}
-    try:
-        model_output_default = train_model(data_default, params_default, task_context_default)
-        print(f"Model output keys: {model_output_default.keys()}")
-        print(f"Train accuracy: {model_output_default['train_accuracy']:.4f}")
-        print(f"Test accuracy: {model_output_default['test_accuracy']:.4f}")
-    except Exception as e:
-        print(f"Caught unexpected error: {e}")
-
-    # Scenario 2: Simulate overfitting
-    print("\nScenario 2: Simulate overfitting")
-    data_overfit = generate_binary_mock_data(size=50) # Smaller dataset prone to overfitting
-    params_overfit = {"epochs": 50, "learning_rate": 0.01} # Higher epochs/LR
-    task_context_overfit = {"task_id": "test_train_overfit", "simulate_train_overfitting": True}
-    try:
-        model_output_overfit = train_model(data_overfit, params_overfit, task_context_overfit)
-        print(f"Simulated Overfit Train accuracy: {model_output_overfit['train_accuracy']:.4f}")
-        print(f"Simulated Overfit Test accuracy: {model_output_overfit['test_accuracy']:.4f}")
-    except Exception as e:
-        print(f"Caught unexpected error: {e}")
-
-    # Scenario 3: Real overfitting (heuristic detection)
-    print("\nScenario 3: Real overfitting (heuristic detection)")
-    # Create data that naturally overfits a bit
-    data_real_overfit = pd.DataFrame({
-        'feature1': np.random.rand(20),
-        'feature2': np.random.rand(20),
-        'target': (np.random.rand(20) > 0.5).astype(int)
-    })
-    params_real_overfit = {"epochs": 100, "learning_rate": 0.0001, "add_regularization": False} # Many epochs, low LR
-    task_context_real_overfit = {"task_id": "test_train_real_overfit"}
-    try:
-        model_output_real_overfit = train_model(data_real_overfit, params_real_overfit, task_context_real_overfit)
-        print(f"Real Overfit Train accuracy: {model_output_real_overfit['train_accuracy']:.4f}")
-        print(f"Real Overfit Test accuracy: {model_output_real_overfit['test_accuracy']:.4f}")
-        print(f"Overfitting detected in context: {task_context_real_overfit.get('overfitting_detected', False)}")
-    except Exception as e:
-        print(f"Caught unexpected error: {e}")
-
-    # Scenario 4: Target with only one unique value
-    print("\nScenario 4: Target with only one unique value")
-    data_single_target = pd.DataFrame({
-        'feature1': np.random.rand(100),
-        'feature2': np.random.rand(100),
-        'target': np.zeros(100)
-    })
-    params_single_target = {"epochs": 10, "learning_rate": 0.001}
-    task_context_single_target = {"task_id": "test_train_single_target"}
-    try:
-        train_model(data_single_target, params_single_target, task_context_single_target)
-    except ValueError as e:
-        print(f"Caught expected error: {e}")
+    print("--- Training Test Run ---")
+    trained_model = train_model(dummy_X, dummy_y, dummy_model_config)
+    print("--- Training Test Complete ---")

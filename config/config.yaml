@@ -1,42 +1,19 @@
-llm_model_name: "simulated-llm-for-cfa"
-dekg_path: ".models/dekg.json"
-embedding_model: "all-MiniLM-L6-v2"
-cbr_top_k: 3
-task_configs:
-  - id: "task_001"
-    simulate_preprocess_error: false
-    simulate_train_overfitting: false
-    data_scenario: "default"
-    initial_params:
-      preprocessing: {"scale_data": true, "handle_missing": false}
-      training: {"epochs": 10, "learning_rate": 0.001}
-  - id: "task_002"
-    simulate_preprocess_error: true
-    preprocess_error_type: "non_numeric_for_scaling"
-    simulate_train_overfitting: false
-    data_scenario: "non_numeric_for_scaling"
-    initial_params:
-      preprocessing: {"scale_data": true, "handle_missing": false}
-      training: {"epochs": 10, "learning_rate": 0.001}
-  - id: "task_003"
-    simulate_preprocess_error: false
-    simulate_train_overfitting: true
-    data_scenario: "small_noisy_data"
-    initial_params:
-      preprocessing: {"scale_data": true, "handle_missing": true}
-      training: {"epochs": 20, "learning_rate": 0.01}
-  - id: "task_004"
-    simulate_preprocess_error: false
-    simulate_train_overfitting: false
-    data_scenario: "default"
-    initial_params:
-      preprocessing: {"scale_data": true, "handle_missing": true, "adaptive_outlier_handling": false}
-      training: {"epochs": 10, "learning_rate": 0.001, "add_regularization": false}
-  - id: "task_005"
-    simulate_preprocess_error: true
-    preprocess_error_type: "unhandled_missing"
-    simulate_train_overfitting: false
-    data_scenario: "missing_values"
-    initial_params:
-      preprocessing: {"scale_data": false, "handle_missing": false}
-      training: {"epochs": 10, "learning_rate": 0.001}
+data_config:
+  num_samples: 1000
+  num_features: 10
+  missing_value_ratio: 0.05
+  imbalance_ratio: 0.1 # Ratio of minority class (e.g., 0.1 means 10% minority, 90% majority)
+  unscaled_features: True
+
+model_config:
+  learning_rate: 0.001
+  num_epochs: 10
+  batch_size: 32
+  hidden_size: 64
+  dropout_rate: 0.2
+  apply_regularization: False # This will be managed by SCEL
+  apply_class_weights: False # This will be managed by SCEL
+
+scel_config:
+  dekg_path: "data/dekg.json"
+  images_dir: ".research/iteration1/images"

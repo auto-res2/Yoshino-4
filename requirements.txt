@@ -1,9 +1,12 @@
 pandas
 torch
 transformers
+json
 networkx
+numpy
+typing
 sentence_transformers
 matplotlib
 seaborn
 scikit-learn
-PyYAML
+pyyaml
