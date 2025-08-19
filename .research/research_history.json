@@ -40,7 +40,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces ACES, an autotelic generative model that automatically generates a wide diversity of challenging Python programming puzzles. It leverages state-of-the-art LLMs and quality-diversity optimization (inspired by Map-Elites) to create puzzles that are empirically more difficult than existing benchmarks.",
+        "methodology": "ACES utilizes goal-directed exploration by sampling target semantic niches based on programming skill descriptors and using previously generated puzzles as in-context examples. It measures puzzle quality using an empirical difficulty metric (negative pass@1 score over 50 attempts) and compares variations like ACES-ELM, ELM-CVT, and StaticGen.",
+        "experimental_setup": "The experiments use the P3 dataset as seeds and evaluate generated puzzles on their semantic diversity (using 20 programming skill tags) and embedding diversity metrics. Benchmarking is performed against 11 state-of-the-art LLM-based solvers on both generated puzzles and standard benchmarks (HumanEval and MBPP).",
+        "limitations": "The approach depends on several assumptions: accurate LLM-based skill labeling, the generator’s capacity to meet target descriptors, and sufficient heredity between parent and child puzzles. In addition, the difficulty metric is computationally expensive and potentially vulnerable to exploitation.",
+        "future_research_directions": "Future work could improve label accuracy and the generator's goal-reaching abilities, explore more comprehensive quality metrics beyond difficulty, and extend the method to other domains such as adaptive educational content, automated scientific discovery, and adversarial testing.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "NAVSIM: Data-Driven Non-Reactive Autonomous Vehicle Simulation and Benchmarking",
@@ -81,7 +89,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces NA VSIM, a framework for non-reactive autonomous vehicle simulation and benchmarking that bridges the gap between open-loop and closed-loop evaluations. It proposes simulation-based metrics, standardizes training and test splits on a large, real-world driving dataset, and demonstrates that simpler methods can perform comparably to more computationally intensive end-to-end approaches.",
+        "methodology": "The framework uses a non-reactive simulation approach where the driving agent is queried only in the initial frame and its planned trajectory is unrolled over a short horizon using a kinematic bicycle model and an LQR controller. Key innovations include the development of the Predictive Driver Model Score (PDMS) through the aggregation of subscores (collision, drivable area compliance, time-to-collision, comfort, and ego progress) and a filtering strategy to curate challenging scenarios from the dataset.",
+        "experimental_setup": "Experiments are conducted on the OpenScene dataset (a redistribution of nuPlan) with standardized splits (navtrain and navtest). The simulation operates over a 4-second horizon at a planning frequency of 10Hz, and comparisons are made using both open-loop (OLS) and closed-loop (CLS) metrics. The evaluation encompasses various learned and rule-based planners, and the framework was further validated in a large-scale challenge at CVPR 2024 with 143 teams and 463 entries.",
+        "limitations": "Key limitations include the simplifying assumption of non-reactive simulation where there is no interaction between the agent and the environment over the simulation horizon, potentially leading to discrepancies with full closed-loop behavior. Additionally, the framework does not account for certain aspects (e.g., rear-end collisions deemed not at-fault) and inherits some dataset issues such as missing classes, annotation noise, and lack of road elevation data.",
+        "future_research_directions": "Future work could focus on integrating reactive simulation and data-driven sensor or traffic simulation to better capture long-term and interactive driving behaviors. Enhancements could also include expanding the benchmark with additional datasets, refining the metric definitions to incorporate more nuanced traffic rules and objectives, and exploring multi-objective evaluation strategies to further improve the fidelity and scope of autonomous driving research.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "AutoManual: Constructing Instruction Manuals by LLM Agents via Interactive Environmental Learning",
@@ -116,7 +132,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces AutoManual, a framework that enables LLM agents to autonomously build, update, and compile a structured manual of environmental rules through interactive learning. It addresses the adaptability challenges and the Path Dependency problem by allowing agents to continuously refine their understanding using a dynamic rule system and collaborative agent roles.",
+        "methodology": "AutoManual employs an alternating process between a Planner agent, which generates free-form code-based plans during environmental interactions, and a Builder agent, which updates and manages a comprehensive rule system using case-conditioned prompting to mitigate hallucinations. A Formulator agent then organizes these rules into a human-readable Markdown manual. The approach leverages online rule optimization instead of offline experiences, enabling real-time adjustment of strategies.",
+        "experimental_setup": "The framework is evaluated on interactive benchmarks such as ALFWorld, MiniWoB++, and WebArena. Experiments involve using GPT-4-turbo and GPT-3.5-turbo as test-time LLMs, with performance comparisons against methods like ReAct, Reflexion, ExpeL, and AdaPlanner. The evaluation metrics include task success rates and error steps, with controlled experiments and ablation studies on rule system components and initial conditions.",
+        "limitations": "The approach relies heavily on the advanced capabilities of GPT-4-turbo, which may limit scalability with less advanced models. The current implementation embeds all rules directly within the LLM context, potentially hindering scalability in larger or more dynamic environments. Additionally, the framework does not fully address the challenge of ensuring that the Planner consistently adheres to the generated manual, and the agents may lack sufficient exploration strategies in unfamiliar scenarios.",
+        "future_research_directions": "Future work could integrate Retrieval-Augmented Generation (RAG) techniques to handle larger, dynamic environments and reduce cognitive load. Enhancing rule adherence mechanisms for the Planner and incorporating exploration or curiosity-driven components (e.g., tree search algorithms) are potential avenues for further improvement. Extending the framework to a broader range of real-world scenarios and diverse LLM architectures is also suggested.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Adaptive Sampling for Discovery",
@@ -149,7 +173,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces the Adaptive Sampling for Discovery (ASD) problem, where a sequential decision-making algorithm selects samples from a large unlabeled dataset, each sample being labeled only once, to maximize the cumulative reward. It rigorously formulates ASD, develops a generic Information-Directed Sampling (IDS) algorithm, and provides theoretical regret bounds under various structural assumptions (generalized linear, low-rank, and graph models), demonstrating improvements over existing bandit methods.",
+        "methodology": "The approach is based on Information-Directed Sampling (IDS), which optimally balances exploration and exploitation by minimizing a ratio of expected instant regret to information gain. The paper details the derivation of regret bounds under structural models including generalized linear models, low-rank matrix completion, and graph-based feedback. It also introduces sampling-based approximations (e.g., using MCMC) to estimate uncertain quantities when closed-form evaluations of information gain are not feasible.",
+        "experimental_setup": "A series of simulation studies were conducted across several models: linear regression (including logistic), low-rank matrix, and various graph structures with different noise levels and dimensions. In addition, the approach was applied to real-world reaction condition discovery problems using two datasets (PNDC and CNCCI) from organic chemistry. The performance of IDS was benchmarked against Thompson Sampling (TS), UCB, and random policies by measuring cumulative regret over multiple independent runs.",
+        "limitations": "The method relies on structural assumptions (e.g., incoherence in low-rank matrices, exploratory properties in the unlabeled set) to achieve sublinear regret; without such structure, performance can deteriorate to linear regret. Exact computation of information gain is often intractable, necessitating approximate algorithms that may introduce additional computational overhead. Moreover, the approach adopts a Bayesian framework with assumptions like Gaussian priors, and the scalability to very large or more complex models remains challenging.",
+        "future_research_directions": "Future work may explore a more refined analysis of the diminishing unlabeled set effect, development of frequentist regret bounds, and the extension of IDS to more practical models such as neural networks and random forests. Additionally, there is potential to improve computational efficiency in approximating information gain and to apply the framework to larger-scale, more complex real-world discovery problems.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Navigating Scaling Laws: Compute Optimality in Adaptive Model Training",
@@ -182,7 +214,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces an adaptive training strategy that dynamically adjusts model shape parameters (such as patch size, context length, and model width) during training by traversing different scaling laws. This approach aims to achieve compute-optimal training, substantially reducing the FLOPs required to reach target performance compared to static models.",
+        "methodology": "The authors derive and utilize scaling laws that relate compute (FLOPs) to downstream performance and propose an adaptive scheduler that selects optimal transitions between different configuration regimes based on the gradient of the inverse scaling function. Experiments demonstrate how to adapt patch size, context length in language models, model width, and training objectives to optimally trade off computational cost and performance.",
+        "experimental_setup": "Experiments are conducted using Vision Transformers (ViTs) trained on the ImageNet-21k dataset with performance validated on ImageNet-1k (using 10-shot error rates) and language models trained on English Wikipedia and Book corpora. The setup includes extensive hyperparameter tuning, use of data augmentation (e.g., random cropping, horizontal flipping), and comparisons between fixed and adaptive training schedules across different model sizes and configurations.",
+        "limitations": "The approach relies on pre-determined scaling laws and requires high computational cost to accurately estimate these behaviors. The hyperparameters are optimized via a greedy search on a small compute budget, and the method does not include extensive learning rate scheduling, which could impact optimality. Additionally, transient performance drops occur when switching configurations.",
+        "future_research_directions": "Potential extensions include applying the adaptive scheduling approach to other model shape parameters such as depth or sparsity, combining multiple adaptive parameters simultaneously, improving function-preserving transition methods (e.g., for width expansion), and incorporating hardware-aware time optimization to further reduce environmental impact.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "DriftSurf: Stable-State / Reactive-State Learning under Concept Drift",
@@ -215,7 +255,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces DriftSurf, a novel adaptive learning algorithm for streaming data that handles concept drift by integrating drift detection within a dual-state framework (stable state and reactive state). The algorithm is shown to be risk-competitive with an oracle algorithm (Aware) and improves upon existing drift detection and ensemble approaches by mitigating false positives and reducing recovery time after drifts.",
+        "methodology": "DriftSurf operates by maintaining two models—a long-lived predictive (or stable) model and a recently-initialized reactive model. It uses aggressive drift detection to trigger a switch from the stable state to a reactive state and then employs a greedy mechanism to select the best performing model at each time step. The algorithm leverages variance-reduced stochastic gradient descent (specifically STRSAGA) as its update process and incorporates theoretical analysis including risk bounds, recovery time estimation, and risk-competitiveness proofs.",
+        "experimental_setup": "The experimental evaluation involves synthetic, semi-synthetic, and real datasets (e.g., SEA, Hyperplane, SINE1, Mixed, Circles, RCV1, CoverType, Airline, Electricity, and Power Supply) with both abrupt and gradual drifts. The study compares DriftSurf against state-of-the-art methods such as MDDM (drift detection based), AUE (ensemble based), as well as variants like single-pass SGD and an oblivious algorithm. Datasets are divided into batches, and performance is primarily measured using misclassification rates over time under varying computational settings.",
+        "limitations": "Some limitations include the reliance on specific hyperparameter settings (such as the thresholds for switching states and reactive state length) and assumptions such as abrupt drift in the theoretical analysis, despite the algorithm being designed to handle gradual drifts as well. The method also may not perform as well when frequent model switching is required, or in environments where computational constraints or different update mechanisms (e.g., standard SGD) reduce the benefits of the variance-reduction approach.",
+        "future_research_directions": "Future work could focus on extending the approach to handle a wider variety of drift types (e.g., continuous or recurring drifts), exploring alternative base learners and update schemes beyond STRSAGA, designing adaptive tuning of hyperparameters, and integrating the algorithm into larger-scale systems with more complex ensemble methods or real-world deployment scenarios with limited computational resources.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Benchopt: Reproducible, efficient and collaborative optimization benchmarks",
@@ -265,7 +313,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces Benchopt, a collaborative and modular framework designed to automate, reproduce, and share optimization benchmarks in machine learning. It addresses the reproducibility crisis by providing an off-the-shelf tool that standardizes benchmark design, facilitates code sharing, enables fair comparisons of diverse solvers across programming languages and hardware architectures, and serves as a reference for future optimization research.",
+        "methodology": "Benchopt organizes benchmarks using a modular structure comprising Objective, Dataset, and Solver classes. The framework defines a standard API and CLI for seamless integration, enabling the testing of optimization algorithms on a variety of tasks. The methodology includes documenting detailed code templates, handling implementations in multiple languages (Python, R, Julia, C/C++), and supporting features such as parallel runs, caching, hyperparameter sensitivity analysis, and automated visualization of results.",
+        "experimental_setup": "The experimental setup involves comprehensive benchmarks on classical and practical learning tasks including ℓ2-regularized logistic regression, the Lasso, and training of a ResNet18 for image classification. Benchopt evaluates solvers on both synthetic and real datasets such as ijcnn1, madelon, news20.binary, rcv1.binary, criteo, as well as image datasets like CIFAR-10, SVHN, and MNIST. The experiments compare a variety of solvers implemented in different packages and frameworks, and results are reported in terms of objective function suboptimality over wall-clock time as well as other metrics like test error and support identification.",
+        "limitations": "The paper notes limitations such as potential inconsistencies when comparing solvers due to differences in implementation details (e.g., in hyperparameter tuning, precision differences between CPU and GPU solvers, or framework-specific behaviors). In addition, error bars are not systematically reported for clarity, and the reproducibility of some experimental configurations may depend on community contributions and careful alignment of parameters across different libraries.",
+        "future_research_directions": "Future directions include extending Benchopt to support additional benchmarks beyond the initial scope, such as higher-dimensional or more complex optimization problems (e.g., 2D Total Variation, Total Generalized Variation), as well as further work in aligning and standardizing experimental protocols across frameworks. The authors also encourage community involvement to continuously update the benchmarks and integrate new solvers, thus establishing a living, reproducible state-of-the-art in optimization for machine learning.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Offline Model-Based Optimization via Normalized Maximum Likelihood Estimation",
@@ -296,7 +352,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces NEMO, a novel algorithm for offline model-based optimization that leverages a tractable approximation of the normalized maximum likelihood (NML) estimator. It addresses the challenge of optimizing functions using a fixed dataset by mitigating model exploitation and providing robust, uncertainty-aware predictions.",
+        "methodology": "NEMO combines the conditional NML framework with techniques such as amortization and quantization to approximate otherwise intractable calculations. The method discretizes the output space using quantization and employs a specialized discretized logistic architecture to estimate probability distributions over outputs. Multiple models are maintained (one per output bin) and updated incrementally using gradient-based optimization.",
+        "experimental_setup": "The proposed approach was evaluated on several high-dimensional design tasks spanning materials science, biology, chemistry, and robotics. Datasets include superconductors (81-dimensional features), GFP (238-dimensional protein sequences), MoleculeActivity (1024 binary features), and robotic tasks (HopperController, AntMorphology, DKittyMorphology). The evaluation protocol involved generating batches of candidate designs and reporting the 100th and 50th percentile ground truth scores over 16 random seeds, while comparisons were made against baselines like ensemble methods, forward models, GP-based Bayesian optimization, and state-of-the-art methods such as MINs, CbAS, and autofocused oracles.",
+        "limitations": "The method relies on approximating the NML estimator via quantization, which may introduce rounding errors and flat regions in the optimization landscape, potentially complicating gradient-based optimization. Additionally, the approach requires careful tuning of hyperparameters (e.g., learning rates, discretization levels) and may still be computationally demanding when scaling to extremely high-dimensional problems or very fine discretizations.",
+        "future_research_directions": "Future work could explore extending the CNML and NEMO framework to other problem domains such as off-policy evaluation, batch learning from bandit feedback, and offline reinforcement learning. Further research may also aim to refine the approximation techniques, improve computational efficiency, and enhance theoretical guarantees for uncertainty estimation and optimization performance.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Offline Multi-Objective Optimization",
@@ -329,7 +393,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces Off-MOO-Bench, an extensive benchmark for offline multi-objective optimization, and systematically evaluates a variety of methods across diverse task domains (e.g., synthetic functions, neural architecture search, reinforcement learning, combinatorial optimization, scientific design, and real-world engineering design). It compares different DNN-based surrogate models and MOBO variants, highlighting their performance and robustness in offline settings.",
+        "methodology": "The study uses surrogate modeling approaches to address offline multi-objective optimization. It investigates various neural network architectures including end-to-end, multi-head, and multiple independent models enhanced with techniques like GradNorm and PcGrad. These surrogates are coupled with evolutionary search algorithms (such as NSGA-II, NSGA-III, MOEA/D) to generate candidate solutions. In addition, Gaussian process based MOBO methods (e.g., qNEHVI, qParEGO, MOBO-JES) are examined. The paper also employs data pruning strategies (e.g., selecting best non-dominated solutions) to improve surrogate training and performance.",
+        "experimental_setup": "The experimental evaluation spans multiple benchmark tasks organized in Off-MOO-Bench, including synthetic benchmarks (DTLZ, ZDT, OmniTest, VLMOP), MO-NAS tasks (NAS-Bench-201, C-10/MOP, IN-1K/MOP), MORL tasks (MO-Swimmer, MO-Hopper), multi-objective combinatorial optimization problems (MO-TSP, MO-CVRP, MO-KP, MO-Portfolio), and scientific and real-world design tasks. Validation is performed using hypervolume metrics and average ranking over tasks, under different evaluation settings (e.g., varying the number of solutions and percentile-based evaluations) and over multiple random seeds.",
+        "limitations": "The paper identifies several challenges: (1) Some methods do not perform as effectively in discrete or combinatorial search spaces; (2) GP-based MOBO approaches can be computationally expensive and sensitive to the number of data points; (3) DNN-based surrogate models can suffer from issues like model collapse and sensitivity to training data, necessitating careful data pruning and hyperparameter tuning; (4) Not all evaluated methods consistently outperform the best non-dominated baselines across all tasks.",
+        "future_research_directions": "Potential future directions include developing improved surrogate modeling techniques for discrete and mixed-variable spaces, mitigating model collapse in DNN-based methods, integrating advanced multi-objective approaches such as Pareto set learning or MO-GFlowNets, enhancing constraint handling strategies, and exploring few-shot optimization approaches in offline settings.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Propagating Knowledge Updates to LMs Through Distillation",
@@ -363,7 +435,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces a novel context distillation approach to update and propagate new factual knowledge in language models by injecting definitions of emerging entities into model parameters, enabling them to make broader inferences. It demonstrates that this method can outperform traditional fine-tuning and gradient-based editing methods on knowledge propagation benchmarks.",
+        "methodology": "The approach consists of two stages: first, a transfer set is generated by prompting a language model to produce continuations from an entity definition; second, the model parameters are updated by minimizing the KL divergence between the teacher (conditioned on the definition) and the student (without the definition) on these continuations. This context distillation method is evaluated using various generation models and settings.",
+        "experimental_setup": "Experiments are conducted on benchmarks such as ENTITY INFERENCES and Entity Cloze By Date (ECBD) with multiple models (GPT-Neo-1.3B, GPT2-XL 1.5B, LLaMA-2-7B). The setup involves comparing the proposed method against in-context prepending, fine-tuning (full and last-layer), and other editing techniques (MEND, MEMIT), using metrics like accuracy, perplexity, specificity, and additional evaluations on counterfactual editing.",
+        "limitations": "The approach is evaluated only on models with less than 10B parameters and is demonstrated with up to 150 entity injections, so its scalability to larger models or thousands/millions of entities is unproven. The evaluation is confined to limited domains using single-sentence definitions and English texts, and the method does not fully close the performance gap with in-context injection.",
+        "future_research_directions": "Future work could extend this method to larger, instruction-tuned models, explore scalability to a broader range of entities and domains, improve the propagation of injected knowledge to better match in-context performance, and develop more comprehensive evaluation frameworks for updated language models.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Latent Paraphrasing: Perturbation on Layers Improves Knowledge Injection in Language Models",
@@ -396,7 +476,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces LaPael, a novel method for injecting new or under-represented knowledge into large language models by applying learned, input-dependent perturbations at the latent level. This approach avoids expensive repetitive paraphrasing and increases the diversity of augmented data, improving knowledge injection performance compared to standard fine-tuning and existing noise-based methods.",
+        "methodology": "LaPael employs latent paraphrasers that inject learned noise into early transformer layers (placed before the MLP) of an LLM. It perturbs the token embeddings using an input-adaptive noise generator trained to match the latent distributions of original and paraphrased inputs via a symmetric KL divergence loss. The method also incorporates a learnable mask to control token-level noise, and can be combined with data-level paraphrasing.",
+        "experimental_setup": "The method is evaluated on diverse question-answering benchmarks using both synthetic and raw documents. Datasets include SQuAD, StreamingQA, ArchivalQA, as well as synthetic datasets such as Films 2024 and US Events 2024. Experiments were conducted with various models (Vicuna-7B-v1.5, Llama2-7B, Mistral-7B-Instruct, Phi3-mini) and compared against baselines like standard fine-tuning, FreeLB, and NEFTune. Evaluation metrics include EM, Recall, and F1 scores, with additional ablation studies and cross-domain transfer experiments.",
+        "limitations": "The approach incurs additional computational costs for training the latent paraphrasers and adds overhead during fine-tuning. There is also a risk of knowledge forgetting, potential issues with the reversal curse, and limited scope in terms of scalability to larger models or continual pre-training scenarios.",
+        "future_research_directions": "Future work could explore methods to mitigate knowledge forgetting, address the reversal curse at the latent level, extend latent paraphrasing to continual pre-training and other fine-tuning paradigms, and investigate integration with retrieval-augmented systems to further enhance knowledge injection.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Seeking Neural Nuggets: Knowledge Transfer in Large Language Models from a Parametric Perspective",
@@ -430,7 +518,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces a novel parametric knowledge transfer paradigm that extracts task-specific parameters from larger teacher models using sensitivity‐based metrics and transfers them to smaller student models via LoRA modules. It empirically demonstrates that implicit knowledge embedded in static parameters is transferable across different LLM scales and provides detailed analysis of the contributing factors.",
+        "methodology": "The approach computes sensitivity scores on a small set of seed samples to identify important parameters in the teacher model. It then performs layer selection and dimensionality reduction to align teacher and student architectures and extracts submatrices based on the highest sensitivity scores. These extracted parameters are factorized via SVD and injected into the student model using the LoRA framework for efficient fine‐tuning.",
+        "experimental_setup": "Experiments were performed on multiple teacher-student pairs using LLaMA-1/2 models of varying sizes (e.g., 7B, 13B, 30B, and 70B). The evaluation spanned four benchmark categories: reasoning (GSM), professional knowledge (MMLU), instruction-driven NLP tasks (Super NI), and open-ended conversation (AlpacaFarm). The setup includes using 32 seed samples for sensitivity estimation, training on a subset of 1,000 instances or LIMA data where applicable, and fine-tuning the student models for several epochs with LoRA.",
+        "limitations": "The method relies on fixed seed samples for sensitivity estimation, and its effectiveness might vary with different teacher-student architectural mismatches and scaling factors. There may be computational overhead during parameter extraction, and the approach assumes that task-specific knowledge can be effectively captured and transferred through the selected submatrices.",
+        "future_research_directions": "Future work could explore more robust extraction and injection strategies, investigate transferability across a wider variety of architectures and tasks, reduce computational overhead during sensitivity computation, and combine this parametric transfer with other distillation techniques for enhanced performance.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Learning Manifold Patch-Based Representations of Man-Made Shapes",
@@ -462,7 +558,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces a novel patch-based 3D representation for man-made shapes that is both compatible with conventional CAD modeling pipelines and suitable for deep learning. It proposes learning deformable parametric templates composed of Coons patches and develops custom loss functions to enforce manifold properties, non-intersections, smoothness, and symmetry in the reconstructed surfaces.",
+        "methodology": "The approach uses deep neural networks (based on a ResNet-18 backbone with fully connected layers) to predict control point parameters for a collection of Coons patches forming a deformable template. It incorporates several differentiable loss functions including an area-weighted Chamfer distance, normal alignment, collision detection, patch flatness, template normal regularization, and symmetry constraints. The system is self-supervised and leverages algorithmically generated category-specific templates and synthetic training data via a sketch augmentation pipeline.",
+        "experimental_setup": "Experiments are conducted on multiple ShapeNet Core categories (airplane, bathtub, guitar, bottle, car, mug, gun, knife). The network is trained on synthetic sketches—generated using a pipeline combining contour rendering, vectorization, and augmentation—validated by quantitative metrics (Chamfer distance, normals loss etc.) and ablation studies. Comparisons are made against existing methods such as Delanoy et al., AtlasNet, and Pixel2Mesh, with qualitative evaluations and analyses of quad meshing and editability.",
+        "limitations": "The method currently relies on pre-computed or algorithmically generated templates, limiting its application to man-made shapes with piecewise-smooth characteristics. It faces challenges in automatically inferring complex shape topology and generalizing to more diverse or organic forms, as well as potential issues related to self-intersection and structural variability.",
+        "future_research_directions": "Future work may include integrating the training of sketch data generation with 3D model reconstruction to reduce reliance on paired data, exploring learned methods for full topology inference, and investigating multiresolution or subdivision surface representations that can capture both global smooth structures and finer geometric details.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Computer-Aided Design as Language",
@@ -496,7 +600,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces a novel framework that treats computer-aided design (CAD) sketches as a language. It proposes methods to represent complex, structured CAD sketches by serializing them using Protocol Buffers and modeling them with language models. Key contributions include the development of both byte and triplet representations for sketch generation, integration of pointer networks to handle structural referencing, and demonstrations of unconditional as well as image-conditional generation of CAD sketches.",
+        "methodology": "The approach employs an autoregressive Transformer-based model to generate sequences of tokens that represent both geometric entities and constraints in CAD sketches. The models use two representations: one that directly generates bytes of serialized Protocol Buffers messages, and a more structured triplet format that encodes discrete and continuous fields with contextual information. Pointer Networks are incorporated to explicitly handle references within the sketches. Additionally, for conditional generation, the method augments the Transformer with a visual transformer that embeds rendered images, allowing the model to generate sketches conditioned on input images.",
+        "experimental_setup": "The authors collected a large-scale dataset from the Onshape public repository comprising over 4.7 million CAD sketches. They preprocessed and filtered the data to remove duplicates and oversimplified examples, then split it into training, validation, and test sets. Experiments were conducted using both unconditional and conditional models, with metrics based on log-likelihood and bits per object. The models were trained on 32 TPU cores using the Adam optimizer, and qualitative evaluations were also performed through visual inspection of generated sketches.",
+        "limitations": "The paper notes several challenges including the generation of invalid or unsolvable sketches (with a higher error rate in the byte model compared to the triplet model), difficulty in recovering from early prediction mistakes in autoregressive models, and issues arising from high sequence length and data redundancy. Also, the current setup is primarily focused on 2D sketches, and the integration with external CAD solvers is not fully optimized.",
+        "future_research_directions": "Future work could involve extending the approach to generate and interact with 3D CAD models, refining the architecture with reinforcement learning for better error recovery and more stable generation, incorporating richer visual feedback during generation, and adapting the framework to other forms of structured data in different domains.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Automated Statistical Model Discovery with Language Models",
@@ -528,7 +640,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces a language model-driven framework (BoxLM) for automated statistical model discovery. It leverages large language models to generate, fit, and critique probabilistic programs in an iterative process inspired by Box's Loop, thereby reducing the need for handcrafted model languages and expert intervention.",
+        "methodology": "The framework integrates a proposal LM that generates candidate probabilistic models (expressed as Python programs using tools like PyMC) with a critic LM that assesses model quality through posterior predictive checks and natural language feedback. This iterative process uses in-context learning, chain-of-thought reasoning, and state-space updates to refine models over multiple rounds.",
+        "experimental_setup": "The approach is evaluated across three settings: (1) searching within a restricted DSL for Gaussian process kernel discovery against baselines such as Automatic Statistician and neural models, (2) open-ended discovery on real-world datasets (e.g., eight schools, dugongs, surgical, and peregrine populations) using simulated data and metadata ablations, and (3) improving expert models under natural language constraints in a Lotka-Volterra setting. Validation methods include leave-one-out cross validation (ELPD LOO), test mean absolute error (MAE), and standard MCMC diagnostics.",
+        "limitations": "The study is limited to static and largely one-dimensional datasets. It relies on pre-defined model criticism statistics and iterative human-curated prompts. Additional concerns include potential context-length limitations in LM prompts and the need for further automation in active data collection and the criticism step.",
+        "future_research_directions": "Future research could explore extending the framework to dynamic/active data collection, handling multi-dimensional datasets, fully automating the model criticism process, and fine-tuning language models specifically for probabilistic program synthesis.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     }
   ]
 }
