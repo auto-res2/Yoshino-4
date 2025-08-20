@@ -1,0 +1,34 @@
+/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=None`.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "/home/runner/work/Yoshino-4/Yoshino-4/src/main.py", line 260, in <module>
+    results = main()
+  File "/home/runner/work/Yoshino-4/Yoshino-4/src/main.py", line 255, in main
+    raise e
+  File "/home/runner/work/Yoshino-4/Yoshino-4/src/main.py", line 205, in main
+    exp1_results = run_experiment_1_multimodal_fusion(device, output_dir, num_samples=50)
+  File "/home/runner/work/Yoshino-4/Yoshino-4/src/main.py", line 117, in run_experiment_1_multimodal_fusion
+    exp1_results = evaluate_multimodal_fusion(
+  File "/home/runner/work/Yoshino-4/Yoshino-4/src/evaluate.py", line 41, in evaluate_multimodal_fusion
+    fused_features, weights = model(text_embeddings, plot_features, stat_vectors)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/runner/work/Yoshino-4/Yoshino-4/src/train.py", line 59, in forward
+    text_processed = self.text_processor(text_features)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/runner/work/_tool/Python/3.10.18/x64/lib/python3.10/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: Expected all tensors to be on the same device, but got mat1 is on cpu, different from other tensors on cuda:0 (when checking argument in method wrapper_CUDA_addmm)

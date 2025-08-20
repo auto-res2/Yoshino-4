@@ -1,0 +1,29 @@
+AutoMind++ Framework started at 2025-08-20 13:03:02.169742
+================================================================================
+AutoMind++ Framework - Experimental Setup
+================================================================================
+✓ GPU Available: Tesla T4
+✓ GPU Memory: 16.7 GB
+✓ GPU is compatible with Tesla T4 requirements (16GB VRAM)
+✓ Output directory created: .research/iteration1/images
+✓ Random seeds set for reproducibility
+
+Starting AutoMind++ experimental pipeline...
+
+============================================================
+EXPERIMENT 1: Multi-Modal Interactive Feedback Fusion
+============================================================
+Generating multi-modal synthetic data...
+Preprocessing text embeddings...
+Extracting image features using CNN...
+Preprocessing statistical features...
+Detecting anomalies in statistical data...
+Detected 5 anomalies out of 50 samples
+Training multi-modal fusion model...
+Epoch 0, Loss: 0.6981
+Epoch 2, Loss: 0.6826
+Epoch 4, Loss: 0.6759
+Evaluating multi-modal fusion performance...
+
+❌ Error during experiment execution: Expected all tensors to be on the same device, but got mat1 is on cpu, different from other tensors on cuda:0 (when checking argument in method wrapper_CUDA_addmm)
+❌ Experiment failed after 8.26 seconds
