@@ -1,0 +1,297 @@
+% ===========================================
+% REQUIRED CITATIONS
+% These papers must be cited in the manuscript
+% ===========================================
+
+@article{author_year_compressed,
+ title = {Compressed Maximum Likelihood}
+}
+
+@article{author_year_learning,
+ title = {Learning Task-Agnostic Embedding of Multiple Black-Box Experts for Multi-Task Model Fusion}
+}
+
+@article{author_year_pipeline,
+ title = {Pipeline Combinators for Gradual AutoML}
+}
+
+@article{blessing_2024-06-11T16:23:33Z_beyond,
+ abstract = {Monte Carlo methods, Variational Inference, and their combinations play a
+pivotal role in sampling from intractable probability distributions. However,
+current studies lack a unified evaluation framework, relying on disparate
+performance measures and limited method comparisons across diverse tasks,
+complicating the assessment of progress and hindering the decision-making of
+practitioners. In response to these challenges, our work introduces a benchmark
+that evaluates sampling methods using a standardized task suite and a broad
+range of performance criteria. Moreover, we study existing metrics for
+quantifying mode collapse and introduce novel metrics for this purpose. Our
+findings provide insights into strengths and weaknesses of existing sampling
+methods, serving as a valuable reference for future developments. The code is
+publicly available here.},
+ arxiv_url = {https://arxiv.org/pdf/2406.07423v1.pdf},
+ author = {Denis Blessing and Xiaogang Jia and Johannes Esslinger and Francisco Vargas and Gerhard Neumann},
+ github_url = {https://github.com/OlegArenz/gmmvi},
+ title = {Beyond ELBOs: A Large-Scale Evaluation of Variational Methods for Sampling},
+ year = {2024-06-11T16:23:33Z}
+}
+
+@article{derek_2021-07-15T17:58:18Z_adaptable,
+ abstract = {In the natural world, life has found innumerable ways to survive and often
+thrive. Between and even within species, each individual is in some manner
+unique, and this diversity lends adaptability and robustness to life. In this
+work, we aim to learn a space of diverse and high-reward policies on any given
+environment. To this end, we introduce a generative model of policies, which
+maps a low-dimensional latent space to an agent policy space. Our method
+enables learning an entire population of agent policies, without requiring the
+use of separate policy parameters. Just as real world populations can adapt and
+evolve via natural selection, our method is able to adapt to changes in our
+environment solely by selecting for policies in latent space. We test our
+generative model's capabilities in a variety of environments, including an
+open-ended grid-world and a two-player soccer environment. Code,
+visualizations, and additional experiments can be found at
+https://kennyderek.github.io/adap/.},
+ arxiv_url = {https://arxiv.org/pdf/2107.07506v1.pdf},
+ author = {Kenneth Derek and Phillip Isola},
+ title = {Adaptable Agent Populations via a Generative Model of Policies},
+ year = {2021-07-15T17:58:18Z}
+}
+
+@article{guo_2024-02-27T12:26:07Z_agent,
+ abstract = {In this work, we investigate the potential of large language models (LLMs)
+based agents to automate data science tasks, with the goal of comprehending
+task requirements, then building and training the best-fit machine learning
+models. Despite their widespread success, existing LLM agents are hindered by
+generating unreasonable experiment plans within this scenario. To this end, we
+present DS-Agent, a novel automatic framework that harnesses LLM agent and
+case-based reasoning (CBR). In the development stage, DS-Agent follows the CBR
+framework to structure an automatic iteration pipeline, which can flexibly
+capitalize on the expert knowledge from Kaggle, and facilitate consistent
+performance improvement through the feedback mechanism. Moreover, DS-Agent
+implements a low-resource deployment stage with a simplified CBR paradigm to
+adapt past successful solutions from the development stage for direct code
+generation, significantly reducing the demand on foundational capabilities of
+LLMs. Empirically, DS-Agent with GPT-4 achieves 100\% success rate in the
+development stage, while attaining 36\% improvement on average one pass rate
+across alternative LLMs in the deployment stage. In both stages, DS-Agent
+achieves the best rank in performance, costing \$1.60 and \$0.13 per run with
+GPT-4, respectively. Our data and code are open-sourced at
+https://github.com/guosyjlu/DS-Agent.},
+ arxiv_url = {https://arxiv.org/pdf/2402.17453v5.pdf},
+ author = {Siyuan Guo and Cheng Deng and Ying Wen and Hechang Chen and Yi Chang and Jun Wang},
+ github_url = {https://github.com/guosyjlu/DS-Agent},
+ title = {DS-Agent: Automated Data Science by Empowering Large Language Models with Case-Based Reasoning},
+ year = {2024-02-27T12:26:07Z}
+}
+
+@article{kumar_2019-12-31T18:06:49Z_model,
+ abstract = {In this work, we aim to solve data-driven optimization problems, where the
+goal is to find an input that maximizes an unknown score function given access
+to a dataset of inputs with corresponding scores. When the inputs are
+high-dimensional and valid inputs constitute a small subset of this space
+(e.g., valid protein sequences or valid natural images), such model-based
+optimization problems become exceptionally difficult, since the optimizer must
+avoid out-of-distribution and invalid inputs. We propose to address such
+problem with model inversion networks (MINs), which learn an inverse mapping
+from scores to inputs. MINs can scale to high-dimensional input spaces and
+leverage offline logged data for both contextual and non-contextual
+optimization problems. MINs can also handle both purely offline data sources
+and active data collection. We evaluate MINs on tasks from the Bayesian
+optimization literature, high-dimensional model-based optimization problems
+over images and protein designs, and contextual bandit optimization from logged
+data.},
+ arxiv_url = {https://arxiv.org/pdf/1912.13464v1.pdf},
+ author = {Aviral Kumar and Sergey Levine},
+ title = {Model Inversion Networks for Model-Based Optimization},
+ year = {2019-12-31T18:06:49Z}
+}
+
+@article{lindauer_2024-06-05T15:05:24Z_position,
+ abstract = {Automated machine learning (AutoML) was formed around the fundamental
+objectives of automatically and efficiently configuring machine learning (ML)
+workflows, aiding the research of new ML algorithms, and contributing to the
+democratization of ML by making it accessible to a broader audience. Over the
+past decade, commendable achievements in AutoML have primarily focused on
+optimizing predictive performance. This focused progress, while substantial,
+raises questions about how well AutoML has met its broader, original goals. In
+this position paper, we argue that a key to unlocking AutoML's full potential
+lies in addressing the currently underexplored aspect of user interaction with
+AutoML systems, including their diverse roles, expectations, and expertise. We
+envision a more human-centered approach in future AutoML research, promoting
+the collaborative design of ML systems that tightly integrates the
+complementary strengths of human expertise and AutoML methodologies.},
+ arxiv_url = {https://arxiv.org/pdf/2406.03348v1.pdf},
+ author = {Marius Lindauer and Florian Karl and Anne Klier and Julia Moosbauer and Alexander Tornede and Andreas Mueller and Frank Hutter and Matthias Feurer and Bernd Bischl},
+ github_url = {https://github.com/automl/amltk},
+ title = {Position: A Call to Action for a Human-Centered AutoML Paradigm},
+ year = {2024-06-05T15:05:24Z}
+}
+
+@article{liu_2019-07-02T10:34:53Z_exploration,
+ abstract = {Inspired by the Reward-Biased Maximum Likelihood Estimate method of adaptive
+control, we propose RBMLE -- a novel family of learning algorithms for
+stochastic multi-armed bandits (SMABs). For a broad range of SMABs including
+both the parametric Exponential Family as well as the non-parametric
+sub-Gaussian/Exponential family, we show that RBMLE yields an index policy. To
+choose the bias-growth rate $\alpha(t)$ in RBMLE, we reveal the nontrivial
+interplay between $\alpha(t)$ and the regret bound that generally applies in
+both the Exponential Family as well as the sub-Gaussian/Exponential family
+bandits. To quantify the finite-time performance, we prove that RBMLE attains
+order-optimality by adaptively estimating the unknown constants in the
+expression of $\alpha(t)$ for Gaussian and sub-Gaussian bandits. Extensive
+experiments demonstrate that the proposed RBMLE achieves empirical regret
+performance competitive with the state-of-the-art methods, while being more
+computationally efficient and scalable in comparison to the best-performing
+ones among them.},
+ arxiv_url = {https://arxiv.org/pdf/1907.01287v3.pdf},
+ author = {Xi Liu and Ping-Chun Hsieh and Anirban Bhattacharya and P. R. Kumar},
+ title = {Exploration Through Reward Biasing: Reward-Biased Maximum Likelihood Estimation for Stochastic Multi-Armed Bandits},
+ year = {2019-07-02T10:34:53Z}
+}
+
+@article{liu_2022-10-12T00:36:01Z_fasterrisk,
+ abstract = {Over the last century, risk scores have been the most popular form of
+predictive model used in healthcare and criminal justice. Risk scores are
+sparse linear models with integer coefficients; often these models can be
+memorized or placed on an index card. Typically, risk scores have been created
+either without data or by rounding logistic regression coefficients, but these
+methods do not reliably produce high-quality risk scores. Recent work used
+mathematical programming, which is computationally slow. We introduce an
+approach for efficiently producing a collection of high-quality risk scores
+learned from data. Specifically, our approach produces a pool of almost-optimal
+sparse continuous solutions, each with a different support set, using a
+beam-search algorithm. Each of these continuous solutions is transformed into a
+separate risk score through a "star ray" search, where a range of multipliers
+are considered before rounding the coefficients sequentially to maintain low
+logistic loss. Our algorithm returns all of these high-quality risk scores for
+the user to consider. This method completes within minutes and can be valuable
+in a broad variety of applications.},
+ arxiv_url = {https://arxiv.org/pdf/2210.05846v1.pdf},
+ author = {Jiachang Liu and Chudi Zhong and Boxuan Li and Margo Seltzer and Cynthia Rudin},
+ github_url = {https://github.com/propublica/compas-analysis},
+ title = {FasterRisk: Fast and Accurate Interpretable Risk Scores},
+ year = {2022-10-12T00:36:01Z}
+}
+
+@article{padmanabhan_2023-06-15T17:39:50Z_propagating,
+ abstract = {Modern language models have the capacity to store and use immense amounts of
+knowledge about real-world entities, but it remains unclear how to update such
+knowledge stored in model parameters. While prior methods for updating
+knowledge in LMs successfully inject atomic facts, updated LMs fail to make
+inferences based on injected facts. In this work, we demonstrate that a context
+distillation-based approach can both impart knowledge about entities and
+propagate that knowledge to enable broader inferences. Our approach consists of
+two stages: transfer set generation and distillation on the transfer set. We
+first generate a transfer set by prompting a language model to generate
+continuations from the entity definition. Then, we update the model parameters
+so that the distribution of the LM (the student) matches the distribution of
+the LM conditioned on the definition (the teacher) on the transfer set. Our
+experiments demonstrate that this approach is more effective at propagating
+knowledge updates than fine-tuning and other gradient-based knowledge-editing
+methods. Moreover, it does not compromise performance in other contexts, even
+when injecting the definitions of up to 150 entities at once.},
+ arxiv_url = {https://arxiv.org/pdf/2306.09306v2.pdf},
+ author = {Shankar Padmanabhan and Yasumasa Onoe and Michael J. Q. Zhang and Greg Durrett and Eunsol Choi},
+ github_url = {https://github.com/microsoft/DeepSpeed},
+ title = {Propagating Knowledge Updates to LMs Through Distillation},
+ year = {2023-06-15T17:39:50Z}
+}
+
+@article{su_2021-10-27T22:11:29Z_you,
+ abstract = {I consider a setting where reviewers offer very noisy scores for several
+items for the selection of high-quality ones (e.g., peer review of large
+conference proceedings), whereas the owner of these items knows the true
+underlying scores but prefers not to provide this information. To address this
+withholding of information, in this paper, I introduce the Isotonic Mechanism,
+a simple and efficient approach to improving imprecise raw scores by leveraging
+certain information that the owner is incentivized to provide. This mechanism
+takes the ranking of the items from best to worst provided by the owner as
+input, in addition to the raw scores provided by the reviewers. It reports the
+adjusted scores for the items by solving a convex optimization problem. Under
+certain conditions, I show that the owner's optimal strategy is to honestly
+report the true ranking of the items to her best knowledge in order to maximize
+the expected utility. Moreover, I prove that the adjusted scores provided by
+this owner-assisted mechanism are significantly more accurate than the raw
+scores provided by the reviewers. This paper concludes with several extensions
+of the Isotonic Mechanism and some refinements of the mechanism for practical
+consideration.},
+ arxiv_url = {https://arxiv.org/pdf/2110.14802v2.pdf},
+ author = {Weijie J. Su},
+ github_url = {https://github.com/shaohua0116/ICLR2020-OpenReviewData},
+ title = {You Are the Best Reviewer of Your Own Papers: An Owner-Assisted Scoring Mechanism},
+ year = {2021-10-27T22:11:29Z}
+}
+
+@article{team_2023-01-18T15:39:21Z_human,
+ abstract = {Foundation models have shown impressive adaptation and scalability in
+supervised and self-supervised learning problems, but so far these successes
+have not fully translated to reinforcement learning (RL). In this work, we
+demonstrate that training an RL agent at scale leads to a general in-context
+learning algorithm that can adapt to open-ended novel embodied 3D problems as
+quickly as humans. In a vast space of held-out environment dynamics, our
+adaptive agent (AdA) displays on-the-fly hypothesis-driven exploration,
+efficient exploitation of acquired knowledge, and can successfully be prompted
+with first-person demonstrations. Adaptation emerges from three ingredients:
+(1) meta-reinforcement learning across a vast, smooth and diverse task
+distribution, (2) a policy parameterised as a large-scale attention-based
+memory architecture, and (3) an effective automated curriculum that prioritises
+tasks at the frontier of an agent's capabilities. We demonstrate characteristic
+scaling laws with respect to network size, memory length, and richness of the
+training task distribution. We believe our results lay the foundation for
+increasingly general and adaptive RL agents that perform well across
+ever-larger open-ended domains.},
+ arxiv_url = {https://arxiv.org/pdf/2301.07608v1.pdf},
+ author = {Adaptive Agent Team and Jakob Bauer and Kate Baumli and Satinder Baveja and Feryal Behbahani and Avishkar Bhoopchand and Nathalie Bradley-Schmieg and Michael Chang and Natalie Clay and Adrian Collister and Vibhavari Dasagi and Lucy Gonzalez and Karol Gregor and Edward Hughes and Sheleem Kashem and Maria Loks-Thompson and Hannah Openshaw and Jack Parker-Holder and Shreya Pathak and Nicolas Perez-Nieves and Nemanja Rakicevic and Tim Rocktäschel and Yannick Schroecker and Jakub Sygnowski and Karl Tuyls and Sarah York and Alexander Zacherl and Lei Zhang},
+ github_url = {https://github.com/google/jax},
+ title = {Human-Timescale Adaptation in an Open-Ended Task Space},
+ year = {2023-01-18T15:39:21Z}
+}
+
+@article{team_2023-01-18T15:39:21Z_human,
+ abstract = {Foundation models have shown impressive adaptation and scalability in
+supervised and self-supervised learning problems, but so far these successes
+have not fully translated to reinforcement learning (RL). In this work, we
+demonstrate that training an RL agent at scale leads to a general in-context
+learning algorithm that can adapt to open-ended novel embodied 3D problems as
+quickly as humans. In a vast space of held-out environment dynamics, our
+adaptive agent (AdA) displays on-the-fly hypothesis-driven exploration,
+efficient exploitation of acquired knowledge, and can successfully be prompted
+with first-person demonstrations. Adaptation emerges from three ingredients:
+(1) meta-reinforcement learning across a vast, smooth and diverse task
+distribution, (2) a policy parameterised as a large-scale attention-based
+memory architecture, and (3) an effective automated curriculum that prioritises
+tasks at the frontier of an agent's capabilities. We demonstrate characteristic
+scaling laws with respect to network size, memory length, and richness of the
+training task distribution. We believe our results lay the foundation for
+increasingly general and adaptive RL agents that perform well across
+ever-larger open-ended domains.},
+ arxiv_url = {https://arxiv.org/pdf/2301.07608v1.pdf},
+ author = {Adaptive Agent Team and Jakob Bauer and Kate Baumli and Satinder Baveja and Feryal Behbahani and Avishkar Bhoopchand and Nathalie Bradley-Schmieg and Michael Chang and Natalie Clay and Adrian Collister and Vibhavari Dasagi and Lucy Gonzalez and Karol Gregor and Edward Hughes and Sheleem Kashem and Maria Loks-Thompson and Hannah Openshaw and Jack Parker-Holder and Shreya Pathak and Nicolas Perez-Nieves and Nemanja Rakicevic and Tim Rocktäschel and Yannick Schroecker and Jakub Sygnowski and Karl Tuyls and Sarah York and Alexander Zacherl and Lei Zhang},
+ github_url = {https://github.com/google/jax},
+ title = {Human-Timescale Adaptation in an Open-Ended Task Space},
+ year = {2023-01-18T15:39:21Z}
+}
+
+@article{wan_2024-01-19T05:02:46Z_knowledge,
+ abstract = {While training large language models (LLMs) from scratch can generate models
+with distinct functionalities and strengths, it comes at significant costs and
+may result in redundant capabilities. Alternatively, a cost-effective and
+compelling approach is to merge existing pre-trained LLMs into a more potent
+model. However, due to the varying architectures of these LLMs, directly
+blending their weights is impractical. In this paper, we introduce the notion
+of knowledge fusion for LLMs, aimed at combining the capabilities of existing
+LLMs and transferring them into a single LLM. By leveraging the generative
+distributions of source LLMs, we externalize their collective knowledge and
+unique strengths, thereby potentially elevating the capabilities of the target
+model beyond those of any individual source LLM. We validate our approach using
+three popular LLMs with different architectures--Llama-2, MPT, and
+OpenLLaMA--across various benchmarks and tasks. Our findings confirm that the
+fusion of LLMs can improve the performance of the target model across a range
+of capabilities such as reasoning, commonsense, and code generation. Our code,
+model weights, and data are public at
+\url{https://github.com/fanqiwan/FuseLLM}.},
+ arxiv_url = {https://arxiv.org/pdf/2401.10491v2.pdf},
+ author = {Fanqi Wan and Xinting Huang and Deng Cai and Xiaojun Quan and Wei Bi and Shuming Shi},
+ github_url = {https://github.com/fanqiwan/FuseLLM},
+ title = {Knowledge Fusion of Large Language Models},
+ year = {2024-01-19T05:02:46Z}
+}
