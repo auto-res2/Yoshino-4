@@ -1,0 +1,436 @@
+% ===========================================
+% REQUIRED CITATIONS
+% These papers must be cited in the manuscript
+% ===========================================
+
+@article{author_year_position,
+ title = {Position: Data-driven Discovery with Large Generative Models}
+}
+
+@article{chen_2024-05-25T14:11:44Z_automanual,
+ abstract = {Large Language Models (LLM) based agents have shown promise in autonomously
+completing tasks across various domains, e.g., robotics, games, and web
+navigation. However, these agents typically require elaborate design and expert
+prompts to solve tasks in specific domains, which limits their adaptability. We
+introduce AutoManual, a framework enabling LLM agents to autonomously build
+their understanding through interaction and adapt to new environments.
+AutoManual categorizes environmental knowledge into diverse rules and optimizes
+them in an online fashion by two agents: 1) The Planner codes actionable plans
+based on current rules for interacting with the environment. 2) The Builder
+updates the rules through a well-structured rule system that facilitates online
+rule management and essential detail retention. To mitigate hallucinations in
+managing rules, we introduce a *case-conditioned prompting* strategy for the
+Builder. Finally, the Formulator agent compiles these rules into a
+comprehensive manual. The self-generated manual can not only improve the
+adaptability but also guide the planning of smaller LLMs while being
+human-readable. Given only one simple demonstration, AutoManual significantly
+improves task success rates, achieving 97.4\% with GPT-4-turbo and 86.2\% with
+GPT-3.5-turbo on ALFWorld benchmark tasks. The code is available at
+https://github.com/minghchen/automanual.},
+ arxiv_url = {https://arxiv.org/pdf/2405.16247v4.pdf},
+ author = {Minghao Chen and Yihang Li and Yanting Yang and Shiyu Yu and Binbin Lin and Xiaofei He},
+ github_url = {https://github.com/minghchen/automanual},
+ title = {AutoManual: Constructing Instruction Manuals by LLM Agents via Interactive Environmental Learning},
+ year = {2024-05-25T14:11:44Z}
+}
+
+@article{chiu_2022-10-07T17:56:57Z_flexible,
+ abstract = {Reinforcement learning (RL) agents have long sought to approach the
+efficiency of human learning. Humans are great observers who can learn by
+aggregating external knowledge from various sources, including observations
+from others' policies of attempting a task. Prior studies in RL have
+incorporated external knowledge policies to help agents improve sample
+efficiency. However, it remains non-trivial to perform arbitrary combinations
+and replacements of those policies, an essential feature for generalization and
+transferability. In this work, we present Knowledge-Grounded RL (KGRL), an RL
+paradigm fusing multiple knowledge policies and aiming for human-like
+efficiency and flexibility. We propose a new actor architecture for KGRL,
+Knowledge-Inclusive Attention Network (KIAN), which allows free knowledge
+rearrangement due to embedding-based attentive action prediction. KIAN also
+addresses entropy imbalance, a problem arising in maximum entropy KGRL that
+hinders an agent from efficiently exploring the environment, through a new
+design of policy distributions. The experimental results demonstrate that KIAN
+outperforms alternative methods incorporating external knowledge policies and
+achieves efficient and flexible learning. Our implementation is available at
+https://github.com/Pascalson/KGRL.git},
+ arxiv_url = {https://arxiv.org/pdf/2210.03729v2.pdf},
+ author = {Zih-Yun Chiu and Yi-Lin Tuan and William Yang Wang and Michael C. Yip},
+ github_url = {https://github.com/Pascalson/KGRL},
+ title = {Flexible Attention-Based Multi-Policy Fusion for Efficient Deep Reinforcement Learning},
+ year = {2022-10-07T17:56:57Z}
+}
+
+@article{dauner_2024-06-21T17:59:02Z_navsim,
+ abstract = {Benchmarking vision-based driving policies is challenging. On one hand,
+open-loop evaluation with real data is easy, but these results do not reflect
+closed-loop performance. On the other, closed-loop evaluation is possible in
+simulation, but is hard to scale due to its significant computational demands.
+Further, the simulators available today exhibit a large domain gap to real
+data. This has resulted in an inability to draw clear conclusions from the
+rapidly growing body of research on end-to-end autonomous driving. In this
+paper, we present NAVSIM, a middle ground between these evaluation paradigms,
+where we use large datasets in combination with a non-reactive simulator to
+enable large-scale real-world benchmarking. Specifically, we gather
+simulation-based metrics, such as progress and time to collision, by unrolling
+bird's eye view abstractions of the test scenes for a short simulation horizon.
+Our simulation is non-reactive, i.e., the evaluated policy and environment do
+not influence each other. As we demonstrate empirically, this decoupling allows
+open-loop metric computation while being better aligned with closed-loop
+evaluations than traditional displacement errors. NAVSIM enabled a new
+competition held at CVPR 2024, where 143 teams submitted 463 entries, resulting
+in several new insights. On a large set of challenging scenarios, we observe
+that simple methods with moderate compute requirements such as TransFuser can
+match recent large-scale end-to-end driving architectures such as UniAD. Our
+modular framework can potentially be extended with new datasets, data curation
+strategies, and metrics, and will be continually maintained to host future
+challenges. Our code is available at
+https://github.com/autonomousvision/navsim.},
+ arxiv_url = {https://arxiv.org/pdf/2406.15349v2.pdf},
+ author = {Daniel Dauner and Marcel Hallgarten and Tianyu Li and Xinshuo Weng and Zhiyu Huang and Zetong Yang and Hongyang Li and Igor Gilitschenski and Boris Ivanovic and Marco Pavone and Andreas Geiger and Kashyap Chitta},
+ github_url = {https://github.com/autonomousvision/navsim},
+ title = {NAVSIM: Data-Driven Non-Reactive Autonomous Vehicle Simulation and Benchmarking},
+ year = {2024-06-21T17:59:02Z}
+}
+
+@article{derek_2021-07-15T17:58:18Z_adaptable,
+ abstract = {In the natural world, life has found innumerable ways to survive and often
+thrive. Between and even within species, each individual is in some manner
+unique, and this diversity lends adaptability and robustness to life. In this
+work, we aim to learn a space of diverse and high-reward policies on any given
+environment. To this end, we introduce a generative model of policies, which
+maps a low-dimensional latent space to an agent policy space. Our method
+enables learning an entire population of agent policies, without requiring the
+use of separate policy parameters. Just as real world populations can adapt and
+evolve via natural selection, our method is able to adapt to changes in our
+environment solely by selecting for policies in latent space. We test our
+generative model's capabilities in a variety of environments, including an
+open-ended grid-world and a two-player soccer environment. Code,
+visualizations, and additional experiments can be found at
+https://kennyderek.github.io/adap/.},
+ arxiv_url = {https://arxiv.org/pdf/2107.07506v1.pdf},
+ author = {Kenneth Derek and Phillip Isola},
+ title = {Adaptable Agent Populations via a Generative Model of Policies},
+ year = {2021-07-15T17:58:18Z}
+}
+
+@article{feng_2023-05-17T05:25:27Z_knowledge,
+ abstract = {By design, large language models (LLMs) are static general-purpose models,
+expensive to retrain or update frequently. As they are increasingly adopted for
+knowledge-intensive tasks, it becomes evident that these design choices lead to
+failures to generate factual, relevant, and up-to-date knowledge. To this end,
+we propose Knowledge Card, a modular framework to plug in new factual and
+relevant knowledge into general-purpose LLMs. We first introduce knowledge
+cards -- specialized language models trained on corpora from specific domains
+and sources. Knowledge cards serve as parametric repositories that are selected
+at inference time to generate background knowledge for the base LLM. We then
+propose three content selectors to dynamically select and retain information in
+documents generated by knowledge cards, specifically controlling for relevance,
+brevity, and factuality of outputs. Finally, we propose two complementary
+integration approaches to augment the base LLM with the (relevant, factual)
+knowledge curated from the specialized LMs. Through extensive experiments, we
+demonstrate that Knowledge Card achieves state-of-the-art performance on six
+benchmark datasets. Ultimately, Knowledge Card framework enables dynamic
+synthesis and updates of knowledge from diverse domains. Its modularity will
+ensure that relevant knowledge can be continuously updated through the
+collective efforts of the research community.},
+ arxiv_url = {https://arxiv.org/pdf/2305.09955v3.pdf},
+ author = {Shangbin Feng and Weijia Shi and Yuyang Bai and Vidhisha Balachandran and Tianxing He and Yulia Tsvetkov},
+ github_url = {https://github.com/noanabeshima/wikipedia-downloader},
+ title = {Knowledge Card: Filling LLMs' Knowledge Gaps with Plug-in Specialized Language Models},
+ year = {2023-05-17T05:25:27Z}
+}
+
+@article{feng_2023-05-17T05:25:27Z_knowledge,
+ abstract = {By design, large language models (LLMs) are static general-purpose models,
+expensive to retrain or update frequently. As they are increasingly adopted for
+knowledge-intensive tasks, it becomes evident that these design choices lead to
+failures to generate factual, relevant, and up-to-date knowledge. To this end,
+we propose Knowledge Card, a modular framework to plug in new factual and
+relevant knowledge into general-purpose LLMs. We first introduce knowledge
+cards -- specialized language models trained on corpora from specific domains
+and sources. Knowledge cards serve as parametric repositories that are selected
+at inference time to generate background knowledge for the base LLM. We then
+propose three content selectors to dynamically select and retain information in
+documents generated by knowledge cards, specifically controlling for relevance,
+brevity, and factuality of outputs. Finally, we propose two complementary
+integration approaches to augment the base LLM with the (relevant, factual)
+knowledge curated from the specialized LMs. Through extensive experiments, we
+demonstrate that Knowledge Card achieves state-of-the-art performance on six
+benchmark datasets. Ultimately, Knowledge Card framework enables dynamic
+synthesis and updates of knowledge from diverse domains. Its modularity will
+ensure that relevant knowledge can be continuously updated through the
+collective efforts of the research community.},
+ arxiv_url = {https://arxiv.org/pdf/2305.09955v3.pdf},
+ author = {Shangbin Feng and Weijia Shi and Yuyang Bai and Vidhisha Balachandran and Tianxing He and Yulia Tsvetkov},
+ github_url = {https://github.com/thoppe/The-Pile-PubMed},
+ title = {Knowledge Card: Filling LLMs' Knowledge Gaps with Plug-in Specialized Language Models},
+ year = {2023-05-17T05:25:27Z}
+}
+
+@article{jansen_2024-06-10T20:08:44Z_discoveryworld,
+ abstract = {Automated scientific discovery promises to accelerate progress across
+scientific domains. However, developing and evaluating an AI agent's capacity
+for end-to-end scientific reasoning is challenging as running real-world
+experiments is often prohibitively expensive or infeasible. In this work we
+introduce DISCOVERYWORLD, the first virtual environment for developing and
+benchmarking an agent's ability to perform complete cycles of novel scientific
+discovery. DISCOVERYWORLD contains a variety of different challenges, covering
+topics as diverse as radioisotope dating, rocket science, and proteomics, to
+encourage development of general discovery skills rather than task-specific
+solutions. DISCOVERYWORLD itself is an inexpensive, simulated, text-based
+environment (with optional 2D visual overlay). It includes 120 different
+challenge tasks, spanning eight topics each with three levels of difficulty and
+several parametric variations. Each task requires an agent to form hypotheses,
+design and run experiments, analyze results, and act on conclusions.
+DISCOVERYWORLD further provides three automatic metrics for evaluating
+performance, based on (a) task completion, (b) task-relevant actions taken, and
+(c) the discovered explanatory knowledge. We find that strong baseline agents,
+that perform well in prior published environments, struggle on most
+DISCOVERYWORLD tasks, suggesting that DISCOVERYWORLD captures some of the novel
+challenges of discovery, and thus that DISCOVERYWORLD may help accelerate
+near-term development and assessment of scientific discovery competency in
+agents. Code available at: www.github.com/allenai/discoveryworld},
+ arxiv_url = {https://arxiv.org/pdf/2406.06769v2.pdf},
+ author = {Peter Jansen and Marc-Alexandre Côté and Tushar Khot and Erin Bransom and Bhavana Dalvi Mishra and Bodhisattwa Prasad Majumder and Oyvind Tafjord and Peter Clark},
+ github_url = {https://github.com/allenai/discoveryworld},
+ title = {DiscoveryWorld: A Virtual Environment for Developing and Evaluating Automated Scientific Discovery Agents},
+ year = {2024-06-10T20:08:44Z}
+}
+
+@article{pourcel_2023-10-15T14:57:14Z_aces,
+ abstract = {The ability to invent novel and interesting problems is a remarkable feature
+of human intelligence that drives innovation, art, and science. We propose a
+method that aims to automate this process by harnessing the power of
+state-of-the-art generative models to produce a diversity of challenging yet
+solvable problems, here in the context of Python programming puzzles. Inspired
+by the intrinsically motivated literature, Autotelic CodE Search (ACES) jointly
+optimizes for the diversity and difficulty of generated problems. We represent
+problems in a space of LLM-generated semantic descriptors describing the
+programming skills required to solve them (e.g. string manipulation, dynamic
+programming, etc.) and measure their difficulty empirically as a linearly
+decreasing function of the success rate of Llama-3-70B, a state-of-the-art LLM
+problem solver. ACES iteratively prompts a large language model to generate
+difficult problems achieving a diversity of target semantic descriptors
+(goal-directed exploration) using previously generated problems as in-context
+examples. ACES generates problems that are more diverse and more challenging
+than problems produced by baseline methods and three times more challenging
+than problems found in existing Python programming benchmarks on average across
+11 state-of-the-art code LLMs.},
+ arxiv_url = {https://arxiv.org/pdf/2310.10692v4.pdf},
+ author = {Julien Pourcel and Cédric Colas and Gaia Molinaro and Pierre-Yves Oudeyer and Laetitia Teodorescu},
+ title = {ACES: Generating a Diversity of Challenging Programming Puzzles with Autotelic Generative Models},
+ year = {2023-10-15T14:57:14Z}
+}
+
+@article{shi_2024-11-01T08:34:32Z_expert,
+ abstract = {Recent development in Artificial Intelligence (AI) models has propelled their
+application in scientific discovery, but the validation and exploration of
+these discoveries require subsequent empirical experimentation. The concept of
+self-driving laboratories promises to automate and thus boost the experimental
+process following AI-driven discoveries. However, the transition of
+experimental protocols, originally crafted for human comprehension, into
+formats interpretable by machines presents significant challenges, which,
+within the context of specific expert domain, encompass the necessity for
+structured as opposed to natural language, the imperative for explicit rather
+than tacit knowledge, and the preservation of causality and consistency
+throughout protocol steps. Presently, the task of protocol translation
+predominantly requires the manual and labor-intensive involvement of domain
+experts and information technology specialists, rendering the process
+time-intensive. To address these issues, we propose a framework that automates
+the protocol translation process through a three-stage workflow, which
+incrementally constructs Protocol Dependence Graphs (PDGs) that approach
+structured on the syntax level, completed on the semantics level, and linked on
+the execution level. Quantitative and qualitative evaluations have demonstrated
+its performance at par with that of human experts, underscoring its potential
+to significantly expedite and democratize the process of scientific discovery
+by elevating the automation capabilities within self-driving laboratories.},
+ arxiv_url = {https://arxiv.org/pdf/2411.00444v1.pdf},
+ author = {Yu-Zhe Shi and Fanxu Meng and Haofei Hou and Zhangqian Bi and Qiao Xu and Lecheng Ruan and Qining Wang},
+ title = {Expert-level protocol translation for self-driving labs},
+ year = {2024-11-01T08:34:32Z}
+}
+
+@article{shirali_2022-10-06T18:56:46Z_theory,
+ abstract = {Dynamic benchmarks interweave model fitting and data collection in an attempt
+to mitigate the limitations of static benchmarks. In contrast to an extensive
+theoretical and empirical study of the static setting, the dynamic counterpart
+lags behind due to limited empirical studies and no apparent theoretical
+foundation to date. Responding to this deficit, we initiate a theoretical study
+of dynamic benchmarking. We examine two realizations, one capturing current
+practice and the other modeling more complex settings. In the first model,
+where data collection and model fitting alternate sequentially, we prove that
+model performance improves initially but can stall after only three rounds.
+Label noise arising from, for instance, annotator disagreement leads to even
+stronger negative results. Our second model generalizes the first to the case
+where data collection and model fitting have a hierarchical dependency
+structure. We show that this design guarantees strictly more progress than the
+first, albeit at a significant increase in complexity. We support our
+theoretical analysis by simulating dynamic benchmarks on two popular datasets.
+These results illuminate the benefits and practical limitations of dynamic
+benchmarking, providing both a theoretical foundation and a causal explanation
+for observed bottlenecks in empirical work.},
+ arxiv_url = {https://arxiv.org/pdf/2210.03165v3.pdf},
+ author = {Ali Shirali and Rediet Abebe and Moritz Hardt},
+ title = {A Theory of Dynamic Benchmarks},
+ year = {2022-10-06T18:56:46Z}
+}
+
+@article{takamoto_2022-10-13T17:03:36Z_pdebench,
+ abstract = {Machine learning-based modeling of physical systems has experienced increased
+interest in recent years. Despite some impressive progress, there is still a
+lack of benchmarks for Scientific ML that are easy to use but still challenging
+and representative of a wide range of problems. We introduce PDEBench, a
+benchmark suite of time-dependent simulation tasks based on Partial
+Differential Equations (PDEs). PDEBench comprises both code and data to
+benchmark the performance of novel machine learning models against both
+classical numerical simulations and machine learning baselines. Our proposed
+set of benchmark problems contribute the following unique features: (1) A much
+wider range of PDEs compared to existing benchmarks, ranging from relatively
+common examples to more realistic and difficult problems; (2) much larger
+ready-to-use datasets compared to prior work, comprising multiple simulation
+runs across a larger number of initial and boundary conditions and PDE
+parameters; (3) more extensible source codes with user-friendly APIs for data
+generation and baseline results with popular machine learning models (FNO,
+U-Net, PINN, Gradient-Based Inverse Method). PDEBench allows researchers to
+extend the benchmark freely for their own purposes using a standardized API and
+to compare the performance of new models to existing baseline methods. We also
+propose new evaluation metrics with the aim to provide a more holistic
+understanding of learning methods in the context of Scientific ML. With those
+metrics we identify tasks which are challenging for recent ML methods and
+propose these tasks as future challenges for the community. The code is
+available at https://github.com/pdebench/PDEBench.},
+ arxiv_url = {https://arxiv.org/pdf/2210.07182v7.pdf},
+ author = {Makoto Takamoto and Timothy Praditia and Raphael Leiteritz and Dan MacKinlay and Francesco Alesiani and Dirk Pflüger and Mathias Niepert},
+ github_url = {https://github.com/pdebench/PDEBench},
+ title = {PDEBench: An Extensive Benchmark for Scientific Machine Learning},
+ year = {2022-10-13T17:03:36Z}
+}
+
+@article{team_2023-01-18T15:39:21Z_human,
+ abstract = {Foundation models have shown impressive adaptation and scalability in
+supervised and self-supervised learning problems, but so far these successes
+have not fully translated to reinforcement learning (RL). In this work, we
+demonstrate that training an RL agent at scale leads to a general in-context
+learning algorithm that can adapt to open-ended novel embodied 3D problems as
+quickly as humans. In a vast space of held-out environment dynamics, our
+adaptive agent (AdA) displays on-the-fly hypothesis-driven exploration,
+efficient exploitation of acquired knowledge, and can successfully be prompted
+with first-person demonstrations. Adaptation emerges from three ingredients:
+(1) meta-reinforcement learning across a vast, smooth and diverse task
+distribution, (2) a policy parameterised as a large-scale attention-based
+memory architecture, and (3) an effective automated curriculum that prioritises
+tasks at the frontier of an agent's capabilities. We demonstrate characteristic
+scaling laws with respect to network size, memory length, and richness of the
+training task distribution. We believe our results lay the foundation for
+increasingly general and adaptive RL agents that perform well across
+ever-larger open-ended domains.},
+ arxiv_url = {https://arxiv.org/pdf/2301.07608v1.pdf},
+ author = {Adaptive Agent Team and Jakob Bauer and Kate Baumli and Satinder Baveja and Feryal Behbahani and Avishkar Bhoopchand and Nathalie Bradley-Schmieg and Michael Chang and Natalie Clay and Adrian Collister and Vibhavari Dasagi and Lucy Gonzalez and Karol Gregor and Edward Hughes and Sheleem Kashem and Maria Loks-Thompson and Hannah Openshaw and Jack Parker-Holder and Shreya Pathak and Nicolas Perez-Nieves and Nemanja Rakicevic and Tim Rocktäschel and Yannick Schroecker and Jakub Sygnowski and Karl Tuyls and Sarah York and Alexander Zacherl and Lei Zhang},
+ github_url = {https://github.com/google/jax},
+ title = {Human-Timescale Adaptation in an Open-Ended Task Space},
+ year = {2023-01-18T15:39:21Z}
+}
+
+@article{team_2023-01-18T15:39:21Z_human,
+ abstract = {Foundation models have shown impressive adaptation and scalability in
+supervised and self-supervised learning problems, but so far these successes
+have not fully translated to reinforcement learning (RL). In this work, we
+demonstrate that training an RL agent at scale leads to a general in-context
+learning algorithm that can adapt to open-ended novel embodied 3D problems as
+quickly as humans. In a vast space of held-out environment dynamics, our
+adaptive agent (AdA) displays on-the-fly hypothesis-driven exploration,
+efficient exploitation of acquired knowledge, and can successfully be prompted
+with first-person demonstrations. Adaptation emerges from three ingredients:
+(1) meta-reinforcement learning across a vast, smooth and diverse task
+distribution, (2) a policy parameterised as a large-scale attention-based
+memory architecture, and (3) an effective automated curriculum that prioritises
+tasks at the frontier of an agent's capabilities. We demonstrate characteristic
+scaling laws with respect to network size, memory length, and richness of the
+training task distribution. We believe our results lay the foundation for
+increasingly general and adaptive RL agents that perform well across
+ever-larger open-ended domains.},
+ arxiv_url = {https://arxiv.org/pdf/2301.07608v1.pdf},
+ author = {Adaptive Agent Team and Jakob Bauer and Kate Baumli and Satinder Baveja and Feryal Behbahani and Avishkar Bhoopchand and Nathalie Bradley-Schmieg and Michael Chang and Natalie Clay and Adrian Collister and Vibhavari Dasagi and Lucy Gonzalez and Karol Gregor and Edward Hughes and Sheleem Kashem and Maria Loks-Thompson and Hannah Openshaw and Jack Parker-Holder and Shreya Pathak and Nicolas Perez-Nieves and Nemanja Rakicevic and Tim Rocktäschel and Yannick Schroecker and Jakub Sygnowski and Karl Tuyls and Sarah York and Alexander Zacherl and Lei Zhang},
+ github_url = {https://github.com/google/jax},
+ title = {Human-Timescale Adaptation in an Open-Ended Task Space},
+ year = {2023-01-18T15:39:21Z}
+}
+
+@article{wu_2024-06-13T02:08:28Z_streambench,
+ abstract = {Recent works have shown that large language model (LLM) agents are able to
+improve themselves from experience, which is an important ability for
+continuous enhancement post-deployment. However, existing benchmarks primarily
+evaluate their innate capabilities and do not assess their ability to improve
+over time. To address this gap, we introduce StreamBench, a pioneering
+benchmark designed to evaluate the continuous improvement of LLM agents over an
+input-feedback sequence. StreamBench simulates an online learning environment
+where LLMs receive a continuous flow of feedback stream and iteratively enhance
+their performance. In addition, we propose several simple yet effective
+baselines for improving LLMs on StreamBench, and provide a comprehensive
+analysis to identify critical components that contribute to successful
+streaming strategies. Our work serves as a stepping stone towards developing
+effective online learning strategies for LLMs, paving the way for more adaptive
+AI systems in streaming scenarios. Source code:
+https://github.com/stream-bench/stream-bench. Benchmark website:
+https://stream-bench.github.io.},
+ arxiv_url = {https://arxiv.org/pdf/2406.08747v2.pdf},
+ author = {Cheng-Kuang Wu and Zhi Rui Tam and Chieh-Yen Lin and Yun-Nung Chen and Hung-yi Lee},
+ github_url = {https://github.com/stream-bench/stream-bench},
+ title = {StreamBench: Towards Benchmarking Continuous Improvement of Language Agents},
+ year = {2024-06-13T02:08:28Z}
+}
+
+% ===========================================
+% REFERENCE CANDIDATES
+% Additional reference papers for context
+% ===========================================
+
+@article{kim_2023-03-30T16:01:52Z_language,
+ abstract = {Agents capable of carrying out general tasks on a computer can improve
+efficiency and productivity by automating repetitive tasks and assisting in
+complex problem-solving. Ideally, such agents should be able to solve new
+computer tasks presented to them through natural language commands. However,
+previous approaches to this problem require large amounts of expert
+demonstrations and task-specific reward functions, both of which are
+impractical for new tasks. In this work, we show that a pre-trained large
+language model (LLM) agent can execute computer tasks guided by natural
+language using a simple prompting scheme where the agent Recursively Criticizes
+and Improves its output (RCI). The RCI approach significantly outperforms
+existing LLM methods for automating computer tasks and surpasses supervised
+learning (SL) and reinforcement learning (RL) approaches on the MiniWoB++
+benchmark. We compare multiple LLMs and find that RCI with the
+InstructGPT-3+RLHF LLM is state-of-the-art on MiniWoB++, using only a handful
+of demonstrations per task rather than tens of thousands, and without a
+task-specific reward function. Furthermore, we demonstrate RCI prompting's
+effectiveness in enhancing LLMs' reasoning abilities on a suite of natural
+language reasoning tasks, outperforming chain of thought (CoT) prompting with
+external feedback. We find that RCI combined with CoT performs better than
+either separately. Our code can be found here:
+https://github.com/posgnu/rci-agent.},
+ arxiv_url = {https://arxiv.org/pdf/2303.17491v3.pdf},
+ author = {Geunwoo Kim and Pierre Baldi and Stephen McAleer},
+ title = {Language models can solve computer tasks.},
+ year = {2023-03-30T16:01:52Z}
+}
+
+@article{levine_2020-05-04T17:00:15Z_offline,
+ abstract = {In this tutorial article, we aim to provide the reader with the conceptual
+tools needed to get started on research on offline reinforcement learning
+algorithms: reinforcement learning algorithms that utilize previously collected
+data, without additional online data collection. Offline reinforcement learning
+algorithms hold tremendous promise for making it possible to turn large
+datasets into powerful decision making engines. Effective offline reinforcement
+learning methods would be able to extract policies with the maximum possible
+utility out of the available data, thereby allowing automation of a wide range
+of decision-making domains, from healthcare and education to robotics. However,
+the limitations of current algorithms make this difficult. We will aim to
+provide the reader with an understanding of these challenges, particularly in
+the context of modern deep reinforcement learning methods, and describe some
+potential solutions that have been explored in recent work to mitigate these
+challenges, along with recent applications, and a discussion of perspectives on
+open problems in the field.},
+ arxiv_url = {https://arxiv.org/pdf/2005.01643v3.pdf},
+ author = {Sergey Levine and Aviral Kumar and George Tucker and Justin Fu},
+ title = {Offline reinforcement learning: Tutorial, review, and perspectives on open problems.},
+ year = {2020-05-04T17:00:15Z}
+}
