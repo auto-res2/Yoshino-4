@@ -1,12 +1,9 @@
-pandas
-torch
-transformers
-json
-networkx
 numpy
-typing
-sentence_transformers
+torch
 matplotlib
-seaborn
+scikit-optimize
 scikit-learn
+gymnasium
+pandas
+seaborn
 pyyaml

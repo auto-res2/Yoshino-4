@@ -1,166 +1,50 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.datasets import make_classification
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.impute import SimpleImputer
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from typing import Dict, Any, Tuple
+from typing import Tuple, Dict, Any, Union
 
-def generate_synthetic_data(config: Dict[str, Any]) -> pd.DataFrame:
-    """Generates synthetic classification data with controlled issues."""
-    np.random.seed(42)
-    num_samples = config['num_samples']
-    num_features = config['num_features']
-    missing_value_ratio = config['missing_value_ratio']
-    imbalance_ratio = config['imbalance_ratio']
-
-    # Generate features
-    X = pd.DataFrame(np.random.rand(num_samples, num_features), columns=[f'feature_{i}' for i in range(num_features)])
-
-    # Introduce some categorical features
-    num_categorical = min(3, num_features // 3)
-    for i in range(num_categorical):
-        X[f'cat_feature_{i}'] = np.random.choice(['A', 'B', 'C'], num_samples)
-
-    # Generate a simple target based on some features
-    y = ((X[f'feature_0'] + X[f'feature_1']) > 1.0).astype(int)
-
-    # Introduce class imbalance
-    if imbalance_ratio < 0.5:
-        minority_class_indices = np.where(y == 1)[0]
-        majority_class_indices = np.where(y == 0)[0]
-        
-        num_minority_samples = int(num_samples * imbalance_ratio)
-        if len(minority_class_indices) > num_minority_samples:
-            # Downsample minority class if it's currently too large
-            downsample_indices = np.random.choice(minority_class_indices, len(minority_class_indices) - num_minority_samples, replace=False)
-            y.iloc[downsample_indices] = 0 # Change some minority to majority
-        elif len(minority_class_indices) < num_minority_samples:
-            # Upsample minority class (by flipping some majority)
-            flip_count = num_minority_samples - len(minority_class_indices)
-            if len(majority_class_indices) >= flip_count:
-                flip_indices = np.random.choice(majority_class_indices, flip_count, replace=False)
-                y.iloc[flip_indices] = 1
-
-    # Introduce missing values
-    for col in X.columns:
-        if np.random.rand() < 0.7: # Only some columns get NaNs
-            nan_indices = np.random.choice(X.index, int(num_samples * missing_value_ratio), replace=False)
-            X.loc[nan_indices, col] = np.nan
-    
-    # Introduce unscaled features (if config asks for it)
-    if config.get('unscaled_features', False):
-        for col in X.select_dtypes(include=np.number).columns:
-            X[col] = X[col] * np.random.uniform(1, 100) + np.random.uniform(0, 50)
-
-    X['target'] = y
-    return X
-
-def get_data_characteristics(df: pd.DataFrame) -> Dict[str, Any]:
-    """Analyzes data and extracts key characteristics relevant for CFAE."""
-    characteristics = {}
-    
-    # Check for missing values
-    missing_cols = df.isnull().sum()
-    characteristics['has_missing_values'] = any(missing_cols > 0)
-    characteristics['missing_cols_count'] = len(missing_cols[missing_cols > 0])
-    
-    # Check class imbalance
-    if 'target' in df.columns:
-        target_counts = df['target'].value_counts(normalize=True)
-        characteristics['target_class_distribution'] = target_counts.to_dict()
-        if len(target_counts) > 1:
-            minority_ratio = target_counts.min()
-            characteristics['is_imbalanced'] = minority_ratio < 0.3 # Threshold for imbalance
-        else:
-            characteristics['is_imbalanced'] = False
-    
-    # Check for unscaled numerical features (simple check)
-    numeric_cols = df.select_dtypes(include=np.number).columns.drop('target', errors='ignore')
-    if not numeric_cols.empty:
-        max_vals = df[numeric_cols].max()
-        min_vals = df[numeric_cols].min()
-        characteristics['has_unscaled_features'] = any((max_vals - min_vals) > 100) # Arbitrary large range
-    else:
-        characteristics['has_unscaled_features'] = False
-    
-    return characteristics
-
-def apply_preprocessing(df: pd.DataFrame, adaptations: Dict[str, Any]) -> Tuple[Any, pd.Series, Any]:
-    """
-    Splits data into features (X) and target (y), then applies preprocessing steps.
-    Adaptations can modify the preprocessing logic.
-    """
-    X = df.drop('target', axis=1)
-    y = df['target']
-
-    numerical_cols = X.select_dtypes(include=np.number).columns
-    categorical_cols = X.select_dtypes(include='object').columns
-
-    numerical_transformer_steps = []
-    
-    # Imputation
-    if adaptations.get('impute_missing', False):
-        print("Preprocessing: Applying missing value imputation.")
-        numerical_transformer_steps.append(('imputer', SimpleImputer(strategy='mean')))
-    else:
-        # If no explicit imputation, fill with a placeholder to avoid pipeline errors on NaNs
-        # Or remove this if the data is guaranteed to not have NaNs when no imputation is applied.
-        # For robustness in demo, keep a default imputer.
-        numerical_transformer_steps.append(('imputer_default', SimpleImputer(strategy='constant', fill_value=0)))
-
-    # Scaling
-    if adaptations.get('scale_features', False):
-        print("Preprocessing: Applying feature scaling.")
-        numerical_transformer_steps.append(('scaler', StandardScaler()))
-
-    numerical_transformer = Pipeline(steps=numerical_transformer_steps)
-
-    categorical_transformer = Pipeline(steps=[
-        ('imputer', SimpleImputer(strategy='most_frequent')), # Impute categorical NaNs
-        ('onehot', OneHotEncoder(handle_unknown='ignore'))
-    ])
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('num', numerical_transformer, numerical_cols),
-            ('cat', categorical_transformer, categorical_cols)
-        ],
-        remainder='passthrough' # Keep other columns if any
+def generate_synthetic_data(n_samples: int = 500, n_features: int = 20, random_state: int = 42) -> Tuple[np.ndarray, np.ndarray]:
+    """Generate synthetic classification dataset for AMMEF 2.0 experiments."""
+    X, y = make_classification(
+        n_samples=n_samples, 
+        n_features=n_features, 
+        n_informative=n_features//2,
+        n_redundant=n_features//4,
+        n_clusters_per_class=1,
+        random_state=random_state
     )
+    return X, y
+
+def preprocess_data(X: np.ndarray, y: np.ndarray, scale_features: bool = True) -> Tuple[Union[np.ndarray, Any], Union[np.ndarray, Any], Union[np.ndarray, Any], Union[np.ndarray, Any]]:
+    """Preprocess data by splitting and optionally scaling features."""
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     
-    print("Fitting and transforming data...")
-    X_processed = preprocessor.fit_transform(X)
+    if scale_features:
+        scaler = StandardScaler()
+        X_train = scaler.fit_transform(X_train)
+        X_test = scaler.transform(X_test)
     
-    print("Data preprocessing complete.")
-    return X_processed, y, preprocessor
+    return X_train, X_test, y_train, y_test
+
+def introduce_adversarial_labels(y: np.ndarray, flip_ratio: float = 0.1, random_state: int = 42) -> np.ndarray:
+    """Introduce adversarial label flips for EMAF-RLG experiment."""
+    np.random.seed(random_state)
+    y_adv = y.copy()
+    n_flip = int(len(y) * flip_ratio)
+    flip_indices = np.random.choice(len(y), size=n_flip, replace=False)
+    y_adv[flip_indices] = 1 - y_adv[flip_indices]
+    return y_adv
 
 if __name__ == '__main__':
-    # Simple test run
-    dummy_config = {
-        'num_samples': 100,
-        'num_features': 5,
-        'missing_value_ratio': 0.1,
-        'imbalance_ratio': 0.2,
-        'unscaled_features': True
-    }
-    
     print("--- Preprocessing Test Run ---")
-    data = generate_synthetic_data(dummy_config)
-    print("Generated data sample:")
-    print(data.head())
+    X, y = generate_synthetic_data(n_samples=100, n_features=10)
+    print(f"Generated data shapes: X={X.shape}, y={y.shape}")
     
-    chars = get_data_characteristics(data)
-    print("\nData Characteristics:")
-    print(chars)
+    X_train, X_test, y_train, y_test = preprocess_data(X, y)
+    print(f"Split data shapes: X_train={X_train.shape}, X_test={X_test.shape}")
     
-    adaptations_test = {
-        'impute_missing': True,
-        'scale_features': True
-    }
-    
-    X_proc, y_proc, preprocessor_obj = apply_preprocessing(data, adaptations_test)
-    print(f"\nProcessed X shape: {X_proc.shape}")
-    print(f"Processed y shape: {y_proc.shape}")
+    y_adv = introduce_adversarial_labels(y, flip_ratio=0.1)
+    print(f"Adversarial labels created with {np.sum(y != y_adv)} flips")
     print("--- Preprocessing Test Complete ---")
