@@ -1,0 +1,5 @@
+/home/runner/work/Yoshino-4/Yoshino-4/src/main.py:259: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x='Configuration', y='Average Accuracy', data=df, palette='viridis')
