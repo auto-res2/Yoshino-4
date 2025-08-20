@@ -65,7 +65,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper initiates the first theoretical study of dynamic benchmarking, jointly analyzing model fitting and data collection in an iterative process. It establishes formal models for sequential (path) dynamic benchmarks and introduces a hierarchical design that combine multiple rounds of dynamic benchmarks. The work provides provable guarantees on error reduction (convergence to O(ϵ^2) for path benchmarks and to O(ϵ^3) for a two-layer hierarchical benchmark) while also highlighting inherent bottlenecks that may prevent long-term improvements.",
+        "methodology": "The authors develop a formal framework representing dynamic benchmarking as alternating rounds of data collection and model building. They define operations such as model building (via an ϵ-approximate risk minimizer), data collection (by identifying failure cases), mixing of distributions, and combining classifiers via majority voting. Two models are considered: a sequential (path dynamic) benchmark which iteratively updates the data distribution based on misclassifications, and a hierarchical dynamic benchmark that aggregates outputs from multiple sequential benchmarks to achieve further error reduction. The analysis is supported by rigorous theoretical proofs and also includes discussion of gradient-based updates and connections to boosting.",
+        "experimental_setup": "The theoretical findings are supported by simulations on two standard datasets: CIFAR-10 for image classification and SNLI for natural language inference. In the experiments, a fixed base model is first trained, then multiple rollouts of path dynamic benchmarks are simulated by training new classifiers on subsets of data that are identified as weaknesses (misclassified samples) of the current model. The performance of the majority vote classifier is tracked over multiple rounds, demonstrating that while some error reduction is achieved, the risk plateaus after a few rounds.",
+        "limitations": "The analysis reveals that under the sequential dynamic benchmark design, improvement saturates at an error reduction limit of Ω(ϵ^2), showing that additional rounds do not substantially reduce error further. The framework also assumes an idealized setting with an ϵ-approximate risk minimizer and perfect annotator performance, which may not hold in practice. In non-realizable settings with label noise or annotator disagreement, the benchmarks may overemphasize mislabeled instances, leading to reduced representativeness. The hierarchical design, while theoretically beneficial, introduces significant complexity and practical challenges in implementation.",
+        "future_research_directions": "Future work may explore more sophisticated dynamic benchmark designs that overcome the inherent plateau in sequential approaches, including alternative hierarchical or ensemble methods. Investigations into methods for dealing with label noise and ensuring diversity in collected examples are warranted. Additionally, bridging the gap between the theoretical models and practical implementations—such as adapting dynamic gradient-based updates or integrating boosting techniques—could further enhance the effectiveness of dynamic benchmarks. Broader studies on robustness and real-world validity of such benchmarks are also needed.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "StreamBench: Towards Benchmarking Continuous Improvement of Language Agents",
@@ -99,7 +107,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces StreamBench, the first benchmark designed to evaluate the continuous self-improvement ability of language agents in an online, streaming setting. It addresses the gap in conventional benchmarks by measuring agents’ capacity to improve over a series of input-feedback cycles and demonstrates that incorporating feedback (especially correct self-generated outputs) and multi-agent memory sharing significantly boosts performance.",
+        "methodology": "The authors simulate an online learning scenario where language agents process a sequential stream of inputs and receive binary feedback signals (correct/incorrect). They propose several streaming methods, including GrowPrompt, MemPrompt, Self-StreamICL, and Multi-Agentic-Memory StreamICL, some using round-robin multi-agent frameworks. These methods update various agent components (e.g., prompt, external memory) instead of the full network parameters to achieve continuous performance improvement.",
+        "experimental_setup": "The benchmark tests a diverse set of tasks including text-to-SQL (using Spider, CoSQL, BIRD), Python programming (DS-1000), tool use (ToolBench), medical diagnosis (DDXPlus), and question answering (HotpotQA). Experiments are conducted using multiple LLM families (GPT, Gemini, Claude) under various baselines (zero-shot, few-shot, chain-of-thought, self-refine, and streaming methods) with performance measured in terms of execution accuracy, pass@1, exact match, among others. The study also examines the effect of different random streaming sequences and includes cost analysis based on token usage.",
+        "limitations": "The current benchmark covers a limited range of task domains and modalities, focusing mainly on text and excluding images or audio. The simulated feedback, which is binary, may not fully capture the complexity and noise of real-world feedback scenarios. Furthermore, the methods emphasize prompt and memory updates while leaving more computationally intensive network parameter updates for future research.",
+        "future_research_directions": "The paper suggests exploring more adaptive online active learning strategies where agents selectively query feedback. It also recommends investigating alternative feedback signals beyond binary correctness and applying multi-agent collaboration strategies (e.g., using multi-arm bandit formulations) to refine agent selection and memory sharing. Extending the benchmark to cover additional tasks and modalities is another potential area for future work.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Benchopt: Reproducible, efficient and collaborative optimization benchmarks",
@@ -149,7 +165,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces Benchopt, a collaborative framework that standardizes, automates, and publishes reproducible benchmarks in optimization for machine learning. It addresses challenges in numerical validation, reducing re-implementation effort, and provides a common platform to fairly compare a wide range of solvers across programming languages and hardware architectures.",
+        "methodology": "Benchopt organizes benchmarks into modular components (Objectives, Datasets, and Solvers) using a well-defined API. It supports algorithms implemented in languages such as Python, R, Julia, and C/C++, and handles diverse optimization tasks including ℓ2-regularized logistic regression, the Lasso, and ResNet18 training for image classification. Benchopt also incorporates features like parallel execution, caching, automated results archiving, and interactive visualization of evaluation metrics.",
+        "experimental_setup": "The paper demonstrates benchmarks on several canonical problems: convex optimization tasks such as ℓ2-regularized logistic regression, non-smooth problems like the Lasso, and large-scale non-convex tasks such as training ResNet18 for image classification. It employs datasets from domains such as text (news20.binary, rcv1.binary), image (CIFAR-10, MNIST, SVHN), and others, while also leveraging both CPU and GPU architectures. The performance is measured in terms of convergence (suboptimality gap, gradient norms, test error) and computational time, with results presented in interactive plots and CSV files.",
+        "limitations": "While Benchopt offers a flexible and extensible framework, some limitations include dependency on careful alignment of hyper-parameters and implementation details across different libraries and frameworks, potential discrepancies in performance due to conversion overheads (ignored in the benchmarks), and differences in behavior between frameworks (e.g., TensorFlow/Keras vs PyTorch) that require additional unit tests. Moreover, the benchmarks sometimes omit error bars for clarity, and may not capture all aspects of performance across every possible scenario.",
+        "future_research_directions": "Future work could extend Benchopt by incorporating additional benchmarks and tasks (e.g., higher-dimensional problems, 2D total variation, and other regularization schemes), further harmonizing evaluation protocols across frameworks, and exploring more automated hyperparameter tuning mechanisms. There is also scope for community-driven efforts to develop and standardize more inclusive evaluation guidelines for emerging optimization algorithms and to improve reproducibility in broader experimental setups.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Adaptive Sampling for Discovery",
@@ -182,7 +206,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper formalizes the Adaptive Sampling for Discovery (ASD) problem, where the goal is to sequentially select and label samples from a large unlabeled dataset to maximize cumulative discovery quality. It introduces an Information-Directed Sampling (IDS) algorithm and provides theoretical regret guarantees under various structural models such as generalized linear, low-rank matrix, and graph models, demonstrating improved performance over existing methods.",
+        "methodology": "The approach is built on a Bayesian framework employing IDS to balance between instant regret and information gain. The algorithm selects samples based on minimizing a ratio of expected regret over information gain. The paper further provides regret bounds under different structural assumptions and proposes approximate algorithms (e.g., SampleVIDS) when direct information gain computation is infeasible.",
+        "experimental_setup": "Experiments include simulation studies on generalized linear/logistic regression models, low-rank matrix completion, and graph models (including random, complete, and star graphs). The performance of IDS is compared with Thompson Sampling (TS), UCB, and random policies. Additionally, real-world reaction condition discovery experiments are conducted using two chemical reaction datasets (PNDC and CNCCI) to validate the practical effectiveness of the proposed methods.",
+        "limitations": "The analysis relies on structural assumptions (e.g., linearity, low-rank structures, graph properties) to obtain sublinear regret; without these, the regret can be linear as shown in Proposition 1. The method depends on Bayesian posterior sampling, which may be computationally intensive, and the current framework is constrained to a Bayesian setting, potentially limiting applicability to other problem setups or larger-scale real-world applications.",
+        "future_research_directions": "Future work may include exploring frequentist regret formulations and extending the framework to more complex models such as neural networks or random forests. Other directions include improving computational efficiency for posterior sampling, relaxing structural assumptions to make the algorithms more broadly applicable, and applying IDS to larger-scale and more diverse real-world discovery problems.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "DriftSurf: Stable-State / Reactive-State Learning under Concept Drift",
@@ -215,7 +247,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces DriftSurf, an adaptive learning algorithm designed to address concept drift in streaming data. Its main contributions include a novel stable-state/reactive-state mechanism that integrates aggressive drift detection with a reactive phase to confirm actual drifts and mitigate false positives. The approach is proven to be risk-competitive with an oracle algorithm (Aware) and demonstrates superior performance compared to existing drift-detection and ensemble methods.",
+        "methodology": "DriftSurf maintains two (and in some cases three) models concurrently: a long-lived predictive model and a reactive model initialized upon drift detection. The algorithm monitors prediction accuracy and uses thresholds (δ and δ′) to decide whether to enter a reactive state and potentially switch models. For learning, it leverages a variance-reduced SGD method (STRSAGA) to update models in a streaming context while balancing rapid adaptation and long-term convergence. The methodology combines theoretical risk-competitiveness analysis with practical model management, ensuring that the model trained on recent data is used when the drift is confirmed.",
+        "experimental_setup": "The experimental evaluation consists of extensive tests on five synthetic, two semi-synthetic, and three real-world datasets, including well-known datasets such as SEA, Hyperplane, SINE1, Mixed, Circles, RCV1, Covertype, Airline, Electricity, and Power Supply. The setups involve binary classification tasks with pre-defined drift points (abrupt or gradual). The performance of DriftSurf is compared against baselines including an oracle algorithm (Aware), drift-detection based method (MDDM), and an ensemble method (AUE). Multiple evaluation settings are examined, including scenarios with equal computational power per model and equal total computational resources, with misclassification rate over time as the key performance metric.",
+        "limitations": "The analysis and algorithm design rely on several assumptions: abrupt drifts are primarily considered in the theoretical analysis, loss functions are assumed to be convex with Lipschitz continuous gradients, and strong convexity is assumed, which might limit the applicability in non-convex or more complex settings. Additionally, parameter settings such as the thresholds for drift detection need to be tuned, and the approach might not be as effective in environments with continuously drifting concepts where creating new models at every time step could be beneficial.",
+        "future_research_directions": "Future work could explore extending DriftSurf to handle gradual or continuously evolving drifts more effectively, relaxing some of the convexity and strong convexity assumptions, and integrating the mechanism with different base learners or ensemble strategies. Additional research could also focus on automated parameter tuning for the drift detection thresholds, scalability improvements, and applying the approach to a broader range of non-stationary and high-dimensional real-world applications.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Navigating Scaling Laws: Compute Optimality in Adaptive Model Training",
@@ -248,7 +288,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces an adaptive training approach that dynamically adjusts model shape parameters—such as patch size for vision transformers, context length for language models, model width, and training objectives—to navigate scaling laws more efficiently. This framework enables compute-optimal training by scheduling when to alter these parameters, leading to significant FLOPs reductions compared to static models.",
+        "methodology": "The authors propose a scheduling strategy based on the derivatives of inverted scaling laws, which quantify the compute required for incremental performance improvements. Using flexible modules (e.g., resizing patch embeddings and positional encodings), the method adapts model parameters such as patch size, width, context length, batch size, and distillation objectives during training. The approach is validated by mapping transitions that maximize performance gain for a given compute budget.",
+        "experimental_setup": "Experiments are conducted using Vision Transformers on ImageNet-21k for pretraining and ImageNet-1k for evaluation (10-shot error rate). Additionally, Transformer-based language models are trained on subsets of English Wikipedia and Books. The study employs various model configurations, hyperparameter searches with fixed budgets, FLOPs as the primary compute metric, and comparisons with baseline scheduling methods like FlexiViT.",
+        "limitations": "The work relies on pre-estimated scaling laws for shape parameters, which are computed with significant cost and may require adjustments for larger compute budgets. The method uses a simple, non function-preserving expansion (e.g., random weight initialization) that temporarily degrades performance, and it does not incorporate learning rate scheduling or cooldown phases, which might shift results at very high compute regimes. Additionally, the largest gains are observed in early training rather than asymptotically.",
+        "future_research_directions": "Potential future directions include extending the scheduling framework to other shape parameters such as model depth and sparsity, combining multiple parameter adjustments, and exploring hardware-aware adaptations that minimize time instead of FLOPs. Further investigation into more function-preserving parameter expansion methods and integration with advanced learning rate schedulers could also enhance adaptive training efficacy.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Offline Training of Language Model Agents with Functions as Learnable Weights",
@@ -284,7 +332,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces a novel paradigm for offline training of language model agents, where functions are treated as learnable parameters instead of fine-tuning the underlying LLM weights. It draws an analogy between traditional model training and agent training, and proposes an AgentOptimizer that iteratively updates the agent’s functions via predefined actions, leading to improved performance on downstream tasks.",
+        "methodology": "The approach involves using an AgentOptimizer that leverages LLM capabilities to update functions progressively through actions (add, revise, remove, or terminate). The training algorithm employs a roll-back strategy to undo detrimental updates and an early-stop mechanism to prevent overfitting when no performance improvement is observed. The method treats the agent’s execution history as the guiding signal (similar to a loss function) for optimizing the function set.",
+        "experimental_setup": "Experiments were conducted on three distinct tasks: Mathematical Reasoning (using a subset of the MATH dataset), Tabular Processing (TabMWP), and General Real-World Tasks (GAIA). Two agent systems, GPT-4+ agent and the ReAct agent, were used. The evaluation involved train/test splits, ablation studies comparing components of the method, batch training experiments, and domain transfer tests to assess the generalizability and effectiveness of the agent training framework.",
+        "limitations": "The method is constrained by the LLM’s context limit, which limits the size of the training data and poses challenges for large-scale training. Moreover, the success of the function optimization critically depends on the quality of generated functions, and improper function generation can lead to performance degradation. The theoretical analysis also relies on strong assumptions regarding data distribution and optimal function identification.",
+        "future_research_directions": "Future work could explore ways to overcome the context length limitation to better utilize large-scale training data, improve batch training techniques for agent training, and extend hyperparameter tuning strategies. Additional research could also focus on enhancing domain transferability, refining function generation to reduce errors, and relaxing the strong assumptions used in the theoretical analysis.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "AvE: Assistance via Empowerment",
@@ -319,7 +375,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper presents a novel paradigm for human-agent assistance by shifting from goal inference to enhancing human empowerment. It formalizes assistance through an augmented reinforcement learning framework that incorporates an empowerment term, and demonstrates that increasing human controllability can overcome challenges associated with ambiguous or misspecified goals.",
+        "methodology": "The approach augments the traditional RL reward function with a bonus based on human empowerment. Since computing true empowerment is computationally intensive in continuous domains, the authors introduce an efficient proxy metric based on the variance of final states generated by sparse sampling. This method is evaluated against goal inference techniques in both simulated gridworld scenarios and a shared autonomy task using Lunar Lander.",
+        "experimental_setup": "Experiments include a gridworld simulation where an agent assists a proxy human to reach a goal by moving blocks, comparing performance of goal inference methods with the empowerment-based approach. In addition, a shared autonomy experiment using the Lunar Lander environment (from OpenAI Gym) is conducted with both simulated pilots (with different error profiles) and a human-in-the-loop user study involving 20 participants, with objective metrics (success rate, steps taken) and subjective survey responses collected.",
+        "limitations": "The method may be less effective in cases where goal inference works well, as empowerment is a more general and less targeted approach. The empowerment proxy relies on assumptions such as homogeneous noise and can sometimes lead to excessive stabilization that reduces user control. Additionally, the approximation may not scale well with larger or more complex action spaces.",
+        "future_research_directions": "Future work could explore hybrid approaches that combine goal inference with empowerment to leverage the strengths of both. Further refinement of the empowerment proxy to improve accuracy and computational efficiency, extension to more general reward formulations, and application to real-world robotic tasks are promising research directions.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Position: Towards Unified Alignment Between Agents, Humans, and Environment",
@@ -361,7 +425,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces the Knowledge-Grounded RL (KGRL) paradigm and the Knowledge-Inclusive Attention Network (KIAN), a flexible actor model that fuses multiple external knowledge policies with an internal policy. This framework is designed to improve sample efficiency, generalizability, compositionality, and incremental learning in deep reinforcement learning, while addressing the challenge of arbitrary combinations and the entropy imbalance problem in multi-policy fusion.",
+        "methodology": "KIAN employs a unified embedding-based approach by assigning learnable 'knowledge keys' to each policy and a query network to compute attention weights that determine the importance of each policy for action prediction. The method supports both discrete and continuous action spaces and includes modifications to policy distributions to mitigate entropy imbalance, enhancing exploration and efficient policy fusion.",
+        "experimental_setup": "The framework is evaluated on discrete domains (MiniGrid environments with tasks such as grid navigation and door/key puzzles) and continuous domains (OpenAI-Robotics tasks like FetchPush, FetchSlide, and FetchPickAndPlace). Comparisons are made against multiple baselines including behavior cloning, RL, RL+BC, KoGuN, and A2T. The experiments assess sample efficiency, generalizability (transfer between simple and complex tasks), compositional learning, and incremental policy updates using standard benchmarks and variance analysis over multiple random seeds.",
+        "limitations": "The work acknowledges that the efficiency of KIAN and similar KGRL methods may decline when dealing with a large external knowledge set that contains irrelevant policies. Efficient handling and selection within extensive and potentially noisy policy sets remain as a limitation.",
+        "future_research_directions": "Future work could explore fusing policies with different state and action representations, integrating safety- and ethics-oriented regulative policies, and developing mechanisms to efficiently navigate and filter large external knowledge sets. Additionally, investigating complex relationships among multiple policies, such as conditional dependencies and conflicts, could further enhance the framework's adaptability and real-world applications.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Knowledge Card: Filling LLMs' Knowledge Gaps with Plug-in Specialized Language Models",
@@ -396,7 +468,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces KNOWLEDGE CARD, a novel modular framework that patches general-purpose large language models (LLMs) by integrating specialized, smaller language models (knowledge cards) trained on domain-specific corpora. This framework addresses limitations in static LLMs such as outdated or hallucinated knowledge by enabling dynamic, plug-and-play updates and community-driven contributions.",
+        "methodology": "The approach involves training specialized language models (knowledge cards) on diverse knowledge domains and then integrating them with a general-purpose LLM using two strategies: a bottom-up method that activates all relevant cards simultaneously, and a top-down method where the LLM determines when external information is needed. Additionally, three selectors (relevance, pruning, and factuality) are employed to ensure that only high-quality, concise, and factual knowledge is integrated into the LLM context.",
+        "experimental_setup": "The framework is evaluated on several benchmarks including MMLU for general-purpose question answering, the LUN misinformation detection dataset with two- and four-way classification settings, and a custom dataset (MidtermQA) for testing temporal knowledge updates. Comparisons are drawn against various baselines such as vanilla black-box LLMs (e.g., Codex, PaLM, Flan-PaLM), retrieval-augmented models, and generated knowledge prompting approaches, with additional ablation studies assessing the contribution of each component.",
+        "limitations": "The current implementation uses relatively small knowledge cards (initialized with OPT-1.3B), which can lead to issues like degeneration and topic deviation in generated knowledge. The factuality selector has biases toward established, information-rich domains and may not generalize well to emerging knowledge. Additionally, the yes/no prompting mechanism for deciding when to fetch external knowledge is not perfect and sometimes leads to over-confidence or misclassification.",
+        "future_research_directions": "Future work could explore increasing the size and improving the training objectives of knowledge cards to enhance knowledge quality. There is also scope for developing more robust factuality evaluation measures and selector mechanisms, improving the LLM’s decision process on when to request external knowledge, and integrating heterogeneous external sources such as retrieval systems, knowledge graphs, and search engines. Finally, further work could focus on fostering a community-driven ecosystem for collaborative knowledge updates.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Knowledge Card: Filling LLMs' Knowledge Gaps with Plug-in Specialized Language Models",
@@ -431,7 +511,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces KNOWLEDGE CARD, a modular framework that augments general-purpose large language models (LLMs) with specialized, domain-specific language models (knowledge cards) to fill knowledge gaps. It proposes two integration methods (bottom-up and top-down) along with three knowledge selectors that enforce relevance, brevity, and factuality, achieving state-of-the-art performance on multiple benchmarks.",
+        "methodology": "The approach involves training multiple specialized language models on diverse domain-specific corpora using OPT-1.3B as a base. Three selectors (relevance, pruning, and factuality selectors) filter and refine generated knowledge. Two integration strategies are applied: bottom-up (activating all knowledge cards and filtering their outputs) and top-down (with LLM deciding when to seek additional knowledge via yes/no and card selection prompts).",
+        "experimental_setup": "Experiments were conducted on several datasets including MMLU (general QA across 57 tasks), the LUN misinformation detection dataset (with binary and four-way classification settings), and a custom MidtermQA dataset for temporal knowledge update. Validation employed few-shot in-context learning settings, comparisons with retrieval-augmented and generated knowledge prompting baselines, and ablation studies to assess individual component contributions.",
+        "limitations": "The paper acknowledges that the small size of the knowledge cards (OPT-1.3B) may limit the quality of generated knowledge, resulting in occasional issues like degeneration or topic deviation. It also notes that the factuality selector might be biased in domains with richer evidence and that the yes/no prompt mechanism for deciding external knowledge need is not yet perfect.",
+        "future_research_directions": "Future research could explore larger and more powerful knowledge cards, specialized training objectives for improved knowledge generation, integration with other knowledge sources (e.g., retrieval systems, search engines, knowledge graphs), and more robust methods for factuality evaluation and dynamic external knowledge selection.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     }
   ]
 }
