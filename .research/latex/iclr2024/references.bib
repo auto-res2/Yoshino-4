@@ -1,0 +1,343 @@
+% ===========================================
+% REQUIRED CITATIONS
+% These papers must be cited in the manuscript
+% ===========================================
+
+@article{anagnostidis_2023-11-06T16:20:28Z_navigating,
+ abstract = {In recent years, the state-of-the-art in deep learning has been dominated by
+very large models that have been pre-trained on vast amounts of data. The
+paradigm is very simple: investing more computational resources (optimally)
+leads to better performance, and even predictably so; neural scaling laws have
+been derived that accurately forecast the performance of a network for a
+desired level of compute. This leads to the notion of a `compute-optimal'
+model, i.e. a model that allocates a given level of compute during training
+optimally to maximize performance. In this work, we extend the concept of
+optimality by allowing for an `adaptive' model, i.e. a model that can change
+its shape during training. By doing so, we can design adaptive models that
+optimally traverse between the underlying scaling laws and outpace their
+`static' counterparts, leading to a significant reduction in the required
+compute to reach a given target performance. We show that our approach
+generalizes across modalities and different shape parameters.},
+ arxiv_url = {https://arxiv.org/pdf/2311.03233v3.pdf},
+ author = {Sotiris Anagnostidis and Gregor Bachmann and Imanol Schlag and Thomas Hofmann},
+ title = {Navigating Scaling Laws: Compute Optimality in Adaptive Model Training},
+ year = {2023-11-06T16:20:28Z}
+}
+
+@article{author_year_autogo,
+ title = {AutoGO: Automated Computation Graph Optimization for Neural Network Evolution}
+}
+
+@article{author_year_autoos,
+ title = {AutoOS: Make Your OS More Powerful by Exploiting Large Language Models}
+}
+
+@article{author_year_dynatune,
+ title = {DynaTune: Dynamic Tensor Program Optimization in Deep Neural Network Compilation}
+}
+
+@article{author_year_position,
+ title = {Position: Towards Unified Alignment Between Agents, Humans, and Environment}
+}
+
+@article{chiu_2022-10-07T17:56:57Z_flexible,
+ abstract = {Reinforcement learning (RL) agents have long sought to approach the
+efficiency of human learning. Humans are great observers who can learn by
+aggregating external knowledge from various sources, including observations
+from others' policies of attempting a task. Prior studies in RL have
+incorporated external knowledge policies to help agents improve sample
+efficiency. However, it remains non-trivial to perform arbitrary combinations
+and replacements of those policies, an essential feature for generalization and
+transferability. In this work, we present Knowledge-Grounded RL (KGRL), an RL
+paradigm fusing multiple knowledge policies and aiming for human-like
+efficiency and flexibility. We propose a new actor architecture for KGRL,
+Knowledge-Inclusive Attention Network (KIAN), which allows free knowledge
+rearrangement due to embedding-based attentive action prediction. KIAN also
+addresses entropy imbalance, a problem arising in maximum entropy KGRL that
+hinders an agent from efficiently exploring the environment, through a new
+design of policy distributions. The experimental results demonstrate that KIAN
+outperforms alternative methods incorporating external knowledge policies and
+achieves efficient and flexible learning. Our implementation is available at
+https://github.com/Pascalson/KGRL.git},
+ arxiv_url = {https://arxiv.org/pdf/2210.03729v2.pdf},
+ author = {Zih-Yun Chiu and Yi-Lin Tuan and William Yang Wang and Michael C. Yip},
+ github_url = {https://github.com/Pascalson/KGRL},
+ title = {Flexible Attention-Based Multi-Policy Fusion for Efficient Deep Reinforcement Learning},
+ year = {2022-10-07T17:56:57Z}
+}
+
+@article{du_2020-06-26T04:40:11Z_ave,
+ abstract = {One difficulty in using artificial agents for human-assistive applications
+lies in the challenge of accurately assisting with a person's goal(s). Existing
+methods tend to rely on inferring the human's goal, which is challenging when
+there are many potential goals or when the set of candidate goals is difficult
+to identify. We propose a new paradigm for assistance by instead increasing the
+human's ability to control their environment, and formalize this approach by
+augmenting reinforcement learning with human empowerment. This task-agnostic
+objective preserves the person's autonomy and ability to achieve any eventual
+state. We test our approach against assistance based on goal inference,
+highlighting scenarios where our method overcomes failure modes stemming from
+goal ambiguity or misspecification. As existing methods for estimating
+empowerment in continuous domains are computationally hard, precluding its use
+in real time learned assistance, we also propose an efficient
+empowerment-inspired proxy metric. Using this, we are able to successfully
+demonstrate our method in a shared autonomy user study for a challenging
+simulated teleoperation task with human-in-the-loop training.},
+ arxiv_url = {https://arxiv.org/pdf/2006.14796v5.pdf},
+ author = {Yuqing Du and Stas Tiomkin and Emre Kiciman and Daniel Polani and Pieter Abbeel and Anca Dragan},
+ github_url = {https://github.com/yuqingd/ave},
+ title = {AvE: Assistance via Empowerment},
+ year = {2020-06-26T04:40:11Z}
+}
+
+@article{feng_2023-05-17T05:25:27Z_knowledge,
+ abstract = {By design, large language models (LLMs) are static general-purpose models,
+expensive to retrain or update frequently. As they are increasingly adopted for
+knowledge-intensive tasks, it becomes evident that these design choices lead to
+failures to generate factual, relevant, and up-to-date knowledge. To this end,
+we propose Knowledge Card, a modular framework to plug in new factual and
+relevant knowledge into general-purpose LLMs. We first introduce knowledge
+cards -- specialized language models trained on corpora from specific domains
+and sources. Knowledge cards serve as parametric repositories that are selected
+at inference time to generate background knowledge for the base LLM. We then
+propose three content selectors to dynamically select and retain information in
+documents generated by knowledge cards, specifically controlling for relevance,
+brevity, and factuality of outputs. Finally, we propose two complementary
+integration approaches to augment the base LLM with the (relevant, factual)
+knowledge curated from the specialized LMs. Through extensive experiments, we
+demonstrate that Knowledge Card achieves state-of-the-art performance on six
+benchmark datasets. Ultimately, Knowledge Card framework enables dynamic
+synthesis and updates of knowledge from diverse domains. Its modularity will
+ensure that relevant knowledge can be continuously updated through the
+collective efforts of the research community.},
+ arxiv_url = {https://arxiv.org/pdf/2305.09955v3.pdf},
+ author = {Shangbin Feng and Weijia Shi and Yuyang Bai and Vidhisha Balachandran and Tianxing He and Yulia Tsvetkov},
+ github_url = {https://github.com/noanabeshima/wikipedia-downloader},
+ title = {Knowledge Card: Filling LLMs' Knowledge Gaps with Plug-in Specialized Language Models},
+ year = {2023-05-17T05:25:27Z}
+}
+
+@article{feng_2023-05-17T05:25:27Z_knowledge,
+ abstract = {By design, large language models (LLMs) are static general-purpose models,
+expensive to retrain or update frequently. As they are increasingly adopted for
+knowledge-intensive tasks, it becomes evident that these design choices lead to
+failures to generate factual, relevant, and up-to-date knowledge. To this end,
+we propose Knowledge Card, a modular framework to plug in new factual and
+relevant knowledge into general-purpose LLMs. We first introduce knowledge
+cards -- specialized language models trained on corpora from specific domains
+and sources. Knowledge cards serve as parametric repositories that are selected
+at inference time to generate background knowledge for the base LLM. We then
+propose three content selectors to dynamically select and retain information in
+documents generated by knowledge cards, specifically controlling for relevance,
+brevity, and factuality of outputs. Finally, we propose two complementary
+integration approaches to augment the base LLM with the (relevant, factual)
+knowledge curated from the specialized LMs. Through extensive experiments, we
+demonstrate that Knowledge Card achieves state-of-the-art performance on six
+benchmark datasets. Ultimately, Knowledge Card framework enables dynamic
+synthesis and updates of knowledge from diverse domains. Its modularity will
+ensure that relevant knowledge can be continuously updated through the
+collective efforts of the research community.},
+ arxiv_url = {https://arxiv.org/pdf/2305.09955v3.pdf},
+ author = {Shangbin Feng and Weijia Shi and Yuyang Bai and Vidhisha Balachandran and Tianxing He and Yulia Tsvetkov},
+ github_url = {https://github.com/thoppe/The-Pile-PubMed},
+ title = {Knowledge Card: Filling LLMs' Knowledge Gaps with Plug-in Specialized Language Models},
+ year = {2023-05-17T05:25:27Z}
+}
+
+@article{moreau_2022-06-27T16:19:24Z_benchopt,
+ abstract = {Numerical validation is at the core of machine learning research as it allows
+to assess the actual impact of new methods, and to confirm the agreement
+between theory and practice. Yet, the rapid development of the field poses
+several challenges: researchers are confronted with a profusion of methods to
+compare, limited transparency and consensus on best practices, as well as
+tedious re-implementation work. As a result, validation is often very partial,
+which can lead to wrong conclusions that slow down the progress of research. We
+propose Benchopt, a collaborative framework to automate, reproduce and publish
+optimization benchmarks in machine learning across programming languages and
+hardware architectures. Benchopt simplifies benchmarking for the community by
+providing an off-the-shelf tool for running, sharing and extending experiments.
+To demonstrate its broad usability, we showcase benchmarks on three standard
+learning tasks: $\ell_2$-regularized logistic regression, Lasso, and ResNet18
+training for image classification. These benchmarks highlight key practical
+findings that give a more nuanced view of the state-of-the-art for these
+problems, showing that for practical evaluation, the devil is in the details.
+We hope that Benchopt will foster collaborative work in the community hence
+improving the reproducibility of research findings.},
+ arxiv_url = {https://arxiv.org/pdf/2206.13424v3.pdf},
+ author = {Thomas Moreau and Mathurin Massias and Alexandre Gramfort and Pierre Ablin and Pierre-Antoine Bannier and Benjamin Charlier and Mathieu Dagréou and Tom Dupré la Tour and Ghislain Durif and Cassio F. Dantas and Quentin Klopfenstein and Johan Larsson and En Lai and Tanguy Lefort and Benoit Malézieux and Badr Moufad and Binh T. Nguyen and Alain Rakotomamonjy and Zaccharie Ramzi and Joseph Salmon and Samuel Vaiter},
+ github_url = {https://github.com/benchopt/benchmark_lasso},
+ title = {Benchopt: Reproducible, efficient and collaborative optimization benchmarks},
+ year = {2022-06-27T16:19:24Z}
+}
+
+@article{shirali_2022-10-06T18:56:46Z_theory,
+ abstract = {Dynamic benchmarks interweave model fitting and data collection in an attempt
+to mitigate the limitations of static benchmarks. In contrast to an extensive
+theoretical and empirical study of the static setting, the dynamic counterpart
+lags behind due to limited empirical studies and no apparent theoretical
+foundation to date. Responding to this deficit, we initiate a theoretical study
+of dynamic benchmarking. We examine two realizations, one capturing current
+practice and the other modeling more complex settings. In the first model,
+where data collection and model fitting alternate sequentially, we prove that
+model performance improves initially but can stall after only three rounds.
+Label noise arising from, for instance, annotator disagreement leads to even
+stronger negative results. Our second model generalizes the first to the case
+where data collection and model fitting have a hierarchical dependency
+structure. We show that this design guarantees strictly more progress than the
+first, albeit at a significant increase in complexity. We support our
+theoretical analysis by simulating dynamic benchmarks on two popular datasets.
+These results illuminate the benefits and practical limitations of dynamic
+benchmarking, providing both a theoretical foundation and a causal explanation
+for observed bottlenecks in empirical work.},
+ arxiv_url = {https://arxiv.org/pdf/2210.03165v3.pdf},
+ author = {Ali Shirali and Rediet Abebe and Moritz Hardt},
+ title = {A Theory of Dynamic Benchmarks},
+ year = {2022-10-06T18:56:46Z}
+}
+
+@article{tahmasbi_2020-03-13T23:25:25Z_driftsurf,
+ abstract = {When learning from streaming data, a change in the data distribution, also
+known as concept drift, can render a previously-learned model inaccurate and
+require training a new model. We present an adaptive learning algorithm that
+extends previous drift-detection-based methods by incorporating drift detection
+into a broader stable-state/reactive-state process. The advantage of our
+approach is that we can use aggressive drift detection in the stable state to
+achieve a high detection rate, but mitigate the false positive rate of
+standalone drift detection via a reactive state that reacts quickly to true
+drifts while eliminating most false positives. The algorithm is generic in its
+base learner and can be applied across a variety of supervised learning
+problems. Our theoretical analysis shows that the risk of the algorithm is
+competitive to an algorithm with oracle knowledge of when (abrupt) drifts
+occur. Experiments on synthetic and real datasets with concept drifts confirm
+our theoretical analysis.},
+ arxiv_url = {https://arxiv.org/pdf/2003.06508v2.pdf},
+ author = {Ashraf Tahmasbi and Ellango Jothimurugesan and Srikanta Tirthapura and Phillip B. Gibbons},
+ title = {DriftSurf: Stable-State / Reactive-State Learning under Concept Drift},
+ year = {2020-03-13T23:25:25Z}
+}
+
+@article{wu_2024-06-13T02:08:28Z_streambench,
+ abstract = {Recent works have shown that large language model (LLM) agents are able to
+improve themselves from experience, which is an important ability for
+continuous enhancement post-deployment. However, existing benchmarks primarily
+evaluate their innate capabilities and do not assess their ability to improve
+over time. To address this gap, we introduce StreamBench, a pioneering
+benchmark designed to evaluate the continuous improvement of LLM agents over an
+input-feedback sequence. StreamBench simulates an online learning environment
+where LLMs receive a continuous flow of feedback stream and iteratively enhance
+their performance. In addition, we propose several simple yet effective
+baselines for improving LLMs on StreamBench, and provide a comprehensive
+analysis to identify critical components that contribute to successful
+streaming strategies. Our work serves as a stepping stone towards developing
+effective online learning strategies for LLMs, paving the way for more adaptive
+AI systems in streaming scenarios. Source code:
+https://github.com/stream-bench/stream-bench. Benchmark website:
+https://stream-bench.github.io.},
+ arxiv_url = {https://arxiv.org/pdf/2406.08747v2.pdf},
+ author = {Cheng-Kuang Wu and Zhi Rui Tam and Chieh-Yen Lin and Yun-Nung Chen and Hung-yi Lee},
+ github_url = {https://github.com/stream-bench/stream-bench},
+ title = {StreamBench: Towards Benchmarking Continuous Improvement of Language Agents},
+ year = {2024-06-13T02:08:28Z}
+}
+
+@article{xu_2022-05-30T03:30:45Z_adaptive,
+ abstract = {In this paper, we study a sequential decision-making problem, called Adaptive
+Sampling for Discovery (ASD). Starting with a large unlabeled dataset,
+algorithms for ASD adaptively label the points with the goal to maximize the
+sum of responses.
+  This problem has wide applications to real-world discovery problems, for
+example drug discovery with the help of machine learning models. ASD algorithms
+face the well-known exploration-exploitation dilemma. The algorithm needs to
+choose points that yield information to improve model estimates but it also
+needs to exploit the model. We rigorously formulate the problem and propose a
+general information-directed sampling (IDS) algorithm. We provide theoretical
+guarantees for the performance of IDS in linear, graph and low-rank models. The
+benefits of IDS are shown in both simulation experiments and real-data
+experiments for discovering chemical reaction conditions.},
+ arxiv_url = {https://arxiv.org/pdf/2205.14829v3.pdf},
+ author = {Ziping Xu and Eunjae Shim and Ambuj Tewari and Paul Zimmerman},
+ title = {Adaptive Sampling for Discovery},
+ year = {2022-05-30T03:30:45Z}
+}
+
+@article{zhang_2024-02-17T18:31:21Z_offline,
+ abstract = {Researchers and practitioners have recently reframed powerful Large Language
+Models (LLMs) as agents, enabling them to automate complex tasks largely via
+the use of specialized functions. To facilitate the development of LLM agents,
+we present a novel paradigm of training LLM agents without modifying the LLM
+weights, which is particularly useful when the LLMs are difficult or
+inaccessible for modifications. Inspired by how humans continuously forge tools
+to adapt to real-world tasks, rather than change our biological structure to
+fit a static set of tools, we propose to progressively forge agent's functions
+to better solve the downstream tasks instead of modifying the LLM weights. By
+treating the functions as learnable `agent parameters' and leveraging the
+fundamental idea of model training in artificial intelligence, we develop
+AgentOptimizer that employs the LLM to update agents' functions and devise an
+agent training algorithm with two strategies, roll-back, and early-stop, to
+streamline the training process. With extensive experiments, we showcase that
+the agent training paradigm could significantly improve the performance of
+representative LLM agents in various downstream tasks. We also study the
+behavior of the agent training regarding aspects like the learning curve and
+domain transferability.},
+ arxiv_url = {https://arxiv.org/pdf/2402.11359v4.pdf},
+ author = {Shaokun Zhang and Jieyu Zhang and Jiale Liu and Linxin Song and Chi Wang and Ranjay Krishna and Qingyun Wu},
+ title = {Offline Training of Language Model Agents with Functions as Learnable Weights},
+ year = {2024-02-17T18:31:21Z}
+}
+
+% ===========================================
+% REFERENCE CANDIDATES
+% Additional reference papers for context
+% ===========================================
+
+@article{zhao_2023-08-20T03:03:34Z_expel,
+ abstract = {The recent surge in research interest in applying large language models
+(LLMs) to decision-making tasks has flourished by leveraging the extensive
+world knowledge embedded in LLMs. While there is a growing demand to tailor
+LLMs for custom decision-making tasks, finetuning them for specific tasks is
+resource-intensive and may diminish the model's generalization capabilities.
+Moreover, state-of-the-art language models like GPT-4 and Claude are primarily
+accessible through API calls, with their parametric weights remaining
+proprietary and unavailable to the public. This scenario emphasizes the growing
+need for new methodologies that allow learning from agent experiences without
+requiring parametric updates. To address these problems, we introduce the
+Experiential Learning (ExpeL) agent. Our agent autonomously gathers experiences
+and extracts knowledge using natural language from a collection of training
+tasks. At inference, the agent recalls its extracted insights and past
+experiences to make informed decisions. Our empirical results highlight the
+robust learning efficacy of the ExpeL agent, indicating a consistent
+enhancement in its performance as it accumulates experiences. We further
+explore the emerging capabilities and transfer learning potential of the ExpeL
+agent through qualitative observations and additional experiments.},
+ arxiv_url = {https://arxiv.org/pdf/2308.10144v3.pdf},
+ author = {Andrew Zhao and Daniel Huang and Quentin Xu and Matthieu Lin and Yong-Jin Liu and Gao Huang},
+ title = {Expel: Llm agents are experiential learners.},
+ year = {2023-08-20T03:03:34Z}
+}
+
+@article{zhou_2022-11-03T15:43:03Z_large,
+ abstract = {By conditioning on natural language instructions, large language models
+(LLMs) have displayed impressive capabilities as general-purpose computers.
+However, task performance depends significantly on the quality of the prompt
+used to steer the model, and most effective prompts have been handcrafted by
+humans. Inspired by classical program synthesis and the human approach to
+prompt engineering, we propose Automatic Prompt Engineer (APE) for automatic
+instruction generation and selection. In our method, we treat the instruction
+as the "program," optimized by searching over a pool of instruction candidates
+proposed by an LLM in order to maximize a chosen score function. To evaluate
+the quality of the selected instruction, we evaluate the zero-shot performance
+of another LLM following the selected instruction. Experiments on 24 NLP tasks
+show that our automatically generated instructions outperform the prior LLM
+baseline by a large margin and achieve better or comparable performance to the
+instructions generated by human annotators on 19/24 tasks. We conduct extensive
+qualitative and quantitative analyses to explore the performance of APE. We
+show that APE-engineered prompts can be applied to steer models toward
+truthfulness and/or informativeness, as well as to improve few-shot learning
+performance by simply prepending them to standard in-context learning prompts.
+Please check out our webpage at
+https://sites.google.com/view/automatic-prompt-engineer.},
+ arxiv_url = {https://arxiv.org/pdf/2211.01910v2.pdf},
+ author = {Yongchao Zhou and Andrei Ioan Muresanu and Ziwen Han and Keiran Paster and Silviu Pitis and Harris Chan and Jimmy Ba},
+ title = {Large language models are human-level prompt engineers.},
+ year = {2022-11-03T15:43:03Z}
+}
