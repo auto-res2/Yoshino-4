@@ -40,7 +40,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "This paper introduces ACES, an autotelic generative model that automatically generates a diverse set of challenging yet solvable Python programming puzzles. It evolves puzzles by optimizing for both empirical difficulty (measured via a target LLM’s pass@1 performance) and semantic diversity (using LLM-generated skill descriptors), outperforming several baselines and human-curated benchmarks.",
+        "methodology": "The approach leverages techniques from quality-diversity optimization and Map-Elites by maintaining an archive of puzzles organized by skill descriptor niches. ACES generates puzzles by prompting a large language model with in-context examples drawn from neighboring niches, while iteratively updating the archive based on empirical difficulty calculated over multiple solving attempts. Multiple baselines including ELM and ELM-CVT are also compared to assess the effectiveness of goal-directed exploration.",
+        "experimental_setup": "The experiments use the P3 dataset as seeded puzzles and are conducted using Llama-3-70B (quantized to 4 bits) for puzzle generation, solution evaluation, and labeling. Evaluations were performed on a single node with 4 Nvidia Tesla V100 GPUs over 40 generations (approximately 6400 puzzle generation attempts per run) and repeated across three random seeds. Puzzle difficulty is measured via pass@1 over 50 attempts, and diversity is assessed through both semantic skill niche count and embedding diversity metrics.",
+        "limitations": "The method relies on several key assumptions, including accurate LLM-based labeling of puzzles, the generator's ability to effectively reach targeted skill niches, and a sufficient heredity of puzzle properties. Additionally, the computation of empirical difficulty is expensive, and there is a risk of 'label hacking' where the model might game the descriptors, potentially misleading the diversity optimization.",
+        "future_research_directions": "Future work could explore improving labeling accuracy and generator performance, extending the approach to other domains such as educational and scientific problem generation, and incorporating more comprehensive quality assessments beyond difficulty alone. Additionally, research could focus on mitigating label hacking and exploring adaptive benchmarks that evolve in tandem with improvements in LLM capabilities.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "NAVSIM: Data-Driven Non-Reactive Autonomous Vehicle Simulation and Benchmarking",
@@ -81,7 +89,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces NA VSIM, a data-driven non-reactive simulation framework for autonomous vehicle benchmarking, which bridges the gap between open-loop and closed-loop evaluations by using simulation-based metrics (PDMS) to better reflect safety, progress, and comfort in real-world driving scenarios. It also standardizes training and testing splits and demonstrates its utility by organizing a large-scale competition.",
+        "methodology": "NA VSIM employs a non-reactive simulation approach where the driving policy is queried only at the initial frame and a fixed trajectory is simulated over a short horizon (4 seconds) using a kinematic bicycle model and an LQR controller. The framework computes simulation-based metrics by aggregating subscores (for collision, drivable area compliance, time-to-collision, comfort, and ego progress) into a final PDMS score, and uses a filtering method to curate challenging scenarios from the OpenScene dataset.",
+        "experimental_setup": "The experimental setup involves using the filtered OpenScene dataset with standardized training (navtrain) and testing (navtest) splits, as well as a smaller navmini split for rapid evaluation. The framework is evaluated using both rule-based and learned planners (including models like TransFuser, Latent TransFuser, UniAD, and PARA-Drive) and studies the correlation between open-loop and closed-loop metrics. Additionally, a CVPR 2024 NA VSIM challenge was organized with over 140 teams participating.",
+        "limitations": "The framework assumes a non-reactive simulation where the planning agent’s actions do not affect the environment, which may not capture the full dynamics of closed-loop interactions. It also does not address issues like reactive simulation for dynamic scenarios, proper classification of rear-end collisions, and lacks integration of road elevation and certain sensor simulation complexities.",
+        "future_research_directions": "Future work could extend the framework to include reactive simulation to capture dynamic interactions and cumulative errors, enhance sensor simulation to minimize domain gaps, broaden evaluation metrics to cover additional traffic rules and objectives, incorporate multi-objective evaluation methods, and support additional datasets to address current annotation and data diversity limitations.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "AutoManual: Constructing Instruction Manuals by LLM Agents via Interactive Environmental Learning",
@@ -116,7 +132,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces AutoManual, an innovative framework that enables LLM agents to autonomously build a structured understanding of their environment through online rule management. By integrating a Planner that generates free-form code, a Builder that updates environmental rules using case-conditioned prompting, and a Formulator that compiles these rules into a human-readable manual, AutoManual addresses task adaptability and the path dependency problem.",
+        "methodology": "AutoManual employs a multi-agent system where the Planner interacts with the environment using code-based planning, the Builder continuously refines and updates a structured rule system based on interactive feedback, and the Formulator converts the set of rules into a comprehensive Markdown manual. The approach uses two iterative stages (plan and rule update) to optimize performance based on environmental feedback and error correction.",
+        "experimental_setup": "The framework is evaluated on three interactive environments: ALFWorld (a text-based household environment with six task types), MiniWoB++ (simulated web tasks with both feedback-based and non-feedback tasks), and WebArena (realistic web environments, particularly the Reddit domain). Comparisons are made with methods like ReAct, Reflexion, ExpeL, AdaPlanner, and a baseline using a skill/reflection library, with success rates measured using GPT-4-turbo and GPT-3.5-turbo models.",
+        "limitations": "The proposed method depends heavily on the advanced capabilities of models like GPT-4-turbo, potentially limiting its applicability with less advanced LLMs. The current implementation embeds all rules within the LLM context, which may not scale well to larger, dynamic environments. Additionally, there is a challenge in ensuring that the Planner consistently follows the rules in the generated manuals, leading to occasional rule hallucinations or non-compliance.",
+        "future_research_directions": "Future research could focus on integrating retrieval-augmented generation (RAG) techniques to better handle scaling to larger environments, enhancing exploration strategies (such as incorporating curiosity or tree search methods), and developing more robust mechanisms to enforce or verify rule adherence during agent planning and execution.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "A Theory of Dynamic Benchmarks",
@@ -148,7 +172,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper initiates a theoretical study of dynamic benchmarking, proposing formal models that interleave model fitting with data collection. It analyzes two realizations—a sequential (path) dynamic benchmark and a hierarchical dynamic benchmark—demonstrating that while initial rounds yield improved performance (error reduction to O(ϵ²) for the sequential model and O(ϵ³) for a two-layer hierarchical design), further rounds may not lead to additional improvement due to inherent limitations such as catastrophic forgetting. The work also highlights the detrimental effects of label noise and provides empirical evidence from simulations.",
+        "methodology": "The authors develop a formal framework for dynamic benchmarking that characterizes the iterative interplay between model building and data collection. They mathematically define operations like risk minimization, data collection, distribution mixing, and classifier aggregation (via majority voting). Key theoretical results are derived using these models to establish error bounds for different benchmark designs. Additionally, they analyze dynamic gradient-based update strategies using surrogate convex losses (hinge loss and exponential loss) to draw parallels with boosting methods.",
+        "experimental_setup": "The experimental validation involves simulating path dynamic benchmarking on two popular datasets: CIFAR-10 for image classification and SNLI for natural language inference. In these simulations, a base classifier is fixed, and new classifiers are trained on subsets of data (misclassified examples) through multiple rounds. The risk of the aggregated majority vote classifier is tracked over rounds to assess convergence, and variability across rollouts is analyzed to compare against the theoretical predictions.",
+        "limitations": "The approach makes idealized assumptions such as the availability of an ϵ-approximate risk minimizer and a realizable learning problem, which may not hold in practice. The sequential design shows a hard lower bound (Ω(ϵ²) error) even after multiple rounds, partly due to catastrophic forgetting. The hierarchical dynamic benchmark, while capable of further error reduction, suffers from increased complexity in design and execution. The dynamic gradient-based update methods discussed also face challenges of computational feasibility and slow convergence in realistic settings.",
+        "future_research_directions": "Future work could explore more sophisticated dynamic benchmark designs that overcome limitations like catastrophic forgetting and error saturation. Research could focus on alternative architectures or update rules that better integrate new data without losing previously acquired knowledge. Additionally, investigating robust methods that can handle label noise and extending the theoretical framework to broader, even non-realizable, settings or multi-label problems are promising directions.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "StreamBench: Towards Benchmarking Continuous Improvement of Language Agents",
@@ -182,7 +214,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces StreamBench, the first benchmark designed to evaluate the continuous improvement of language agents in an online learning setting. It addresses the gap in existing benchmarks by focusing on agents’ ability to improve over an input-feedback sequence across diverse downstream tasks.",
+        "methodology": "The work formulates a streaming scenario where an LLM agent, augmented with components like external memory and retrievers, receives sequential inputs and binary feedback signals (correct/incorrect) and updates parts of its architecture (e.g., prompts and memory) to enhance performance. Several baseline methods are proposed, including GrowPrompt, MemPrompt, Self-StreamICL, and a multi-agent variant (MAM-StreamICL), which utilize past correct outputs to guide improvement.",
+        "experimental_setup": "The benchmark evaluates performance on a suite of tasks such as Text-to-SQL (using Spider, CoSQL, and BIRD datasets), Python coding (DS-1000), tool use (ToolBench), medical diagnosis (DDXPlus), and question answering (HotpotQA). Experiments involve multiple LLM families (GPT, Gemini, Claude) using different shuffled streaming sequences with ablation studies and cost analysis to assess robustness and effectiveness under varied conditions.",
+        "limitations": "The study is limited to tasks involving text, excluding other modalities like image and audio. Additionally, the benchmark uses simulated, binary feedback which may not fully capture the complexity and noise present in real-world feedback scenarios. There is also inherent constraint in task and domain coverage, limiting the generalizability of findings.",
+        "future_research_directions": "Future work could explore online active learning where agents selectively request feedback, extend the methodology to additional modalities and tasks, experiment with more sophisticated multi-agent collaboration strategies (e.g., using multi-arm bandit frameworks), and incorporate richer feedback signals beyond simple binary correctness.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Benchopt: Reproducible, efficient and collaborative optimization benchmarks",
@@ -232,7 +272,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces Benchopt, a collaborative framework designed to automate, reproduce, and publish optimization benchmarks in machine learning. It standardizes the benchmarking process across various programming languages and hardware setups, thereby addressing reproducibility challenges and streamlining the validation of optimization algorithms.",
+        "methodology": "Benchopt uses a modular design that separates benchmarks into three main components: Objective, Dataset, and Solver. The framework provides an API and CLI for defining objectives (including loss functions and metrics), loading datasets (with preprocessing options), and integrating solvers written in multiple languages. It supports features such as parallel execution, caching, and automated result visualization to facilitate fair comparisons of optimization methods.",
+        "experimental_setup": "The paper showcases Benchopt through several experiments on canonical optimization tasks including ℓ2-regularized logistic regression, the Lasso, and training a ResNet18 for image classification. It employs a range of datasets (e.g., ijcnn1, madelon, news20.binary, criteo for logistic regression; MEG, rcv1.binary, MillionSong for Lasso; CIFAR-10, SVHN, MNIST for ResNet18) and supports various solvers implemented in languages such as Python, R, Julia, and C/C++. Benchmark results are recorded via CSV and interactive HTML visualizations to enable detailed performance analysis across different hyperparameter settings and hardware configurations.",
+        "limitations": "The framework and benchmarks may face challenges related to differences in solver implementations, framework-specific hyperparameter tuning (e.g., discrepancies in weight decay handling between TensorFlow and PyTorch), and the absence of error bars in some reported experiments. Additionally, while Benchopt is designed to facilitate reproducibility, its efficacy depends on community contributions and proper standardization across diverse experimental settings.",
+        "future_research_directions": "Potential extensions include expanding Benchopt to support new classes of optimization problems (such as higher-dimensional Total Variation regularization or advanced non-convex penalties like MCP), integrating additional solvers and hardware architectures, and refining benchmarking practices (e.g., incorporating error bars and more robust validation splits) to further enhance reproducibility and fairness in performance comparisons.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Adaptive Computation with Elastic Input Sequence",
@@ -267,7 +315,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "Introduces AdaTape, a novel adaptive computation framework that harnesses an elastic input sequence via a dynamic read-and-write tape mechanism. This allows neural networks to adjust both the type and amount of computation per input by selectively appending a variable number of tape tokens, thus providing a new inductive bias to tackle tasks where standard transformers fail.",
+        "methodology": "Presents a new Adaptive Tape Reading (ATR) algorithm that dynamically selects tape tokens from a tape bank (which can be either learnable or input-driven) based on an input query. The selected tokens are merged with the original tokens and processed through a transformer. The algorithm handles adaptive sequence content and length, differing from previous approaches that change network depth or sparsely activate parameters.",
+        "experimental_setup": "Conducted experiments on a synthetic parity task to validate the adaptive capabilities and on image recognition benchmarks. For image classification, models were pre-trained on the large-scale JFT-300M dataset and evaluated using few-shot learning protocols on datasets like ImageNet, CIFAR100, and Pets. Ablation studies and comparisons with baselines such as ViT, DeiT, and universal transformers were performed.",
+        "limitations": "AdaTape does not improve training efficiency and is less hardware friendly, leading to slower throughput during training compared to standard transformers. The dynamic nature of the architecture can also introduce instability and requires careful tuning of hyperparameters, particularly related to the halting mechanism.",
+        "future_research_directions": "Future work could target improving hardware efficiency and throughput, extending the adaptive computation framework to other modalities and tasks, and further optimizing the dynamic halting and token selection processes. Research could also investigate more stable training methods and integration with other adaptive transformer architectures.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Navigating Scaling Laws: Compute Optimality in Adaptive Model Training",
@@ -300,7 +356,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "This paper introduces an adaptive training framework that dynamically adjusts the model’s shape (e.g., patch size for Vision Transformers, context size for language models, and model width) during training to efficiently traverse between different scaling laws. The approach demonstrates that by adapting shape parameters in response to compute and performance trade‐offs, one can achieve significant reductions in training compute (up to 50-60% FLOPs reduction) compared to static models.",
+        "methodology": "The authors analyze neural scaling laws and derive a strategy to determine optimal transition points based on the gradient of the inverted scaling law, which indicates the minimal compute required for a given performance improvement. They adapt model parameters such as patch size, context length, model width, batch size, and training objective by employing simple transformation methods (e.g., resizing embeddings, bilinear interpolation, and weight expansion) to ensure smooth transitions. Their scheduling strategy is benchmarked against methods like FlexiViT and other heuristic schedulers.",
+        "experimental_setup": "Experiments were conducted on Vision Transformers using the ImageNet-21k dataset with evaluation on ImageNet-1k (10-shot error rate) and on Transformer-based language models trained on subsets of English Wikipedia and Books datasets. The setup includes training with various fixed patch sizes, context sizes, and model widths, and then applying the adaptive scheduling strategy to compare against static models. Performance is measured in FLOPs and GPU-hours, with additional benchmarks for downstream tasks and few-shot learning.",
+        "limitations": "The study uses a greedy search for hyperparameters on a relatively small compute budget, which may not generalize perfectly to larger-scale settings. Establishing the scaling behavior for each shape parameter requires high computational cost. The approach also does not incorporate advanced learning rate scheduling or cooldown phases, and the temporary performance degradation during parameter transitions (e.g., model width expansion) is acknowledged as a minor issue.",
+        "future_research_directions": "Future work could extend the adaptive scheduling strategy to additional model shape parameters such as model depth, sparsity, or combined parameters. Further research is encouraged on refining function-preserving expansion techniques, integrating dynamic learning rate schedules, and exploring hardware-aware optimizations that minimize actual training time rather than just FLOPs.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Synthesizing Programmatic Policies that Inductively Generalize",
@@ -345,7 +409,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces PDEB ENCH, an extensive benchmark suite designed to evaluate scientific machine learning methods for simulating physical systems governed by partial differential equations (PDEs). It fills a gap by providing a diverse set of datasets (from 1D to 3D and including several challenging PDEs such as advection, Burgers, diffusion-reaction, Darcy flow, and compressible/incompressible Navier-Stokes equations) accompanied with unified APIs and multiple evaluation metrics tailored for scientific ML.",
+        "methodology": "The benchmark combines both high-fidelity numerical simulations and pre-generated datasets stored in HDF5 formats with detailed parameter variations. It implements baseline surrogate models including Fourier Neural Operators (FNO), U-Net, Physics-Informed Neural Networks (PINNs) and a gradient-based inverse method. A comprehensive set of evaluation metrics, including RMSE, normalized RMSE, frequency-based errors, and boundary error metrics, is used to assess the performance of these ML models.",
+        "experimental_setup": "The experimental setup involves generating extensive datasets using numerical solvers for various PDEs with different parameters, resolutions, initial and boundary conditions. Experiments compare the performance of different ML surrogate models on these datasets under both forward simulation and inverse problem settings. Detailed hardware configurations and training protocols (e.g., using PyTorch, Adam optimizer, specific epoch counts for different models) are provided, along with runtime and inference time comparisons across 1D, 2D, and 3D simulations.",
+        "limitations": "The benchmark is currently limited to time-dependent PDE problems mostly focused on flow and diffusion phenomena, and does not yet cover other physics domains (e.g., multi-phase flows, quantum mechanics or non-rectangular domains). Additionally, high-resolution 3D data are available with relatively few samples due to storage constraints and simulation cost. Certain ML models (e.g., PINNs, autoregressive U-Net) exhibit instabilities or increased error in long-term predictions and high-frequency components.",
+        "future_research_directions": "Future work could extend the benchmark to include a broader range of PDEs (such as multi-phase flows, other physics domains, and non-rectangular domains), improve sample sizes especially for high-dimensional data, explore enhanced models that better capture long-term temporal dynamics and high-frequency phenomena, and develop more robust inverse problem methodologies. Further investigation into reducing discretization error and optimizing ML training for challenging parameter regimes is also suggested.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Benchopt: Reproducible, efficient and collaborative optimization benchmarks",
@@ -395,7 +467,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces Benchopt, a collaborative and reproducible benchmarking framework designed to standardize and automate the evaluation of optimization algorithms in machine learning. Its main contributions include providing a modular, off‐the‐shelf tool that supports multiple programming languages and hardware architectures, and offering a unified approach to compare and extend optimization solvers across canonical tasks.",
+        "methodology": "Benchopt uses a structured framework based on three main components: Objective (defining the problem and evaluation metrics), Dataset (handling data loading and preprocessing), and Solver (implementing the optimization algorithms). It is implemented in Python and allows integration with solvers written in Python, R, Julia, and C/C++. The framework supports features such as parallel execution, caching, automatic export of results (CSV, interactive HTML plots), and extensive sensitivity analyses through numerous benchmark implementations covering problems like logistic regression, Lasso, ResNet training, total variation regularization, and more.",
+        "experimental_setup": "The experimental evaluation is comprehensive, covering multiple benchmarks such as ℓ2-regularized logistic regression, Lasso, ResNet18 training for image classification, Ridge regression, TV regularized problems, MCP regression, and zero-order optimization functions. Datasets include standard ones such as ijcnn1, madelon, news20.binary, criteo, MEG, rcv1, MillionSong, CIFAR-10, SVHN, and MNIST, among others. Experiments are conducted on both CPU and GPU hardware (e.g., Intel Xeon CPUs, NVIDIA V100 GPUs) with detailed analysis of solver performance in terms of suboptimality, convergence speed, test error rates, and sensitivity to hyperparameters.",
+        "limitations": "While Benchopt provides an extensive and flexible benchmarking platform, some limitations include the need for continuous updates to incorporate new solvers and account for evolving hardware performance. Comparisons across different frameworks may be affected by subtle differences in implementation details (e.g., weight decay handling, initialization schemes, batch normalization behavior). Additionally, error bars were not reported in the main visualizations, potentially limiting insights into variability across runs.",
+        "future_research_directions": "Future work includes expanding the set of benchmarks to cover additional optimization problems and applications (e.g., higher-dimensional regularization tasks such as 2D or Total Generalized Variation), improving standardization across different frameworks, incorporating community contributions to keep benchmarks up-to-date, and further enhancing reproducibility and extensibility for diverse machine learning tasks.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Einsum Benchmark: Enabling the Development of Next-Generation Tensor Execution Engines",
@@ -437,7 +517,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "This paper introduces the Knowledge-Grounded Reinforcement Learning (KGRL) paradigm and proposes the Knowledge-Inclusive Attention Network (KIAN), an actor model that flexibly fuses multiple external and internal policies to improve sample efficiency, generalizability, compositionality, and incremental learning in deep reinforcement learning.",
+        "methodology": "KIAN employs a novel architecture with a learnable internal actor, policy embeddings (knowledge keys) for both external and internal policies, and a state-dependent query that performs an embedding-based attention operation. It integrates modified policy distributions for both discrete and continuous action spaces to address the entropy imbalance issue inherent in maximum entropy RL.",
+        "experimental_setup": "Experiments were conducted on MiniGrid (discrete action tasks) and OpenAI-Robotics (continuous control tasks) environments. The study compares KIAN with baselines such as RL, behavior cloning (BC), RL+BC, KoGuN, and A2T, and includes evaluations for sample efficiency, generalizability (using simple-to-complex and complex-to-simple transfer setups), as well as compositional and incremental learning. Ablation studies address the impact of entropy imbalance as well.",
+        "limitations": "A noted limitation is that the efficiency of KIAN and related KGRL methods may decrease when dealing with a large external knowledge set containing irrelevant policies, making it challenging to efficiently filter and harness such extensive, potentially noisy knowledge.",
+        "future_research_directions": "Future work could explore fusion of heterogeneous policies across different state and action spaces, integrate regulative (e.g., safety and ethical) policies, handle complex inter-policy dependencies and conflicts, and develop more efficient methods to manage and leverage large external knowledge sets.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "Agent Planning with World Knowledge Model",
@@ -476,7 +564,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "This paper introduces a parametric World Knowledge Model (WKM) which augments agent planning by integrating both global task knowledge and dynamic local state knowledge. The approach helps reduce blind trial-and-error and hallucinatory actions in LLM-based agents during interactive planning tasks, demonstrating improved performance across various simulated real-world environments.",
+        "methodology": "The method steers an agent model to self-synthesize task knowledge by comparing expert and sampled trajectories and to generate state knowledge at each planning step. The synthesized knowledge is integrated into expert trajectories to train both the agent model and the WKM using LoRA. At inference, the WKM provides task guidance and a state knowledge retrieval mechanism that uses a weighted combination of probabilities from the agent model and retrieved state constraints to decide the next action.",
+        "experimental_setup": "Experiments are conducted on three simulated planning tasks: ALFWorld, WebShop, and ScienceWorld. The paper evaluates three state-of-the-art open-source models (Mistral-7B, Gemma-7B, and Llama-3-8B) against several baselines (e.g., REACT, Reflexion, NAT, ETO, KNOWAGENT). The performance is measured using average rewards, planning steps, and hallucinatory action rates, with additional ablations and analyses to validate component effectiveness.",
+        "limitations": "The approach is limited to textual world knowledge and does not incorporate multi-modal information. It also cannot dynamically update with changes in the environment or agent feedback, incurs extra inference overhead in the retrieval process, and relies on the challenge of accurately determining what the language model knows.",
+        "future_research_directions": "Future work could involve developing a unified world knowledge model that generalizes across tasks, integrating multi-modal inputs to expand beyond textual representations, learning to predict the world as a complete world model, and exploring the 'weak-guide-strong' paradigm further to improve agent adaptability to new environments.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     },
     {
       "title": "A Human-Inspired Reading Agent with Gist Memory of Very Long Contexts",
@@ -510,7 +606,15 @@
         "citation_count": null,
         "h_index_relevance": null
       },
-      "llm_extracted_info": null
+      "llm_extracted_info": {
+        "main_contributions": "The paper introduces ReadAgent, a human-inspired LLM-based system that extends the effective context length (up to 20×) for long-document comprehension. Its key contributions include decomposing long texts via episode pagination, compressing them into condensed gist memories, and interactively performing look-ups to retrieve relevant details, which leads to improved performance on long-context question-answering tasks.",
+        "methodology": "ReadAgent is built entirely using prompt engineering with a pre-trained LLM. It involves three steps: (1) Episode Pagination, where the model decides natural break points in the document; (2) Memory Gisting, where each page is summarized into a concise gist with contextual tags; and (3) Interactive Look-Up, where the model selectively retrieves specific pages to supplement the gist memory when answering questions. Variants like parallel and sequential look-up strategies are explored, and adaptations to web navigation tasks are demonstrated.",
+        "experimental_setup": "The approach is evaluated on multiple long-document reading comprehension benchmarks including QuALITY, NarrativeQA, and QMSum. Metrics such as accuracy, ROUGE F-measures, and LLM-based ratings are reported. Comparisons are made against baselines including full raw text input, standard retrieval methods (BM25 and neural embedding-based retrieval), and other interactive methods. Additionally, experiments on web navigation using the Mind2Web dataset further validate the method's applicability.",
+        "limitations": "The methodology inherits limitations from the underlying LLMs, such as sensitivity to context length and potential degradation when handling extremely long or noisy documents. The reliance on gist memory may lead to loss of detailed information and increase the risk of hallucination. There is also a computational overhead due to the iterative nature of pagination, gisting, and look-up, and the approach may face scalability issues as the gist memory itself becomes long.",
+        "future_research_directions": "Future work could focus on mitigating hallucinations caused by compressed representations, improving scalability for extremely long texts, and exploring conditional gisting where task information is integrated early. Extensions to other domains, more efficient iterative processing, and better integration of retrieval mechanisms that balance compression with retention of critical details are promising directions.",
+        "experimental_code": null,
+        "experimental_info": null
+      }
     }
   ]
 }
