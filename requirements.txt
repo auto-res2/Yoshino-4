@@ -1,9 +1,8 @@
 numpy
 torch
 matplotlib
-scikit-optimize
-scikit-learn
-gymnasium
-pandas
 seaborn
-pyyaml
+pandas
+scikit-learn
+flask
+requests
