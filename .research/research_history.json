@@ -2,10 +2,10 @@
   "research_topic": "Based on the paper “AutoMind: Adaptive Knowledgeable Agent for Automated Data Science,” make improvements and exceed OpenAI's MLE-bench score. Carefully research what the challenges of this paper are and how you can improve it to exceed the score.",
   "queries": [
     "AutoMind challenges",
-    "Adaptive data science",
-    "MLE bench optimization",
-    "knowledge injection",
-    "automated modeling"
+    "MLE-bench improvements",
+    "adaptive automation",
+    "data science benchmarks",
+    "knowledge agent enhancements"
   ],
   "research_study_list": [
     {
