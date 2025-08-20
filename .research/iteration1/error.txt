@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/home/runner/work/Yoshino-4/Yoshino-4/src/main.py", line 21, in <module>
-    import src.preprocess as preprocess
-ModuleNotFoundError: No module named 'src'

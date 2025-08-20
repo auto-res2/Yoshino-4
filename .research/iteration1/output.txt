@@ -1,0 +1,39 @@
+---------------------
+Starting Test Suite for AMMEF 2.0 Experiments
+---------------------
+Running Experiment 1: Adaptive Scenario Generation with BMDSG
+BMDSG Iteration 1: difficulty=0.7965, performance_error=0.0979
+BMDSG Iteration 2: difficulty=0.1834, performance_error=0.0974
+BMDSG Iteration 3: difficulty=0.7797, performance_error=0.0912
+BMDSG Iteration 4: difficulty=0.5969, performance_error=0.0398
+BMDSG Iteration 5: difficulty=0.4458, performance_error=-0.0017
+BMDSG Iteration 6: difficulty=0.1000, performance_error=-0.0017
+BMDSG Iteration 7: difficulty=0.4592, performance_error=-0.0017
+BMDSG Iteration 8: difficulty=0.3337, performance_error=-0.0017
+BMDSG Iteration 9: difficulty=0.1429, performance_error=-0.0017
+BMDSG Iteration 10: difficulty=0.6509, performance_error=-0.0017
+BMDSG Iteration 11: difficulty=1.0000, performance_error=-0.0017
+BMDSG Iteration 12: difficulty=0.4908, performance_error=-0.0092
+BMDSG Iteration 13: difficulty=0.4954, performance_error=-0.0092
+BMDSG Iteration 14: difficulty=0.5092, performance_error=-0.0382
+BMDSG Iteration 15: difficulty=0.5065, performance_error=-0.0382
+Experiment 1 plot saved as .research/iteration1/images/adaptive_scenario.pdf
+
+Running Experiment 2: Robust Label Guard and Adversarial Defense with EMAF-RLG
+Performance metrics on adversarial dataset:
+Before Adversarial Defense:
+  Accuracy: 0.8833, Precision: 0.8940, Recall: 0.8766
+After Adversarial Defense:
+  Accuracy: 0.9000, Precision: 0.9133, Recall: 0.8896
+Experiment 2 plot saved as .research/iteration1/images/label_guard_performance.pdf
+
+Running Experiment 3: Hybrid Adaptive Simulation and Continual Calibration (HASCC) Efficiency Test
+Episode 1: Total Reward = 12.00, Fidelity Mode = low, Time = 0.2668 sec
+Episode 2: Total Reward = 22.00, Fidelity Mode = high, Time = 0.0214 sec
+Episode 3: Total Reward = 34.00, Fidelity Mode = high, Time = 0.0330 sec
+Episode 4: Total Reward = 30.00, Fidelity Mode = high, Time = 0.0291 sec
+Episode 5: Total Reward = 14.00, Fidelity Mode = high, Time = 0.0135 sec
+Experiment 3 plot saved as .research/iteration1/images/hascc_efficiency.pdf
+---------------------
+All Experiments Completed Successfully
+---------------------
