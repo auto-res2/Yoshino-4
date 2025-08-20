@@ -402,6 +402,9 @@ def run_all_experiments():
     print('ALL EXPERIMENTS COMPLETED SUCCESSFULLY')
     print('High-quality PDF plots saved to .research/iteration1/images/')
     print('=' * 80)
+    
+    status_enum = "stopped"
+    print(f'Status: {status_enum}')
 
 if __name__ == '__main__':
     run_all_experiments()
